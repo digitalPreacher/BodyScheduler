@@ -2,44 +2,45 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace BodyShedule_v_2_0.Server.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole<int>, int>
     {
 
-        public ApplicationDbContext(DbContextOptions options) : base(options) { }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.HasDefaultSchema("Identity");
-            builder.Entity<IdentityUser>(entity =>
+
+            builder.Entity<ApplicationUser>(entity =>
             {
-                entity.ToTable(name: "User");
+                entity.ToTable(name: "Users");
             });
-            builder.Entity<IdentityRole>(entity =>
+            builder.Entity<IdentityRole<int>>(entity =>
             {
-                entity.ToTable(name: "Role");
+                entity.ToTable(name: "Roles");
             });
-            builder.Entity<IdentityUserRole<string>>(entity =>
+            builder.Entity<IdentityUserRole<int>>(entity =>
             {
-                entity.ToTable("UserRoles");
+                entity.ToTable(name: "UserRoles");
             });
-            builder.Entity<IdentityUserClaim<string>>(entity =>
+            builder.Entity<IdentityUserClaim<int>>(entity =>
             {
-                entity.ToTable("UserClaims");
+                entity.ToTable(name: "UserClaims");
             });
-            builder.Entity<IdentityUserLogin<string>>(entity =>
+            builder.Entity<IdentityUserLogin<int>>(entity =>
             {
-                entity.ToTable("UserLogins");
+                entity.ToTable(name: "UserLogins");
             });
-            builder.Entity<IdentityRoleClaim<string>>(entity =>
+            builder.Entity<IdentityRoleClaim<int>>(entity =>
             {
-                entity.ToTable("RoleClaims");
+                entity.ToTable(name: "RoleClaims");
             });
-            builder.Entity<IdentityUserToken<string>>(entity =>
+            builder.Entity<IdentityUserToken<int>>(entity =>
             {
-                entity.ToTable("UserTokens");
+                entity.ToTable(name: "UserTokens");
             });
         }
     }

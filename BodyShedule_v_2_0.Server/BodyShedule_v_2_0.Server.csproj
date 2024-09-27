@@ -44,6 +44,7 @@
     <Folder Include="DataTransferObjects\" />
     <Folder Include="Logs\" />
     <Folder Include="Helpers\" />
+    <Folder Include="Migrations\" />
     <Folder Include="Service\" />
     <Folder Include="Repository\" />
   </ItemGroup>

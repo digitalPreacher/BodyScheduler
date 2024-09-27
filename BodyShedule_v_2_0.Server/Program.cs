@@ -12,8 +12,8 @@ Env.Load("./Environments.env");
 var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(Environment.GetEnvironmentVariable(connectionString ??
-        throw new InvalidOperationException("Connection string 'postgresql' not found."))));
+    options.UseNpgsql(connectionString ??
+        throw new InvalidOperationException("Connection string 'postgresql' not found.")));
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options => {
     options.SignIn.RequireConfirmedEmail = false;
