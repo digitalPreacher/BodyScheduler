@@ -41,7 +41,6 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
-    <Folder Include="DataTransferObjects\" />
     <Folder Include="Logs\" />
     <Folder Include="Helpers\" />
     <Folder Include="Migrations\" />
