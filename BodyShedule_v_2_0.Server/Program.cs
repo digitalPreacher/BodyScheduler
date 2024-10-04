@@ -1,26 +1,18 @@
 using BodyShedule_v_2_0.Server.Data;
 using BodyShedule_v_2_0.Server.Models;
-using BodyShedule_v_2_0.Server.Repository;
-using BodyShedule_v_2_0.Server.Service;
 using DotNetEnv;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Serilog;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
-
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
+// Add services to the container.
 Env.Load("./Environments.env");
 
+var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(Environment.GetEnvironmentVariable("CONNECTION_STRING") ??
+    options.UseNpgsql(connectionString ??
         throw new InvalidOperationException("Connection string 'postgresql' not found.")));
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options => {
@@ -28,17 +20,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options => {
     options.User.RequireUniqueEmail = true;
 })
     .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddErrorDescriber<CustomIdentityErrorDescriber>()
     .AddDefaultTokenProviders();
-
-builder.Services.Configure<IdentityOptions>(options =>
-{
-    options.SignIn.RequireConfirmedEmail = false;
-    options.User.RequireUniqueEmail = true;
-});
-
-builder.Host.UseSerilog((context, configuration) =>
-    configuration.ReadFrom.Configuration(context.Configuration));
 
 builder.Services.AddCors(options =>
 {
@@ -47,31 +29,12 @@ builder.Services.AddCors(options =>
     .AllowAnyHeader());
 });
 
-builder.Services.AddAuthentication(x =>
-{
-    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-  .AddJwtBearer(options =>
-  {
-      options.RequireHttpsMetadata = false;
-      options.SaveToken = true;
-      options.TokenValidationParameters = new TokenValidationParameters
-      {
-          ValidateIssuer = true,
-          ValidateAudience = true,
-          ValidateLifetime = true,
-          ValidateIssuerSigningKey = true,
-          ValidIssuer = Environment.GetEnvironmentVariable("JWTAUTH_ISSUER"),
-          ValidAudience = Environment.GetEnvironmentVariable("JWTAUTH_AUDIENCE"),
-          IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("JWTAUTH_SECRETKEY") ?? 
-            throw new InvalidOperationException("SecretKey not found"))),
-          ClockSkew = TimeSpan.Zero
-      };
-  });
+builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<IAccountRepository, AccountRepository>();
-builder.Services.AddScoped<IAccountService, AccountService>();
+
 
 var app = builder.Build();
 
