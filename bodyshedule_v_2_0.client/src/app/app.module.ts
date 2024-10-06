@@ -10,6 +10,7 @@ import { HttpInterceptorService } from './modules/authorization/shared/http-inte
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HomeComponent } from './modules/user/components/home/home.component';
 import { RegistrationComponent } from './modules/registration/components/registration/registration.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { RegistrationComponent } from './modules/registration/components/registr
   ],
   imports: [
     BrowserModule, HttpClientModule,
-    AppRoutingModule, FormsModule, NgbModule
+    AppRoutingModule, FormsModule, NgbModule,
+    ReactiveFormsModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true }],
   bootstrap: [AppComponent]
