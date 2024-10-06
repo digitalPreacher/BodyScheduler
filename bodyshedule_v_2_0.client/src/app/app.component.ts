@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core'; 
-import { AuthorizationService } from '../app/modules/authorization/shared/authorization.service'
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -9,9 +8,4 @@ import { AuthorizationService } from '../app/modules/authorization/shared/author
 })
 export class AppComponent {
 
-  constructor(private authService: AuthorizationService) {
-    if (localStorage.getItem('authToken')) {
-      this.authService.setUserDetails();
-    }
-  }
 }
