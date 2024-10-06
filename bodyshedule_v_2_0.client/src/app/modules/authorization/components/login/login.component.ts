@@ -1,8 +1,9 @@
 import { Component, Output } from '@angular/core';
-import { User } from '../../shared/user.model';
-import { AuthorizationService } from '../../shared/authorization.service'
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+import { User } from '../../shared/user.model';
+import { AuthorizationService } from '../../shared/authorization.service'
 
 @Component({
   selector: 'app-login',

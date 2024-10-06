@@ -1,8 +1,9 @@
 import { Component, Output } from '@angular/core';
-import { RegistrationService } from '../../shared/registration.service';
-import { RegistrationData } from '../../shared/registration-data.model';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+import { RegistrationData } from '../../shared/registration-data.model';
+import { RegistrationService } from '../../shared/registration.service';
 
 @Component({
   selector: 'app-registration',
@@ -13,6 +14,7 @@ export class RegistrationComponent {
   model: RegistrationData = new RegistrationData();
   registrationForm: FormGroup;
   confirmedPassword = '';
+
   @Output() submittedClick: boolean = false;
   @Output() getErrorMessage = false;
   @Output() errorMessages: string[] = [];

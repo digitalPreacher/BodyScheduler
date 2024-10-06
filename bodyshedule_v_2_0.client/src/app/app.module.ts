@@ -2,15 +2,17 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-
 import { AppRoutingModule } from './app-routing.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FullCalendarModule } from '@fullcalendar/angular'
+
+
 import { AppComponent } from './app.component';
 import { LoginComponent } from './modules/authorization/components/login/login.component';
-import { HttpInterceptorService } from './modules/authorization/shared/http-interceptor.service';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { HomeComponent } from './modules/user/components/home/home.component';
+import { HomeComponent } from './modules/home/components/home/home.component';
 import { RegistrationComponent } from './modules/registration/components/registration/registration.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { HttpInterceptorService } from './modules/authorization/shared/http-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,7 @@ import { ReactiveFormsModule } from '@angular/forms';
   imports: [
     BrowserModule, HttpClientModule,
     AppRoutingModule, FormsModule, NgbModule,
-    ReactiveFormsModule
+    ReactiveFormsModule, FullCalendarModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true }],
   bootstrap: [AppComponent]

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http'
-import { RegistrationData } from '../shared/registration-data.model'
 import { catchError, map, pipe, throwError } from 'rxjs';
+
+import { RegistrationData } from '../shared/registration-data.model'
 
 @Injectable({
   providedIn: 'root'

@@ -1,0 +1,8 @@
+<p>home works!</p>
+<full-calendar [options]="calendarOptions">
+  <ng-template #eventContent let-arg>
+    <b>{{arg.timeText}}</b>
+    <i>{{arg.event.title}}</i>
+  </ng-template>
+</full-calendar>
+<button type="button" class="w-100 btn btn-outline-secondary mt-3 " (click)="logout()">Выйти</button>
