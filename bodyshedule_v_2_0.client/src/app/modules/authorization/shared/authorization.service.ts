@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from './user.model';
-import { BehaviorSubject, map, Subject } from 'rxjs';
+import { BehaviorSubject, catchError, map, Subject, throwError } from 'rxjs';
 import { UserData } from './user-data.model';
 import { Router } from '@angular/router';
 
@@ -17,11 +17,20 @@ export class AuthorizationService {
 
   login(userDetails: User) {
     return this.http.post<any>(this.baseUrl + "/Account/UserSignIn", userDetails)
-      .pipe(map(response => {
-        localStorage.setItem('authToken', response.token);
-        this.setUserDetails();
-        return response;
-      }));
+      .pipe(
+        map(response => {
+          localStorage.setItem('authToken', response.token);
+          this.setUserDetails();
+
+          return response;
+        }),
+        catchError(error => {
+          if (error.status === 401) {
+            return throwError('Некорретный логин/пароль')
+          }
+          return throwError('Произошла неизвестная ошибка');
+        })
+      );
   }
 
   setUserDetails() {

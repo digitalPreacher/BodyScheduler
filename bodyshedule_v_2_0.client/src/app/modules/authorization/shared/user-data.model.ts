@@ -1,4 +1,4 @@
 export class UserData {
-  login?: string;
-  role?: string;
+  login!: string;
+  role!: string;
 }

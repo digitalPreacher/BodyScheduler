@@ -3,6 +3,7 @@ using BodyShedule_v_2_0.Server.Helpers;
 using BodyShedule_v_2_0.Server.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BodyShedule_v_2_0.Server.Controllers
 {
@@ -34,11 +35,17 @@ namespace BodyShedule_v_2_0.Server.Controllers
                     return Ok();
                 }
                 else
-                {   foreach (var error in result.Errors)
-                    {
-                        _logger.LogInformation("Error: {Message}", error.Description);
-                    }
-                    return BadRequest(result.Errors);
+                {  
+                    //foreach (var error in result.Errors)
+                    //{
+                    //    _logger.LogInformation("Error: {Message}", error.Description);
+                    //    return BadRequest(new
+                    //    {
+                    //        message = error.Description
+                    //    });    
+                    //}
+
+                    return BadRequest(new { message = result.Errors.Select(x => x.Description) });
                 }
             }
             catch (Exception ex)

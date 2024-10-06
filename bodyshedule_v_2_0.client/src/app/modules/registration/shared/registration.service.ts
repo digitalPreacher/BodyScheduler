@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http'
 import { RegistrationData } from '../shared/registration-data.model'
-import { map, pipe } from 'rxjs';
+import { catchError, map, pipe, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,14 @@ export class RegistrationService {
 
   registration(model: RegistrationData) {
     return this.httpClient.post<RegistrationData>(this.baseUrl + "/Account/UserSignUp", model)
-      .pipe(result => { return result });
+      .pipe(map(result => { return result }),
+        catchError(error => {
+          if (error.status === 0) {
+            return throwError(["Произошла неизвестная ошибка!"]);
+          }
+          else {
+            return throwError(error.error.message);
+          }
+        }));
   }
-
 }
