@@ -10,7 +10,7 @@ import { FullCalendarModule } from '@fullcalendar/angular'
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './modules/authorization/components/login/login.component';
-import { HomeComponent } from './modules/home/components/home/home.component';
+import { HomeComponent } from './modules/events/home/components/home/home.component';
 import { RegistrationComponent } from './modules/registration/components/registration/registration.component';
 import { HttpInterceptorService } from './modules/authorization/shared/http-interceptor.service';
 

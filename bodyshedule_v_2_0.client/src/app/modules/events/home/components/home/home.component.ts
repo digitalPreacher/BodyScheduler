@@ -2,8 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CalendarOptions } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 
-import { UserInactivityService } from '../../../authorization/shared/user-inactivity.service'
-import { AuthorizationService } from '../../../authorization/shared/authorization.service'
+import { UserInactivityService } from '../../../../authorization/shared/user-inactivity.service'
+import { AuthorizationService } from '../../../../authorization/shared/authorization.service'
 
 @Component({
   selector: 'app-home',
@@ -17,7 +17,8 @@ export class HomeComponent implements OnInit {
     initialView: 'dayGridMonth',
     weekends: false,
     events: [
-      { title: 'Meeting', start: new Date() }
+      { title: 'event 1', date: '2024-10-07' },
+      { title: 'event 2', date: '2019-04-02' }
     ]
   };
 

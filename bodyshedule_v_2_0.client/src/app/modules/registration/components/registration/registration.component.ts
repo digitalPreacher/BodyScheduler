@@ -37,18 +37,20 @@ export class RegistrationComponent {
   registration() {
     if (this.registrationForm.valid) {
       if (this.registrationForm.get('password')?.value == this.confirmedPassword) {
+        this.confirmedPasswordResult = true;
         this.registrationService.registration(this.registrationForm.value).subscribe({
           next: result => {
             this.router.navigate(['/login']);
           },
           error: error => {
             this.getErrorMessage = true;
-            this.confirmedPasswordResult = true;
             this.errorMessages = error;
           }
         });
       }
+      else {
+        this.confirmedPasswordResult = false;
+      }
     }
   }
-
 }

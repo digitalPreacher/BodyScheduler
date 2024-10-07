@@ -17,12 +17,7 @@ export class RegistrationService {
     return this.httpClient.post<RegistrationData>(this.baseUrl + "/Account/UserSignUp", model)
       .pipe(map(result => { return result }),
         catchError(error => {
-          if (error.status === 0) {
-            return throwError(["Произошла неизвестная ошибка!"]);
-          }
-          else {
-            return throwError(error.error.message);
-          }
+          return throwError(error.error.message || ["Произошла неизвестная ошибка"]);
         }));
   }
 }
