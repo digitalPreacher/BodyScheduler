@@ -42,5 +42,8 @@ namespace BodyShedule_v_2_0.Server.Data
                 entity.ToTable(name: "UserTokens");
             });
         }
+
+        public DbSet<EventModel> Events { get; set; }
+
     }
 }

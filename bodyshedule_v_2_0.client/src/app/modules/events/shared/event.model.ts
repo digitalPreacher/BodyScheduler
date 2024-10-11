@@ -1,8 +1,8 @@
-export class Event {
-  id?: number;
+export class Event
+{
+  userLogin!: string;
   title!: string;
   description!: string;
-  start!: Date;
-  end!: Date;
-  display!: string;
+  StartTime!: string;
+  EndTime!: string;
 }

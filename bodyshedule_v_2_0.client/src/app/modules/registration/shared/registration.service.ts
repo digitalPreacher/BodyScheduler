@@ -14,7 +14,7 @@ export class RegistrationService {
   constructor(private httpClient: HttpClient) { }
 
   registration(model: RegistrationData) {
-    return this.httpClient.post<RegistrationData>(this.baseUrl + "/Account/UserSignUp", model)
+    return this.httpClient.post<RegistrationData>(this.baseUrl + "/Event/GetEvents", model)
       .pipe(map(result => { return result }),
         catchError(error => {
           return throwError(error.error.message || ["Произошла неизвестная ошибка"]);

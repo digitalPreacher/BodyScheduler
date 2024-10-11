@@ -70,8 +70,11 @@ builder.Services.AddAuthentication(x =>
       };
   });
 
+
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IEventRepository, EventRepository>();
+builder.Services.AddScoped<IEventService, EventService>();
 
 var app = builder.Build();
 
