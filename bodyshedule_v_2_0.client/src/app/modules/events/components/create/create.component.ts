@@ -4,6 +4,7 @@ import { EventService } from '../../shared/event.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ModalDismissReasons, NgbDatepickerModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { formatDate } from "@angular/common";
+import { Router } from '@angular/router';
 
 import { AuthorizationService } from '../../../authorization/shared/authorization.service';
 
@@ -21,11 +22,12 @@ export class CreateComponent implements OnInit {
   createForm: FormGroup;
   modalService = inject(NgbModal);
   userLogin: string = '';
+  
 
   @Output() submittedClick = false;
 
   constructor(private eventService: EventService, private formBuilder: FormBuilder,
-    private authService: AuthorizationService, private datePipe: DatePipe) {
+    private authService: AuthorizationService, private datePipe: DatePipe, private router: Router) {
     this.userDataSubscribtion = this.authService.userData$.asObservable().subscribe(data => {
       this.userLogin = data.login;
     });
@@ -39,6 +41,17 @@ export class CreateComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.eventService.eventAdded$.subscribe(data => {
+      if (data) {
+        this.createForm = this.formBuilder.group({
+          userLogin: [this.userLogin, Validators.required],
+          title: ['', Validators.required],
+          description: ['', Validators.required],
+          startTime: ['', Validators.required],
+          endTime: ['', Validators.required]
+        });
+      }
+    })
   }
 
   create() {
@@ -54,6 +67,7 @@ export class CreateComponent implements OnInit {
           this.submittedClick = false;
           this.createForm.reset();
           this.modalService.dismissAll();
+          this.eventService.eventAdded$.next(true);
         },
         error: err => {
           console.log(err)

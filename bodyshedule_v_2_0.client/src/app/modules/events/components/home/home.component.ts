@@ -29,6 +29,11 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.loadData();
+    this.eventService.eventAdded$.subscribe(data => {
+      if (data) {
+        this.loadData();
+      }
+    })
   }
 
   loadData() {
