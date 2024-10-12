@@ -8,6 +8,6 @@ namespace BodyShedule_v_2_0.Server.Service
     {
         public Task<bool> AddEventAsync(AddEventDTO eventInfo);
 
-        public Task<List<GetEventsDTO>> GetEventsAsync(string userLogin);
+        public Task<List<GetEventsDTO>> GetEventsAsync(string userId);
     }
 }

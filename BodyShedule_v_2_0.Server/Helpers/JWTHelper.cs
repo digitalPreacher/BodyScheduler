@@ -8,7 +8,7 @@ namespace BodyShedule_v_2_0.Server.Helpers
 {
     public static class JWTHelper
     { 
-        public static string GenerateToken(UserLoginDTO userCredentials, string role)
+        public static string GenerateToken(UserLoginDTO userCredentials, string role, int userId)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("JWTAUTH_SECRETKEY") ?? 
                 throw new InvalidOperationException("SecretKey not found")));
@@ -18,6 +18,7 @@ namespace BodyShedule_v_2_0.Server.Helpers
             {
                 new Claim(JwtRegisteredClaimNames.Sub, userCredentials.Login),
                 new Claim("role", role),
+                new Claim("userId", userId.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 

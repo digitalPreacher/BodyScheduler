@@ -9,6 +9,7 @@ using System.Globalization;
 
 namespace BodyShedule_v_2_0.Server.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class EventController : ControllerBase
@@ -24,14 +25,14 @@ namespace BodyShedule_v_2_0.Server.Controllers
 
         //Get all user events
         [HttpGet]
-        [Route("GetEvents/{userLogin}")]
-        public async Task<IActionResult> GetEventsAsync(string userLogin)
+        [Route("GetEvents/{userId}")]
+        public async Task<IActionResult> GetEventsAsync(string userId)
         {
             try
             {
-                if (userLogin != null)
+                if (userId != null)
                 {
-                    var events = await _service.GetEventsAsync(userLogin);
+                    var events = await _service.GetEventsAsync(userId);
 
                     return Ok(events);
                 }

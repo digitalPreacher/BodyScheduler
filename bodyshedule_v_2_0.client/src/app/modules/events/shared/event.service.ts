@@ -11,19 +11,19 @@ export class EventService {
   userDataSubscribtion: any;
   eventAdded$: Subject<boolean> = new Subject<boolean>();
   subscribed: any;
-  userLogin = '';
+  userId = '';
 
   baseUrl = 'https://localhost:7191';
 
   constructor(private httpClient: HttpClient, private authService: AuthorizationService)
   {
     this.userDataSubscribtion = this.authService.userData$.asObservable().subscribe(data => {
-      this.userLogin = data.login;
+      this.userId = data.userId;
     })
   }
 
   getEvents(): Observable<any[]> {
-    return this.httpClient.get<any[]>(this.baseUrl + `/Event/GetEvents/${this.userLogin}`)
+    return this.httpClient.get<any[]>(this.baseUrl + `/Event/GetEvents/${this.userId}`)
       .pipe(
         result => {
           return result;

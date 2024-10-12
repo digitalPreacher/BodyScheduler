@@ -18,9 +18,9 @@ namespace BodyShedule_v_2_0.Server.Service
             return await _repository.AddEventAsync(eventInfo);
         }
 
-        public async Task<List<GetEventsDTO>> GetEventsAsync(string userLogin)
+        public async Task<List<GetEventsDTO>> GetEventsAsync(string userId)
         {
-            return await _repository.GetEventsAsync(userLogin);
+            return await _repository.GetEventsAsync(userId);
         }
     }
 }
