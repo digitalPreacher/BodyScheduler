@@ -14,6 +14,7 @@ import { HomeComponent } from './modules/events/components/home/home.component';
 import { RegistrationComponent } from './modules/registration/components/registration/registration.component';
 import { HttpInterceptorService } from './modules/authorization/shared/http-interceptor.service';
 import { CreateComponent } from './modules/events/components/create/create.component';
+import { ListComponent } from './modules/events/components/list/list.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { CreateComponent } from './modules/events/components/create/create.compo
     HomeComponent,
     RegistrationComponent,
     CreateComponent,
+    ListComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule,

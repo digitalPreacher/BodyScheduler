@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Event} from './event.model';
 import { Observable, Subject, catchError, throwError } from 'rxjs';
 
 import { AuthorizationService } from '../../authorization/shared/authorization.service';

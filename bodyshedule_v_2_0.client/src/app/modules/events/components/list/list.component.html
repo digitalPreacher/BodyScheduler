@@ -1,0 +1,32 @@
+<div class="container">
+  <div class="row">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>
+            Название
+          </th>
+          <th>
+            Описание
+          </th>
+          <th>
+            Начало
+          </th>
+          <th>
+            Завершение
+          </th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let event of events">
+        <tr>
+          <td> {{ event.title }} </td>
+          <td> {{ event.description }} </td>
+          <td> {{ event.start | date : "M/d/yy HH:mm" }} </td>
+          <td> {{ event.end | date : "M/d/yy HH:mm" }} </td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
