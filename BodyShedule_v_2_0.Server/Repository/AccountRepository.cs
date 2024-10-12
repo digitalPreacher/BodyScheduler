@@ -52,5 +52,12 @@ namespace BodyShedule_v_2_0.Server.Repository
 
             return roles;
         }
+
+        public async Task<int> GetUserIdAsync(string userLogin)
+        {
+            var user = await _userManager.FindByNameAsync(userLogin) ?? throw new InvalidOperationException($"User {userLogin} not found");  
+
+            return user.Id;
+        }
     }
 }

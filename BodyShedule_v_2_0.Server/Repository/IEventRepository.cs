@@ -7,6 +7,6 @@ namespace BodyShedule_v_2_0.Server.Repository
     public interface IEventRepository
     {
         public Task<bool> AddEventAsync(AddEventDTO eventInfo);
-        public Task<List<GetEventsDTO>> GetEventsAsync(string userLogin);
+        public Task<List<GetEventsDTO>> GetEventsAsync(string userId);
     }
 }

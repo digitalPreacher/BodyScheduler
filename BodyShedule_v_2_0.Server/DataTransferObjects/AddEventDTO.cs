@@ -6,7 +6,7 @@ namespace BodyShedule_v_2_0.Server.DataTransferObjects
     public class AddEventDTO
     {
         [Required]
-        public string userLogin { get; set; } = string.Empty;
+        public string UserId { get; set; } = string.Empty;
 
         [Required]
         public string Title { get; set; } = string.Empty;

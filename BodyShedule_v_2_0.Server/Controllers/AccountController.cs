@@ -58,7 +58,9 @@ namespace BodyShedule_v_2_0.Server.Controllers
                 if (result.Succeeded)
                 {
                     var userRoles = await _accountService.GetUserRolesAsync(userCredentials);
-                    var tokenString = JWTHelper.GenerateToken(userCredentials, userRoles[0]);
+                    var userId = await _accountService.GetUserIdAsync(userCredentials.Login);
+
+                    var tokenString = JWTHelper.GenerateToken(userCredentials, userRoles[0], userId);
 
                     return Ok(new { token = tokenString });
                 }

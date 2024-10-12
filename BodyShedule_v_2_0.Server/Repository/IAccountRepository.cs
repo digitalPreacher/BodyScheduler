@@ -10,5 +10,7 @@ namespace BodyShedule_v_2_0.Server.Repository
 
         public Task<IList<string>> GetUserRolesAsync(UserLoginDTO userCredentials);
 
+        public Task<int> GetUserIdAsync(string userLogin);
+
     }
 }

@@ -25,5 +25,10 @@ namespace BodyShedule_v_2_0.Server.Service
         {
             return await _repository.GetUserRolesAsync(userCredentials);
         }
+
+        public async Task<int> GetUserIdAsync(string userLogin)
+        {
+            return await _repository.GetUserIdAsync(userLogin);
+        }
     }
 }

@@ -2,9 +2,7 @@
 using BodyShedule_v_2_0.Server.DataTransferObjects;
 using BodyShedule_v_2_0.Server.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 
 namespace BodyShedule_v_2_0.Server.Repository
 {
@@ -21,7 +19,7 @@ namespace BodyShedule_v_2_0.Server.Repository
 
         public async Task<bool> AddEventAsync(AddEventDTO eventInfo)
         {
-            var user = await _userManager.FindByNameAsync(eventInfo.userLogin);
+            var user = await _userManager.FindByIdAsync(eventInfo.UserId);
             if (user != null)
             {
                 EventModel eventModel = new EventModel
@@ -42,9 +40,9 @@ namespace BodyShedule_v_2_0.Server.Repository
             return false;
         }
 
-        public async Task<List<GetEventsDTO>> GetEventsAsync(string userLogin)
+        public async Task<List<GetEventsDTO>> GetEventsAsync(string userId)
         {
-            var user = await _userManager.FindByNameAsync(userLogin);
+            var user = await _userManager.FindByIdAsync(userId);
             var events = await _db.Events.Where(x => x.User == user).Select(x => new GetEventsDTO
             {
                 Id = x.Id.ToString(),

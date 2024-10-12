@@ -21,7 +21,7 @@ export class CreateComponent implements OnInit {
   userDataSubscribtion: any;
   createForm: FormGroup;
   modalService = inject(NgbModal);
-  userLogin: string = '';
+  userId: string = '';
   
 
   @Output() submittedClick = false;
@@ -29,10 +29,10 @@ export class CreateComponent implements OnInit {
   constructor(private eventService: EventService, private formBuilder: FormBuilder,
     private authService: AuthorizationService, private datePipe: DatePipe, private router: Router) {
     this.userDataSubscribtion = this.authService.userData$.asObservable().subscribe(data => {
-      this.userLogin = data.login;
+      this.userId = data.userId;
     });
     this.createForm = this.formBuilder.group({
-      userLogin: [this.userLogin, Validators.required],
+      userId: [this.userId, Validators.required],
       title: ['', Validators.required],
       description: ['', Validators.required],
       startTime: ['', Validators.required],
@@ -44,7 +44,7 @@ export class CreateComponent implements OnInit {
     this.eventService.eventAdded$.subscribe(data => {
       if (data) {
         this.createForm = this.formBuilder.group({
-          userLogin: [this.userLogin, Validators.required],
+          userId: [this.userId, Validators.required],
           title: ['', Validators.required],
           description: ['', Validators.required],
           startTime: ['', Validators.required],
