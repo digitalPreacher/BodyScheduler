@@ -14,9 +14,9 @@ namespace BodyShedule_v_2_0.Server.DataTransferObjects
         public string Description { get; set; } = string.Empty;
 
         [Required]
-        public DateTimeOffset StartTime { get; set; }
+        public DateTimeOffset Start{ get; set; }
 
         [Required]
-        public DateTimeOffset EndTime { get; set; }
+        public DateTimeOffset End { get; set; }
     }
 }

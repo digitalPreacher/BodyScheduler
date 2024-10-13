@@ -48,8 +48,8 @@ namespace BodyShedule_v_2_0.Server.Repository
                 Id = x.Id.ToString(),
                 Title = x.Title,
                 Description = x.Description,
-                StartTime = x.StartTime,
-                EndTime = x.EndTime
+                Start = x.StartTime,
+                End = x.EndTime
             })
             .ToListAsync();
 

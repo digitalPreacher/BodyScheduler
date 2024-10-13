@@ -47,6 +47,7 @@ export class HomeComponent implements OnInit {
     this.eventService.getEvents().subscribe({
       next: events => {
         this.events = events;
+        console.log(events);
         this.calendarOptions = {
           events: this.events
         };
