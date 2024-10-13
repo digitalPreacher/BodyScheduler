@@ -15,6 +15,9 @@ import { RegistrationComponent } from './modules/registration/components/registr
 import { HttpInterceptorService } from './modules/authorization/shared/http-interceptor.service';
 import { CreateComponent } from './modules/events/components/create/create.component';
 import { ListComponent } from './modules/events/components/list/list.component';
+import { EditComponent } from './modules/events/components/edit/edit.component';
+import { DeleteComponent } from './modules/events/components/delete/delete.component';
+import { DetailsComponent } from './modules/events/components/details/details.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +27,9 @@ import { ListComponent } from './modules/events/components/list/list.component';
     RegistrationComponent,
     CreateComponent,
     ListComponent,
+    EditComponent,
+    DeleteComponent,
+    DetailsComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule,

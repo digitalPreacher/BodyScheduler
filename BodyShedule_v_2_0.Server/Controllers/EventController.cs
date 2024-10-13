@@ -1,15 +1,11 @@
 ﻿using BodyShedule_v_2_0.Server.DataTransferObjects;
-using BodyShedule_v_2_0.Server.Models;
 using BodyShedule_v_2_0.Server.Service;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Globalization;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BodyShedule_v_2_0.Server.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("[controller]")]
     public class EventController : ControllerBase
@@ -74,6 +70,78 @@ namespace BodyShedule_v_2_0.Server.Controllers
                 return BadRequest(ex.Message);
             }
 
+        }
+
+        //Editing user event
+        [HttpPut]
+        [Route("EditEvent")]
+        public async Task<IActionResult> EditEventAsync([FromBody] EditEventDTO eventInfo)
+        {
+            try
+            {
+                var result = await _service.EditEventAsync(eventInfo);
+                if (result)
+                {
+                    return Ok(new { Message = "Запись успешно отредактирована " });
+                }
+                else
+                {
+                    return BadRequest(new { Message = "Произошла ошибка, повторите запрос" });
+                }
+            }
+            catch (Exception ex)
+            { 
+                _logger.LogInformation(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        //Removing user event
+        [HttpGet]
+        [Route("GetEvent/{id}")]
+        public async Task<IActionResult> GetEvent(int id)
+        {
+            try
+            {
+                var getEvent = await _service.GetEventAsync(id);
+                if(getEvent != null)
+                {
+                    return Ok(getEvent);
+                }
+                else
+                {
+                    return NotFound(new { Message = $"Запись с id: {id} не найдена" });
+                }
+
+            }
+            catch(Exception ex)
+            {
+                _logger.LogInformation(ex.Message);
+                return BadRequest(ex.Message);  
+            }
+        }
+
+        [HttpDelete]
+        [Route("DeleteEvent/{id}")]
+        public async Task<IActionResult> DeleteEvent(int id)
+        {
+            try
+            {
+                var result = await _service.DeleteEventAsync(id);
+                if (result)
+                {
+                    return Ok(new { Message = $"Запись с id: {id} успешно удалена" });
+                }
+                else
+                {
+                    return NotFound(new { Message = $"Запись с id: {id} не найдена" });
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation(ex.Message);
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

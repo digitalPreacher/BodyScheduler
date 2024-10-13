@@ -9,13 +9,13 @@ import { Event } from '../../shared/event.model';
   styles: ``
 })
 export class ListComponent implements OnInit {
-  events: Event[] = [];
+  events: any[] = [];
 
   constructor(private authService: AuthorizationService, private eventService: EventService) { }
 
   ngOnInit() {
     this.loadData();
-    this.eventService.eventAdded$.subscribe(data => {
+    this.eventService.eventChangeData$.subscribe(data => {
       if (data) {
         this.loadData();
       }
@@ -27,6 +27,7 @@ export class ListComponent implements OnInit {
       next: events => {
         this.events = events;
         console.log(this.events);
+        console.log(events);  
       },
       error: err => {
         console.log(err);

@@ -26,7 +26,7 @@ namespace BodyShedule_v_2_0.Server.Helpers
                 issuer: Environment.GetEnvironmentVariable("JWTAUTH_ISSUER"),
                 audience: Environment.GetEnvironmentVariable("JWTAUTH_AUDIENCE"),
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(1),
+                //expires: DateTime.Now.AddMinutes(1),
                 signingCredentials: credentials
             );
 
