@@ -15,6 +15,7 @@ import { RegistrationComponent } from './modules/registration/components/registr
 import { HttpInterceptorService } from './modules/authorization/shared/http-interceptor.service';
 import { CreateComponent } from './modules/events/components/create/create.component';
 import { ListComponent } from './modules/events/components/list/list.component';
+import { EditComponent } from './modules/events/components/edit/edit.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { ListComponent } from './modules/events/components/list/list.component';
     RegistrationComponent,
     CreateComponent,
     ListComponent,
+    EditComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule,

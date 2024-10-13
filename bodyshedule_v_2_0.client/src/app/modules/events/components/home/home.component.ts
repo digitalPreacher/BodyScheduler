@@ -19,8 +19,15 @@ export class HomeComponent implements OnInit {
 
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin],
+    headerToolbar: {
+      left: 'prev,next,today',
+      center: 'title',
+      right: ''
+    },
+    eventColor: '#6343ac',
+    locale: "ru",
     initialView: 'dayGridMonth',
-    weekends: false,
+    weekends: true,
   };
 
   constructor(private authService: AuthorizationService, private inactivityService: UserInactivityService,

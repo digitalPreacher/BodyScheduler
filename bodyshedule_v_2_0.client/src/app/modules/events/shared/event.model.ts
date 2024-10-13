@@ -1,8 +1,8 @@
 export class Event
 {
-  id!: number;
+/*  id!: string;*/
   title!: string;
   description!: string;
-  start!: string;
-  end!: string;
+  //start!: string;
+  //end!: string;
 }

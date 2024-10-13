@@ -4,7 +4,6 @@ import { EventService } from '../../shared/event.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ModalDismissReasons, NgbDatepickerModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { formatDate } from "@angular/common";
-import { Router } from '@angular/router';
 
 import { AuthorizationService } from '../../../authorization/shared/authorization.service';
 
@@ -27,7 +26,7 @@ export class CreateComponent implements OnInit {
   @Output() submittedClick = false;
 
   constructor(private eventService: EventService, private formBuilder: FormBuilder,
-    private authService: AuthorizationService, private datePipe: DatePipe, private router: Router) {
+    private authService: AuthorizationService, private datePipe: DatePipe) {
     this.userDataSubscribtion = this.authService.userData$.asObservable().subscribe(data => {
       this.userId = data.userId;
     });

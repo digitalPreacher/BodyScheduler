@@ -9,7 +9,7 @@ import { Event } from '../../shared/event.model';
   styles: ``
 })
 export class ListComponent implements OnInit {
-  events: Event[] = [];
+  events: any[] = [];
 
   constructor(private authService: AuthorizationService, private eventService: EventService) { }
 
@@ -27,6 +27,7 @@ export class ListComponent implements OnInit {
       next: events => {
         this.events = events;
         console.log(this.events);
+        console.log(events);  
       },
       error: err => {
         console.log(err);

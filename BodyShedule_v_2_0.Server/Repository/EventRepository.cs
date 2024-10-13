@@ -55,5 +55,63 @@ namespace BodyShedule_v_2_0.Server.Repository
 
             return events;
         }
+
+        public async Task<bool> EditEventAsync(EditEventDTO eventInfo)
+        {
+            var user = await _userManager.FindByIdAsync(eventInfo.UserId);
+            if (user != null)
+            {
+                EventModel editEvent = new EventModel
+                {
+                    Id = eventInfo.Id,
+                    Title = eventInfo.Title,
+                    Description = eventInfo.Description,
+                    StartTime = eventInfo.StartTime,
+                    EndTime = eventInfo.EndTime,
+                    User = user
+                };
+                
+                _db.Events.Attach(editEvent);
+                _db.Entry(editEvent).State = EntityState.Modified;
+                await _db.SaveChangesAsync();
+
+                return true;
+
+            }
+
+            return false;
+        }
+
+        public async Task<List<GetEventDTO>> GetEventAsync(int id)
+        {
+            var getEvent = _db.Events.Where(x => x.Id == id).Select(x => new GetEventDTO
+            {
+                //Id = x.Id.ToString(),
+                Title = x.Title,
+                Description = x.Description,
+                //Start = x.StartTime,
+                //End = x.EndTime,
+            });
+            
+
+            return getEvent.ToList();
+        }
+
+        public async Task<bool> DeleteEventAsync(int id)
+        {
+            var getEvent = await _db.Events.FirstOrDefaultAsync(x => x.Id == id);
+            if (getEvent != null) 
+            {
+                _db.Remove(getEvent);
+                _db.SaveChanges();
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
     }
 }

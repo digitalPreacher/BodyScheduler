@@ -34,6 +34,30 @@ export class EventService {
       );
   }
 
+  getEvent(id: number): Observable<Event[]> {
+    return this.httpClient.get<Event[]>(this.baseUrl + `/Event/GetEvent/${id}`)
+      .pipe(
+        result => {
+          return result;
+        },
+        catchError(error => {
+          return throwError(error.error.message)
+        })
+      );
+  }
+
+  editEvent(model: any) {
+    return this.httpClient.put<any>(this.baseUrl + "/Event/EditEvent", model).
+      pipe(
+        result => {
+          return result;
+        },
+        catchError(error => {
+          return throwError(error.error.message);
+        })
+      );
+  }
+
   addEvent(model: any) {
     return this.httpClient.post<any>(this.baseUrl + "/Event/AddEvent", model)
       .pipe(
