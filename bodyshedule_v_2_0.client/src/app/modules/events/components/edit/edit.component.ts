@@ -16,14 +16,13 @@ export class EditComponent {
   userDataSubscribtion: any;
   modalService = inject(NgbModal);
   userId: any;
-  model: any[] = [{"test": "test"}];
   title: string = '';
   createForm: FormGroup;
-  eventModel: Event[] = [];
-
-  testEvent: any;
+ 
 
   @Output() submittedClick = false;
+
+  @Input() eventId!: number;
   
 
   constructor(private eventService: EventService, private formBuilder: FormBuilder,
@@ -32,23 +31,50 @@ export class EditComponent {
       this.userId = data.userId;
     });
     this.createForm = this.formBuilder.group({
-/*      id: [''],*/
-      title: [''],
-      description: [''],
-      //start: [''],
-      //end: ['']
+      userId: [this.userId, Validators.required],
+      id: [''],
+      title: ['', Validators.required],
+      description: ['', Validators.required],
+      startTime: ['', Validators.required],
+      endTime: ['', Validators.required]
     });
   }
 
-  @Input() eventId!: number;
-
-
+  saveEvent() {
+    if (this.createForm.valid) {
+      const currStartTime = this.datePipe.transform(this.createForm.get('startTime')?.value, 'yyyy-MM-ddTHH:mm:ss.ssS', 'UTC') + 'Z';
+      const currEndTime = this.datePipe.transform(this.createForm.get('endTime')?.value, 'yyyy-MM-ddTHH:mm:ss.ssS', 'UTC') + 'Z';
+      this.createForm.patchValue({
+        startTime: currStartTime,
+        endTime: currEndTime
+      });
+      this.eventService.editEvent(this.createForm.value).subscribe({
+        next: result => {
+          this.submittedClick = false;
+          this.modalService.dismissAll();
+          this.eventService.eventChangeData$.next(true);
+        },
+        error: err => {
+          console.log(err)
+        }
+      });
+    }
+  }
 
   getEvent() {
     this.eventService.getEvent(this.eventId).subscribe({
       next: async result => {
-        
-
+        this.eventService.getEvent(this.eventId).subscribe(result => {
+          const currStartTime = this.datePipe.transform(result[0].startTime, 'yyyy-MM-ddTHH:mm');
+          const currEndTime = this.datePipe.transform(result[0].endTime, 'yyyy-MM-ddTHH:mm');
+          this.createForm.patchValue({
+            id: result[0].id,
+            title: result[0].title,
+            description: result[0].description,
+            startTime: currStartTime,
+            endTime: currEndTime
+          })
+        });
         console.log(this.createForm.value);
       },
       error: err => {
@@ -58,15 +84,7 @@ export class EditComponent {
   }
 
   open(content: TemplateRef<any>) {
-    this.eventService.getEvent(this.eventId).subscribe(async result =>
-    {
-      this.model = result;
-      this.testEvent = JSON.parse(this.model.toString())
-
-      this.createForm.patchValue(this.model);
-      console.log(this.model);
-    });
-    
+    this.getEvent();
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
 

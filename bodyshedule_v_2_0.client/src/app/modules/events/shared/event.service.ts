@@ -9,7 +9,7 @@ import { AuthorizationService } from '../../authorization/shared/authorization.s
 })
 export class EventService {
   userDataSubscribtion: any;
-  eventAdded$: Subject<boolean> = new Subject<boolean>();
+  eventChangeData$: Subject<boolean> = new Subject<boolean>();
   subscribed: any;
   userId = '';
 
@@ -34,8 +34,8 @@ export class EventService {
       );
   }
 
-  getEvent(id: number): Observable<Event[]> {
-    return this.httpClient.get<Event[]>(this.baseUrl + `/Event/GetEvent/${id}`)
+  getEvent(id: number): Observable<any> {
+    return this.httpClient.get<any>(this.baseUrl + `/Event/GetEvent/${id}`)
       .pipe(
         result => {
           return result;
@@ -60,6 +60,18 @@ export class EventService {
 
   addEvent(model: any) {
     return this.httpClient.post<any>(this.baseUrl + "/Event/AddEvent", model)
+      .pipe(
+        result => {
+          return result;
+        },
+        catchError(error => {
+          return throwError(error.error.message)
+        })
+      );
+  }
+
+  deleteEvent(id: number) {
+    return this.httpClient.delete(this.baseUrl + `/Event/DeleteEvent/${id}`)
       .pipe(
         result => {
           return result;

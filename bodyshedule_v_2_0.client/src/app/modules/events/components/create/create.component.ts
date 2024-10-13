@@ -40,7 +40,7 @@ export class CreateComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.eventService.eventAdded$.subscribe(data => {
+    this.eventService.eventChangeData$.subscribe(data => {
       if (data) {
         this.createForm = this.formBuilder.group({
           userId: [this.userId, Validators.required],
@@ -66,7 +66,7 @@ export class CreateComponent implements OnInit {
           this.submittedClick = false;
           this.createForm.reset();
           this.modalService.dismissAll();
-          this.eventService.eventAdded$.next(true);
+          this.eventService.eventChangeData$.next(true);
         },
         error: err => {
           console.log(err)

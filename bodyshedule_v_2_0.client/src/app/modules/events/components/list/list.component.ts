@@ -15,7 +15,7 @@ export class ListComponent implements OnInit {
 
   ngOnInit() {
     this.loadData();
-    this.eventService.eventAdded$.subscribe(data => {
+    this.eventService.eventChangeData$.subscribe(data => {
       if (data) {
         this.loadData();
       }

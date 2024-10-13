@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace BodyShedule_v_2_0.Server.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("[controller]")]
     public class EventController : ControllerBase
@@ -75,7 +75,7 @@ namespace BodyShedule_v_2_0.Server.Controllers
         //Editing user event
         [HttpPut]
         [Route("EditEvent")]
-        public async Task<IActionResult> EditEventAsync(EditEventDTO eventInfo)
+        public async Task<IActionResult> EditEventAsync([FromBody] EditEventDTO eventInfo)
         {
             try
             {
@@ -104,7 +104,7 @@ namespace BodyShedule_v_2_0.Server.Controllers
             try
             {
                 var getEvent = await _service.GetEventAsync(id);
-                if(getEvent.Count != 0)
+                if(getEvent != null)
                 {
                     return Ok(getEvent);
                 }

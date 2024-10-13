@@ -60,7 +60,7 @@ builder.Services.AddAuthentication(x =>
       {
           ValidateIssuer = true,
           ValidateAudience = true,
-          ValidateLifetime = true,
+          ValidateLifetime = false,
           ValidateIssuerSigningKey = true,
           ValidIssuer = Environment.GetEnvironmentVariable("JWTAUTH_ISSUER"),
           ValidAudience = Environment.GetEnvironmentVariable("JWTAUTH_AUDIENCE"),

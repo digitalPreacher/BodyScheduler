@@ -4,7 +4,7 @@
     <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
   </div>
   <div class="modal-body">
-    <form class="p-3 text-center" [formGroup]="createForm" (ngSubmit)="getEvent()">
+    <form class="p-3 text-center" [formGroup]="createForm" (ngSubmit)="saveEvent()">
       <div class="form-group">
         <label>Заголовок</label>
         <input type="text"
@@ -31,13 +31,13 @@
           Поле обязательно для заполнения
         </div>
       </div>
-      <!--<div class="form-group mt-2">
+      <div class="form-group mt-2">
         <label>Начало</label>
         <input type="datetime-local"
                class="form-control"
                id="startTime"
                required
-               formControlName="start"
+               formControlName="startTime"
                name="startTimeField"
                />
         <div *ngIf="createForm.get('startTime')?.hasError('required') && submittedClick"
@@ -51,13 +51,13 @@
                class="form-control"
                id="endTime"
                required
-               formControlName="end"
+               formControlName="endTime"
                name="endTimeField" />
         <div *ngIf="createForm.get('endTime')?.hasError('required') && submittedClick"
              class="alert alert-danger mt-2">
           Поле обязательно для заполнения
         </div>
-      </div>-->
+      </div>
       <div class="modal-footer mt-3">
         <button type="submit" class="w-100 btn btn-outline-secondary mt-3" (click)="submittedClick=true">Добавить</button>
       </div>

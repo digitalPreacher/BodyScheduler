@@ -25,6 +25,8 @@
           <td> {{ event.startTime | date : "M/d/yy HH:mm" }} </td>
           <td> {{ event.endTime | date : "M/d/yy HH:mm" }} </td>
           <td><app-edit [eventId]="event.id"></app-edit></td>
+          <td><app-delete [eventId]="event.id"></app-delete></td>
+          <td><app-details [eventId]="event.id"></app-details></td>
         </tr>
       </tbody>
     </table>

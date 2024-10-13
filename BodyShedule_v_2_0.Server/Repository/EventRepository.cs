@@ -48,8 +48,8 @@ namespace BodyShedule_v_2_0.Server.Repository
                 Id = x.Id.ToString(),
                 Title = x.Title,
                 Description = x.Description,
-                Start = x.StartTime.ToLocalTime(),
-                End = x.EndTime.ToLocalTime()
+                StartTime = x.StartTime,
+                EndTime = x.EndTime
             })
             .ToListAsync();
 
@@ -82,19 +82,19 @@ namespace BodyShedule_v_2_0.Server.Repository
             return false;
         }
 
-        public async Task<List<GetEventDTO>> GetEventAsync(int id)
+        public async Task<GetEventDTO[]> GetEventAsync(int id)
         {
             var getEvent = _db.Events.Where(x => x.Id == id).Select(x => new GetEventDTO
             {
-                //Id = x.Id.ToString(),
+                Id = x.Id.ToString(),
                 Title = x.Title,
                 Description = x.Description,
-                //Start = x.StartTime,
-                //End = x.EndTime,
+                StartTime = x.StartTime,
+                EndTime = x.EndTime,
             });
             
 
-            return getEvent.ToList();
+            return getEvent.ToArray();
         }
 
         public async Task<bool> DeleteEventAsync(int id)
