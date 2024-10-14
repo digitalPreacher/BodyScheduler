@@ -16,14 +16,16 @@
             Завершение
           </th>
           <th></th>
+          <th></th>
+          <th></th>
         </tr>
       </thead>
       <tbody *ngFor="let event of events">
         <tr>
           <td> {{ event.title }} </td>
           <td> {{ event.description }} </td>
-          <td> {{ event.startTime | date : "M/d/yy HH:mm" }} </td>
-          <td> {{ event.endTime | date : "M/d/yy HH:mm" }} </td>
+          <td> {{ event.start | date : "M/d/yy HH:mm"}} </td>
+          <td> {{ event.end | date : "M/d/yy HH:mm" }} </td>
           <td><app-edit [eventId]="event.id"></app-edit></td>
           <td><app-delete [eventId]="event.id"></app-delete></td>
           <td><app-details [eventId]="event.id"></app-details></td>
