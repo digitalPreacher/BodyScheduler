@@ -75,7 +75,7 @@ namespace BodyShedule_v_2_0.Server.Controllers
         //Editing user event
         [HttpPut]
         [Route("EditEvent")]
-        public async Task<IActionResult> EditEventAsync([FromBody] EditEventDTO eventInfo)
+        public async Task<IActionResult> EditEvent([FromBody] EditEventDTO eventInfo)
         {
             try
             {
