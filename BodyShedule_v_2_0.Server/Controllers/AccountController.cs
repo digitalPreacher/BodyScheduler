@@ -3,7 +3,6 @@ using BodyShedule_v_2_0.Server.Helpers;
 using BodyShedule_v_2_0.Server.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BodyShedule_v_2_0.Server.Controllers
 {
@@ -36,15 +35,6 @@ namespace BodyShedule_v_2_0.Server.Controllers
                 }
                 else
                 {  
-                    //foreach (var error in result.Errors)
-                    //{
-                    //    _logger.LogInformation("Error: {Message}", error.Description);
-                    //    return BadRequest(new
-                    //    {
-                    //        message = error.Description
-                    //    });    
-                    //}
-
                     return BadRequest(new { message = result.Errors.Select(x => x.Description) });
                 }
             }
@@ -68,7 +58,9 @@ namespace BodyShedule_v_2_0.Server.Controllers
                 if (result.Succeeded)
                 {
                     var userRoles = await _accountService.GetUserRolesAsync(userCredentials);
-                    var tokenString = JWTHelper.GenerateToken(userCredentials, userRoles[0]);
+                    var userId = await _accountService.GetUserIdAsync(userCredentials.Login);
+
+                    var tokenString = JWTHelper.GenerateToken(userCredentials, userRoles[0], userId);
 
                     return Ok(new { token = tokenString });
                 }

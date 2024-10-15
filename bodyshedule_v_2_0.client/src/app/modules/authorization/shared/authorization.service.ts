@@ -45,6 +45,9 @@ export class AuthorizationService {
 
       userDetails.login = this.decodeUserDetails.sub;
       userDetails.role = this.decodeUserDetails.role;
+      userDetails.userId = this.decodeUserDetails.userId;
+
+      console.log(userDetails.userId);
 
       this.userData$.next(userDetails);
     }

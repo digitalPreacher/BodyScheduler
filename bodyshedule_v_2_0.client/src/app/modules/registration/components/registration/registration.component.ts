@@ -1,8 +1,9 @@
 import { Component, Output } from '@angular/core';
-import { RegistrationService } from '../../shared/registration.service';
-import { RegistrationData } from '../../shared/registration-data.model';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+import { RegistrationData } from '../../shared/registration-data.model';
+import { RegistrationService } from '../../shared/registration.service';
 
 @Component({
   selector: 'app-registration',
@@ -13,6 +14,7 @@ export class RegistrationComponent {
   model: RegistrationData = new RegistrationData();
   registrationForm: FormGroup;
   confirmedPassword = '';
+
   @Output() submittedClick: boolean = false;
   @Output() getErrorMessage = false;
   @Output() errorMessages: string[] = [];
@@ -35,18 +37,20 @@ export class RegistrationComponent {
   registration() {
     if (this.registrationForm.valid) {
       if (this.registrationForm.get('password')?.value == this.confirmedPassword) {
+        this.confirmedPasswordResult = true;
         this.registrationService.registration(this.registrationForm.value).subscribe({
           next: result => {
             this.router.navigate(['/login']);
           },
           error: error => {
             this.getErrorMessage = true;
-            this.confirmedPasswordResult = true;
             this.errorMessages = error;
           }
         });
       }
+      else {
+        this.confirmedPasswordResult = false;
+      }
     }
   }
-
 }

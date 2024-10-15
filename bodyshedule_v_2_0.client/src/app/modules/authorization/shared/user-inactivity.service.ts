@@ -6,7 +6,7 @@ import { Observable, Subject, BehaviorSubject } from 'rxjs';
 })
 export class UserInactivityService{
 
-  private idleTimeout = 10000; 
+  private idleTimeout = 100000; 
   private idleTimer: any;
   private lastActivityTime: number = Date.now();
 

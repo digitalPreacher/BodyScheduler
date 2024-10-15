@@ -60,7 +60,7 @@ builder.Services.AddAuthentication(x =>
       {
           ValidateIssuer = true,
           ValidateAudience = true,
-          ValidateLifetime = true,
+          ValidateLifetime = false,
           ValidateIssuerSigningKey = true,
           ValidIssuer = Environment.GetEnvironmentVariable("JWTAUTH_ISSUER"),
           ValidAudience = Environment.GetEnvironmentVariable("JWTAUTH_AUDIENCE"),
@@ -70,8 +70,11 @@ builder.Services.AddAuthentication(x =>
       };
   });
 
+
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IEventRepository, EventRepository>();
+builder.Services.AddScoped<IEventService, EventService>();
 
 var app = builder.Build();
 
