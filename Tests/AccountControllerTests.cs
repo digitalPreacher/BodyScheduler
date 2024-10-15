@@ -21,7 +21,7 @@ public class AccountControllerTests
         _accountController = new AccountController(_accountServiceMock.Object, _logger.Object);
     }
 
-    //Testing succesfully registered of a new user and return result OK on response to client
+    //Testing successfully registered of a new user and return result OK on response to client
     [Fact]
     public async Task UserSignUpSuccess()
     {
@@ -35,16 +35,21 @@ public class AccountControllerTests
         Assert.IsType<OkResult>(result);
     }
 
-    //Testing succesfully log in to the system and return result OK on response to client
+    //Testing successfully log in to the system and return result OK on response to client
     [Fact]
     public async Task UserSignInSuccess()
     {
         //arrange
         Environment.SetEnvironmentVariable("JWTAUTH_ISSUER", "https://localhost:4200/");
         Environment.SetEnvironmentVariable("JWTAUTH_AUDIENCE", "https://localhost:4200/");
-        Environment.SetEnvironmentVariable("JWTAUTH_SECRETKEY", "59n7SAFCyHenSxzM8LVt7VF+ioBQ6fBAzq9bH90Klg9NN6nv8vHqNMGRXya1/U7leRxiAr4ic+cck+k5I27R4A==");
+        Environment.SetEnvironmentVariable("JWTAUTH_SECRETKEY", "SAIWzvv8atUUGgFgGs+gUMe+iLgkEsva0E/5Un7PBA5PJ4XF4NX+ThibKachx6M3Aytu1sLB4O1+Gkd9gQzXhw==");
 
         UserLoginDTO user = new UserLoginDTO { Login = "Test", Password = "Test123!" };
+
+        _accountServiceMock.Setup(x => x.GetUserRolesAsync(It.IsAny<UserLoginDTO>()))
+            .ReturnsAsync(new List<string>() { "USER" });
+
+        _accountServiceMock.Setup(x => x.GetUserIdAsync(It.IsAny<string>())).ReturnsAsync(1);
 
         _accountServiceMock.Setup(x => x.SignInAsync(It.IsAny<UserLoginDTO>()))
             .ReturnsAsync(Microsoft.AspNetCore.Identity.SignInResult.Success);
