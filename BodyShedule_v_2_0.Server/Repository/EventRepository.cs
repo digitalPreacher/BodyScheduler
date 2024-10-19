@@ -101,6 +101,14 @@ namespace BodyShedule_v_2_0.Server.Repository
                 Description = x.Description,
                 StartTime = x.StartTime,
                 EndTime = x.EndTime,
+                Exercises = x.Exercises.Select(x => new ExerciseDTO
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    QuantityApproaches = x.QuantityApproaches,
+                    QuantityRepetions = x.QuantityRepetions,
+                })
+                .ToArray()
 
             });
             
