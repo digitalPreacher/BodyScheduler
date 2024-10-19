@@ -22,13 +22,23 @@ namespace BodyShedule_v_2_0.Server.Repository
             var user = await _userManager.FindByIdAsync(eventInfo.UserId);
             if (user != null)
             {
-                EventModel eventModel = new EventModel
+                var exercises = eventInfo.Exercises.Select(x => new Exercise
+                {
+                    User = user,
+                    Title = x.Title,
+                    QuantityApproaches = x.QuantityApproaches,
+                    QuantityRepetions = x.QuantityRepetions,
+                })
+                .ToList() ;
+
+                Event eventModel = new Event
                 {
                     User = user,
                     Title = eventInfo.Title,
                     Description = eventInfo.Description,
                     StartTime = eventInfo.StartTime,
                     EndTime = eventInfo.EndTime,
+                    Exercises = exercises
                 };
 
                 await _db.AddAsync(eventModel);
@@ -61,7 +71,7 @@ namespace BodyShedule_v_2_0.Server.Repository
             var user = await _userManager.FindByIdAsync(eventInfo.UserId);
             if (user != null)
             {
-                EventModel editEvent = new EventModel
+                Event editEvent = new Event
                 {
                     Id = eventInfo.Id,
                     Title = eventInfo.Title,
@@ -91,6 +101,7 @@ namespace BodyShedule_v_2_0.Server.Repository
                 Description = x.Description,
                 StartTime = x.StartTime,
                 EndTime = x.EndTime,
+
             });
             
 

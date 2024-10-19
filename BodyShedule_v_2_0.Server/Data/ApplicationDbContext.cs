@@ -20,6 +20,23 @@ namespace BodyShedule_v_2_0.Server.Data
             builder.Entity<IdentityRole<int>>(entity =>
             {
                 entity.ToTable(name: "Roles");
+
+                var admin = new IdentityRole<int>()
+                {
+                    Id = 1,
+                    Name = "admin",
+                    NormalizedName = "ADMIN"
+                };
+
+                var user = new IdentityRole<int>()
+                {
+                    Id = 2,
+                    Name = "user",
+                    NormalizedName = "USER"
+                };
+
+                entity.HasData(user, admin);
+
             });
             builder.Entity<IdentityUserRole<int>>(entity =>
             {
@@ -43,7 +60,8 @@ namespace BodyShedule_v_2_0.Server.Data
             });
         }
 
-        public DbSet<EventModel> Events { get; set; }
+        public DbSet<Event> Events { get; set; }
+        public DbSet<Exercise> Exercises { get; set; }
 
     }
 }
