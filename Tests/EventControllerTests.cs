@@ -79,6 +79,15 @@ namespace Tests
                 StartTime = DateTimeOffset.Now,
                 EndTime = DateTimeOffset.Now,
                 UserId = "1",
+                Exercises = new List<ExerciseDTO>()
+                {
+                    new ExerciseDTO
+                    {
+                        Title = "Test",
+                        QuantityApproaches = 1,
+                        QuantityRepetions = 1,
+                    }
+                }
             };
 
             _eventServiceMock.Setup(x => x.AddEventAsync(It.IsAny<AddEventDTO>())).ReturnsAsync(true);
@@ -88,6 +97,8 @@ namespace Tests
 
             //assert
             Assert.IsType<OkObjectResult>(result);
+            var objectResult = result as OkObjectResult;
+            Assert.NotNull(objectResult);
         }
 
         //Testing positive result by editing event
@@ -103,6 +114,22 @@ namespace Tests
                 StartTime = DateTimeOffset.Now,
                 EndTime = DateTimeOffset.Now,
                 UserId = "1",
+                Exercises = new List<ExerciseDTO>()
+                {
+                    new ExerciseDTO
+                    {
+                        Id = 1,
+                        Title = "Test",
+                        QuantityApproaches = 1,
+                        QuantityRepetions = 1
+                    },
+                    new ExerciseDTO
+                    {
+                        Title = "Test2",
+                        QuantityApproaches = 1,
+                        QuantityRepetions = 1
+                    },
+                }
             };
 
             _eventServiceMock.Setup(x => x.EditEventAsync(It.IsAny<EditEventDTO>())).ReturnsAsync(true);
@@ -119,13 +146,20 @@ namespace Tests
         public async Task GetEventOkResult()
         {
             //arrange
-            GetEventDTO[] getEvent = { 
-                new GetEventDTO { 
+            GetEventDTO[] getEvent = {
+                new GetEventDTO {
                     Id = "1", Title = "test1",
                     Description = "test",
                     StartTime = DateTimeOffset.Parse("2024-10-15T21:33:29.9291418+03:00"),
-                    EndTime = DateTimeOffset.Parse("2024-10-15T21:33:29.9291418+03:00")
-                } 
+                    EndTime = DateTimeOffset.Parse("2024-10-15T21:33:29.9291418+03:00"),
+                    Exercises = [new ExerciseDTO
+                    {
+                        Id = 1,
+                        Title = "test1",
+                        QuantityApproaches = 0,
+                        QuantityRepetions = 0,
+                    }]
+                }
             };
             _eventServiceMock.Setup(x => x.GetEventAsync(It.IsAny<int>())).ReturnsAsync(getEvent);
 
