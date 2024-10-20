@@ -3,6 +3,7 @@ using BodyShedule_v_2_0.Server.DataTransferObjects;
 using BodyShedule_v_2_0.Server.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace BodyShedule_v_2_0.Server.Repository
 {
@@ -22,13 +23,23 @@ namespace BodyShedule_v_2_0.Server.Repository
             var user = await _userManager.FindByIdAsync(eventInfo.UserId);
             if (user != null)
             {
-                EventModel eventModel = new EventModel
+                var exercises = eventInfo.Exercises.Select(x => new Exercise
+                {
+                    User = user,
+                    Title = x.Title,
+                    QuantityApproaches = x.QuantityApproaches,
+                    QuantityRepetions = x.QuantityRepetions,
+                })
+                .ToList() ;
+
+                Event eventModel = new Event
                 {
                     User = user,
                     Title = eventInfo.Title,
                     Description = eventInfo.Description,
                     StartTime = eventInfo.StartTime,
                     EndTime = eventInfo.EndTime,
+                    Exercises = exercises
                 };
 
                 await _db.AddAsync(eventModel);
@@ -61,7 +72,7 @@ namespace BodyShedule_v_2_0.Server.Repository
             var user = await _userManager.FindByIdAsync(eventInfo.UserId);
             if (user != null)
             {
-                EventModel editEvent = new EventModel
+                Event editEvent = new Event
                 {
                     Id = eventInfo.Id,
                     Title = eventInfo.Title,
@@ -70,13 +81,56 @@ namespace BodyShedule_v_2_0.Server.Repository
                     EndTime = eventInfo.EndTime,
                     User = user
                 };
-                
+
+                List<Exercise> getExercises = eventInfo.Exercises.Select(x => new Exercise
+                {
+                    Id = x.Id > 0 ? x.Id : 0,
+                    Title = x.Title,
+                    QuantityApproaches = x.QuantityApproaches,
+                    QuantityRepetions = x.QuantityRepetions,
+                    Event = editEvent
+                })
+                .ToList();
+
+                foreach(var exercise in getExercises)
+                {
+                    if(exercise.Id > 0)
+                    {
+                        _db.Entry(exercise).State = EntityState.Modified;
+
+                    }
+                    else
+                    {
+                        Exercise newExercise = new Exercise
+                        {
+                            Title = exercise.Title,
+                            QuantityApproaches = exercise.QuantityApproaches,
+                            QuantityRepetions = exercise.QuantityRepetions,
+                            Event = editEvent,
+                            User = user,
+                            EventId = exercise.Id,
+                            CreateAt = DateTime.Now.ToUniversalTime(),
+                        };
+
+                        _db.Entry(newExercise).State = EntityState.Added;
+                    }
+                }
+
+                List<Exercise> eventExercises = _db.Exercises.Where(x => x.EventId == eventInfo.Id).ToList();
+                foreach(var exercise in eventExercises)
+                {
+                    if (!getExercises.Contains(exercise))
+                    {
+                        _db.Entry(exercise).State = EntityState.Deleted;
+                    }
+                }
+
                 _db.Events.Attach(editEvent);
                 _db.Entry(editEvent).State = EntityState.Modified;
+
                 await _db.SaveChangesAsync();
 
                 return true;
-
             }
 
             return false;
@@ -91,6 +145,14 @@ namespace BodyShedule_v_2_0.Server.Repository
                 Description = x.Description,
                 StartTime = x.StartTime,
                 EndTime = x.EndTime,
+                Exercises = x.Exercises.Select(x => new ExerciseDTO
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    QuantityApproaches = x.QuantityApproaches,
+                    QuantityRepetions = x.QuantityRepetions,
+                })
+                .ToArray()
             });
             
 

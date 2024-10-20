@@ -1,7 +1,7 @@
 import { Component, Input, TemplateRef, inject } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { EventService } from '../../shared/event.service';
 
 @Component({
@@ -21,30 +21,47 @@ export class DetailsComponent {
       title: [''],
       description: [''],
       startTime: [''],
-      endTime: ['']
+      endTime: [''],
+      exercises: this.formBuilder.array([])
     });
   }
 
   getEvent() {
     this.eventService.getEvent(this.eventId).subscribe({
-      next: async result => {
-        this.eventService.getEvent(this.eventId).subscribe(result => {
-          const currStartTime = this.datePipe.transform(result[0].startTime, 'yyyy-MM-ddTHH:mm');
-          const currEndTime = this.datePipe.transform(result[0].endTime, 'yyyy-MM-ddTHH:mm');
-          this.detailsForm.patchValue({
-            id: result[0].id,
-            title: result[0].title,
-            description: result[0].description,
-            startTime: currStartTime,
-            endTime: currEndTime
-          })
+      next: result => {
+        const eventData = result[0];
+        const currStartTime = this.datePipe.transform(eventData.startTime, 'yyyy-MM-ddTHH:mm');
+        const currEndTime = this.datePipe.transform(eventData.endTime, 'yyyy-MM-ddTHH:mm');
+        this.detailsForm.patchValue({
+          id: eventData.id,
+          title: eventData.title,
+          description: eventData.description,
+          startTime: currStartTime,
+          endTime: currEndTime,
         });
-        console.log(this.detailsForm.value);
+
+        const exercises = this.detailsForm.get('exercises') as FormArray;
+        exercises.clear();
+
+        eventData.exercises.forEach((exercise: { id: number; title: string; quantityApproaches: number; quantityRepetions: number; }) =>
+        {
+          exercises.push(this.formBuilder.group({
+            id: [exercise.id],
+            title: [exercise.title],
+            quantityApproaches: [exercise.quantityApproaches],
+            quantityRepetions: [exercise.quantityRepetions]
+          }));
+        })
+
       },
       error: err => {
         console.log(err);
       }
     });
+  }
+
+  get getExercise() {
+    return this.detailsForm.get('exercises') as FormArray;
   }
 
   open(content: TemplateRef<any>) {
