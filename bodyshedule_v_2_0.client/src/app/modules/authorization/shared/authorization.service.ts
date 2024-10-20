@@ -46,6 +46,7 @@ export class AuthorizationService {
       userDetails.login = this.decodeUserDetails.sub;
       userDetails.role = this.decodeUserDetails.role;
       userDetails.userId = this.decodeUserDetails.userId;
+      userDetails.isLoggedIn = true;
 
       console.log(userDetails.userId);
 

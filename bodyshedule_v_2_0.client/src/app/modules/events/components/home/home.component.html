@@ -1,15 +1,9 @@
-
-
-<div class="container">
+<div class="d-flex justify-content-start mb-2">
   <app-create></app-create>
-  <a routerLink="/list">Список</a>
-  <button class="btn" (click)="loadData()">Загрузить</button>
-  <button type="button" class="w-100 btn btn-outline-secondary mt-3 " (click)="logout()">Выйти</button>
-  <p>home works!</p>
-  <full-calendar [options]="calendarOptions">
-    <ng-template #eventContent let-arg>
-      <b>{{arg.timeText}}</b>
-      <i>{{arg.event.title}}</i>
-    </ng-template>
-  </full-calendar>
 </div>
+<full-calendar [options]="calendarOptions">
+  <ng-template #eventContent let-arg>
+    <b>{{arg.timeText}}</b>
+    <i>{{arg.event.title}}</i>
+  </ng-template>
+</full-calendar>
