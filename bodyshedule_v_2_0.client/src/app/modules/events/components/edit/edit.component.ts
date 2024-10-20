@@ -1,6 +1,6 @@
 import { Component, Input, Output, TemplateRef, inject } from '@angular/core';
 import { EventService } from '../../shared/event.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthorizationService } from '../../../authorization/shared/authorization.service';
 import { DatePipe } from '@angular/common';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -36,7 +36,8 @@ export class EditComponent {
       title: ['', Validators.required],
       description: ['', Validators.required],
       startTime: ['', Validators.required],
-      endTime: ['', Validators.required]
+      endTime: ['', Validators.required],
+      exercises: this.formBuilder.array([])
     });
   }
 
@@ -63,24 +64,58 @@ export class EditComponent {
 
   getEvent() {
     this.eventService.getEvent(this.eventId).subscribe({
-      next: async result => {
-        this.eventService.getEvent(this.eventId).subscribe(result => {
-          const currStartTime = this.datePipe.transform(result[0].startTime, 'yyyy-MM-ddTHH:mm');
-          const currEndTime = this.datePipe.transform(result[0].endTime, 'yyyy-MM-ddTHH:mm');
-          this.createForm.patchValue({
-            id: result[0].id,
-            title: result[0].title,
-            description: result[0].description,
-            startTime: currStartTime,
-            endTime: currEndTime
-          })
+      next: result => {
+        const eventData = result[0];
+        const currStartTime = this.datePipe.transform(eventData.startTime, 'yyyy-MM-ddTHH:mm');
+        const currEndTime = this.datePipe.transform(eventData.endTime, 'yyyy-MM-ddTHH:mm');
+        this.createForm.patchValue({
+          id: eventData.id,
+          title: eventData.title,
+          description: eventData.description,
+          startTime: currStartTime,
+          endTime: currEndTime
+        })
+
+        const exercises = this.createForm.get('exercises') as FormArray;
+        exercises.clear();
+
+        eventData.exercises.forEach((exercise: { id: number; title: string; quantityApproaches: number; quantityRepetions: number; }) => {
+          exercises.push(this.formBuilder.group({
+            id: [exercise.id],
+            title: [exercise.title],
+            quantityApproaches: [exercise.quantityApproaches],
+            quantityRepetions: [exercise.quantityRepetions]
+          }))
         });
-        console.log(this.createForm.value);
       },
       error: err => {
         console.log(err);
       }
     });
+  }
+
+  get getExercise() {
+    return this.createForm.get('exercises') as FormArray;
+  }
+
+  addField() {
+    const formGroup = this.createdItem();
+    const exercises = this.createForm.get('exercises') as FormArray;
+    exercises.push(formGroup);
+  }
+
+  createdItem(): FormGroup {
+    return this.formBuilder.group({
+      title: ['', Validators.required],
+      quantityApproaches: [0, Validators.required],
+      quantityRepetions: [0, Validators.required]
+    })
+  }
+
+  removeField(id: number) {
+    const exercises = this.createForm.get('exercises') as FormArray;
+    exercises.removeAt(id);
+    console.log("remove item with id: " + id);
   }
 
   open(content: TemplateRef<any>) {

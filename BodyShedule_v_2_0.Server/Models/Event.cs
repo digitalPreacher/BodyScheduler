@@ -2,7 +2,7 @@
 
 namespace BodyShedule_v_2_0.Server.Models
 {
-    public class EventModel
+    public class Event
     {
         [Key]
         public int Id { get; set; }
@@ -17,6 +17,8 @@ namespace BodyShedule_v_2_0.Server.Models
 
         [Required]
         public DateTimeOffset EndTime { get; set; }
+
+        public ICollection<Exercise> Exercises { get; set; }
 
         public virtual ApplicationUser User { get; set; } 
 

@@ -19,6 +19,8 @@ namespace BodyShedule_v_2_0.Server.DataTransferObjects
         [Required]
         public DateTimeOffset EndTime { get; set; } = DateTimeOffset.Now;
 
+        public List<ExerciseDTO> Exercises { get; set; }
+
         [Required]
         public string UserId { get; set; }  
 
