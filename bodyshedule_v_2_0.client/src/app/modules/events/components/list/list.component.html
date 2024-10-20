@@ -1,36 +1,35 @@
-<div class="container">
-  <div class="row">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>
-            Название
-          </th>
-          <th>
-            Описание
-          </th>
-          <th>
-            Начало
-          </th>
-          <th>
-            Завершение
-          </th>
-          <th></th>
-          <th></th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody *ngFor="let event of events">
-        <tr>
-          <td> {{ event.title }} </td>
-          <td> {{ event.description }} </td>
-          <td> {{ event.start | date : "M/d/yy HH:mm"}} </td>
-          <td> {{ event.end | date : "M/d/yy HH:mm" }} </td>
-          <td><app-edit [eventId]="event.id"></app-edit></td>
-          <td><app-delete [eventId]="event.id"></app-delete></td>
-          <td><app-details [eventId]="event.id"></app-details></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+<div class="d-flex justify-content-start mb-2">
+  <app-create></app-create>
 </div>
+<table class="table">
+  <thead>
+    <tr>
+      <th>
+        Название
+      </th>
+      <th>
+        Описание
+      </th>
+      <th>
+        Начало
+      </th>
+      <th>
+        Завершение
+      </th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody *ngFor="let event of events">
+    <tr>
+      <td> {{ event.title }} </td>
+      <td> {{ event.description }} </td>
+      <td> {{ event.start | date : "M/d/yy HH:mm"}} </td>
+      <td> {{ event.end | date : "M/d/yy HH:mm" }} </td>
+      <td><app-edit [eventId]="event.id"></app-edit></td>
+      <td><app-delete [eventId]="event.id"></app-delete></td>
+      <td><app-details [eventId]="event.id"></app-details></td>
+    </tr>
+  </tbody>
+</table>

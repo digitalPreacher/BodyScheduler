@@ -9,6 +9,7 @@ import { ListComponent } from './modules/events/components/list/list.component'
 import { EditComponent } from './modules/events/components/edit/edit.component';
 import { DeleteComponent } from './modules/events/components/delete/delete.component';
 import { DetailsComponent } from './modules/events/components/details/details.component';
+import { NavbarComponent } from './modules/navbar/components/navbar/navbar.component'
 
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthorizationUserGuard] },
@@ -22,7 +23,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes)],  
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

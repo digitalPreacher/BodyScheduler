@@ -18,6 +18,7 @@ import { ListComponent } from './modules/events/components/list/list.component';
 import { EditComponent } from './modules/events/components/edit/edit.component';
 import { DeleteComponent } from './modules/events/components/delete/delete.component';
 import { DetailsComponent } from './modules/events/components/details/details.component';
+import { NavbarComponent } from './modules/navbar/components/navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { DetailsComponent } from './modules/events/components/details/details.co
     EditComponent,
     DeleteComponent,
     DetailsComponent,
+    NavbarComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule,
