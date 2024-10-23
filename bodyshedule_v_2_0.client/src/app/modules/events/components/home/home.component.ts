@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CalendarOptions } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
+import ruLocale from '@fullcalendar/core/locales/ru';
 
 import { UserInactivityService } from '../../../authorization/shared/user-inactivity.service';
 import { AuthorizationService } from '../../../authorization/shared/authorization.service';
@@ -11,7 +12,7 @@ import { Event } from '../../shared/event.model';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styles: ``
+  styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit {
 
@@ -19,15 +20,18 @@ export class HomeComponent implements OnInit {
 
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin],
+    locale: ruLocale,
     headerToolbar: {
       left: 'prev,next,today',
       center: 'title',
-      right: ''
+      right: 'dayGridMonth,dayGridWeek,dayGridDay'
     },
     eventColor: '#6343ac',
-    locale: "ru",
     initialView: 'dayGridMonth',
     weekends: true,
+    editable: true,
+    selectable: true,
+    eventDisplay: 'block',
   };
 
   constructor(private authService: AuthorizationService, private inactivityService: UserInactivityService,

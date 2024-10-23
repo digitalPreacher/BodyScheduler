@@ -5,7 +5,7 @@ import { AuthorizationService } from '../../../authorization/shared/authorizatio
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styles: ``
+  styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
 
