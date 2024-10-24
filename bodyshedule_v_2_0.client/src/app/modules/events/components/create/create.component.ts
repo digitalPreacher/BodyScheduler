@@ -35,7 +35,6 @@ export class CreateComponent implements OnInit {
       title: ['', Validators.required],
       description: ['', Validators.required],
       startTime: ['', Validators.required],
-      endTime: ['', Validators.required],
       exercises: this.formBuilder.array([this.createdItem()])
     });
   }
@@ -48,7 +47,6 @@ export class CreateComponent implements OnInit {
           title: ['', Validators.required],
           description: ['', Validators.required],
           startTime: ['', Validators.required],
-          endTime: ['', Validators.required],
           exercises: this.formBuilder.array([this.createdItem()])
         });
       }
@@ -58,10 +56,8 @@ export class CreateComponent implements OnInit {
   create() {
     if (this.createForm.valid) {
       const currStartTime = this.datePipe.transform(this.createForm.get('startTime')?.value, 'yyyy-MM-ddTHH:mm:ss.ssS', 'UTC') + 'Z';
-      const currEndTime = this.datePipe.transform(this.createForm.get('endTime')?.value, 'yyyy-MM-ddTHH:mm:ss.ssS', 'UTC') + 'Z';
       this.createForm.patchValue({
         startTime: currStartTime,
-        endTime: currEndTime
       });
       this.eventService.addEvent(this.createForm.value).subscribe({
         next: result => {

@@ -1,6 +1,6 @@
 <ng-template #content let-modal>
   <div class="modal-header">
-    <h3 class="modal-title" id="modal-create-title" style="text-align">Добавление</h3>
+    <h3 class="modal-title" id="modal-create-title" style="text-align:center">Добавление</h3>
     <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
   </div>
   <div class="modal-body">
@@ -40,19 +40,6 @@
                  formControlName="startTime"
                  name="start-time-field" />
           <div *ngIf="createForm.get('startTime')?.hasError('required') && submittedClick"
-               class="alert alert-danger mt-2">
-            Поле обязательно для заполнения
-          </div>
-        </div>
-        <div class="form-group mt-2">
-          <label>Завершение</label>
-          <input type="datetime-local"
-                 class="form-control"
-                 id="end-time-create-form-field"
-                 required
-                 formControlName="endTime"
-                 name="end-time-field" />
-          <div *ngIf="createForm.get('endTime')?.hasError('required') && submittedClick"
                class="alert alert-danger mt-2">
             Поле обязательно для заполнения
           </div>

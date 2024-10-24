@@ -1,6 +1,6 @@
 <ng-template #content let-modal>
   <div class="modal-header">
-    <h3 class="modal-title" id="modal-details-title" style="text-align">Просмотр</h3>
+    <h3 class="modal-title" id="modal-details-title" style="text-align:center">Просмотр</h3>
     <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
   </div>
   <div class="modal-body">
@@ -33,16 +33,6 @@
                required
                formControlName="startTime"
                name="start-time-field"
-               readonly />
-      </div>
-      <div class="form-group mt-2">
-        <label>Завершение</label>
-        <input type="datetime-local"
-               class="form-control"
-               id="end-time-details-form-field"
-               required
-               formControlName="endTime"
-               name="end-time-field"
                readonly />
       </div>
       <div class="form-group mt-2" formArrayName="exercises">

@@ -21,7 +21,6 @@ export class DetailsComponent {
       title: [''],
       description: [''],
       startTime: [''],
-      endTime: [''],
       exercises: this.formBuilder.array([])
     });
   }
@@ -31,13 +30,11 @@ export class DetailsComponent {
       next: result => {
         const eventData = result[0];
         const currStartTime = this.datePipe.transform(eventData.startTime, 'yyyy-MM-ddTHH:mm');
-        const currEndTime = this.datePipe.transform(eventData.endTime, 'yyyy-MM-ddTHH:mm');
         this.detailsForm.patchValue({
           id: eventData.id,
           title: eventData.title,
           description: eventData.description,
-          startTime: currStartTime,
-          endTime: currEndTime,
+          startTime: currStartTime
         });
 
         const exercises = this.detailsForm.get('exercises') as FormArray;

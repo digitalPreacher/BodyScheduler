@@ -13,9 +13,6 @@ namespace BodyShedule_v_2_0.Server.DataTransferObjects
 
         [Required]
         public DateTimeOffset StartTime { get; set; }
-
-        [Required]
-        public DateTimeOffset EndTime { get; set; }
         [Required]
         public ExerciseDTO[] Exercises { get; set; }
     }

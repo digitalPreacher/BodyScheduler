@@ -37,5 +37,10 @@ namespace BodyShedule_v_2_0.Server.Service
         {
             return await _repository.DeleteEventAsync(id);
         }
+
+        public async Task<bool> AddTrainingProgramAsync(AddTrainingProgramDTO trainingProgramInfo)
+        {
+            return await _repository.AddTrainingProgramAsync(trainingProgramInfo);
+        }
     }
 }

@@ -38,7 +38,6 @@ namespace BodyShedule_v_2_0.Server.Repository
                     Title = eventInfo.Title,
                     Description = eventInfo.Description,
                     StartTime = eventInfo.StartTime,
-                    EndTime = eventInfo.EndTime,
                     Exercises = exercises
                 };
 
@@ -60,7 +59,6 @@ namespace BodyShedule_v_2_0.Server.Repository
                 Title = x.Title,
                 Description = x.Description,
                 Start = x.StartTime,
-                End = x.EndTime
             })
             .ToListAsync();
 
@@ -78,7 +76,6 @@ namespace BodyShedule_v_2_0.Server.Repository
                     Title = eventInfo.Title,
                     Description = eventInfo.Description,
                     StartTime = eventInfo.StartTime,
-                    EndTime = eventInfo.EndTime,
                     User = user
                 };
 
@@ -144,7 +141,6 @@ namespace BodyShedule_v_2_0.Server.Repository
                 Title = x.Title,
                 Description = x.Description,
                 StartTime = x.StartTime,
-                EndTime = x.EndTime,
                 Exercises = x.Exercises.Select(x => new ExerciseDTO
                 {
                     Id = x.Id,
@@ -162,6 +158,7 @@ namespace BodyShedule_v_2_0.Server.Repository
         public async Task<bool> DeleteEventAsync(int id)
         {
             var getEvent = await _db.Events.FirstOrDefaultAsync(x => x.Id == id);
+
             if (getEvent != null) 
             {
                 _db.Remove(getEvent);
@@ -174,6 +171,69 @@ namespace BodyShedule_v_2_0.Server.Repository
                 return false;
             }
 
+        }
+
+        public async Task<bool> AddTrainingProgramAsync(AddTrainingProgramDTO trainingProgramInfo)
+        {
+            var user = await _userManager.FindByIdAsync(trainingProgramInfo.UserId);
+            if (user != null)
+            {
+                var weeksTraining = new List<WeeksTraining>();
+                
+                foreach(var week in trainingProgramInfo.Weeks)
+                {
+                    var weekEvents = new List<Event>();
+
+                    foreach(var eventInfo in week.Events)
+                    {
+                        var exercises = new List<Exercise>();
+
+                        foreach(var exercise in eventInfo.Exercises)
+                        {
+                            exercises.Add(new Exercise
+                            {
+                                Title = exercise.Title,
+                                QuantityApproaches = exercise.QuantityApproaches,
+                                QuantityRepetions = exercise.QuantityRepetions,
+                                User = user
+                            });
+                        }
+
+                        weekEvents.Add(new Event
+                        {
+                            User = user,
+                            Title = eventInfo.Title,
+                            Description = eventInfo.Description,
+                            StartTime = eventInfo.StartTime,
+                            Exercises = exercises
+                            
+                        });
+                    }
+
+                    weeksTraining.Add(new WeeksTraining
+                    {
+                        User = user,
+                        WeekNumber = week.WeekNumber,
+                        Events = weekEvents
+                    });
+                }
+
+
+                TrainingProgram trainingProgram = new TrainingProgram
+                {
+                    Title = trainingProgramInfo.Title,
+                    Description = trainingProgramInfo.Description,
+                    Weeks = weeksTraining,
+                    User = user,
+                };
+
+                await _db.AddRangeAsync(trainingProgram);
+                _db.SaveChanges();
+
+                return true;
+            }
+
+            return false;
         }
     }
 }
