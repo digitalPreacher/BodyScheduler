@@ -62,6 +62,8 @@ namespace BodyShedule_v_2_0.Server.Data
 
         public DbSet<Event> Events { get; set; }
         public DbSet<Exercise> Exercises { get; set; }
+        public DbSet<TrainingProgram> TrainingProgramSet { get; set; }
+        public DbSet<WeeksTraining> WeeksTrainingSet { get; set; }  
 
     }
 }
