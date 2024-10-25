@@ -11,7 +11,6 @@ namespace BodyShedule_v_2_0.Server.Models
         [ForeignKey("Program")]
         public int ProgramId { get; set; }
         public virtual TrainingProgram Program { get; set; }
-        public required ICollection<Event>? Events { get; set; }
         public virtual ApplicationUser User { get; set; }
 
     }
