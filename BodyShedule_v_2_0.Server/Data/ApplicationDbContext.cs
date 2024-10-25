@@ -24,14 +24,14 @@ namespace BodyShedule_v_2_0.Server.Data
                 var admin = new IdentityRole<int>()
                 {
                     Id = 1,
-                    Name = "admin",
+                    Name = "Admin",
                     NormalizedName = "ADMIN"
                 };
 
                 var user = new IdentityRole<int>()
                 {
                     Id = 2,
-                    Name = "user",
+                    Name = "User",
                     NormalizedName = "USER"
                 };
 

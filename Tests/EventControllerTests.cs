@@ -39,16 +39,14 @@ namespace Tests
                     Id = "1",
                     Title = "test1",
                     Description = "test",
-                    Start = DateTimeOffset.Parse("2024-10-15T21:33:29.9291418+03:00"),
-                    End = DateTimeOffset.Parse("2024-10-15T21:33:29.9291418+03:00"),
+                    Start = DateTimeOffset.Parse("2024-10-15T21:33:29.9291418+03:00")
                 },
                  new GetEventsDTO
                 {
                     Id = "2",
                     Title = "test2",
                     Description = "test",
-                    Start = DateTimeOffset.Parse("2024-10-15T21:33:29.9291418+03:00"),
-                    End = DateTimeOffset.Parse("2024-10-15T21:33:29.9291418+03:00"),
+                    Start = DateTimeOffset.Parse("2024-10-15T21:33:29.9291418+03:00")
                 }
             };
 
@@ -77,7 +75,6 @@ namespace Tests
                 Title = "test1",
                 Description = "test",
                 StartTime = DateTimeOffset.Now,
-                EndTime = DateTimeOffset.Now,
                 UserId = "1",
                 Exercises = new List<ExerciseDTO>()
                 {
@@ -112,7 +109,6 @@ namespace Tests
                 Title = "test1",
                 Description = "test",
                 StartTime = DateTimeOffset.Now,
-                EndTime = DateTimeOffset.Now,
                 UserId = "1",
                 Exercises = new List<ExerciseDTO>()
                 {
@@ -151,7 +147,6 @@ namespace Tests
                     Id = "1", Title = "test1",
                     Description = "test",
                     StartTime = DateTimeOffset.Parse("2024-10-15T21:33:29.9291418+03:00"),
-                    EndTime = DateTimeOffset.Parse("2024-10-15T21:33:29.9291418+03:00"),
                     Exercises = [new ExerciseDTO
                     {
                         Id = 1,
