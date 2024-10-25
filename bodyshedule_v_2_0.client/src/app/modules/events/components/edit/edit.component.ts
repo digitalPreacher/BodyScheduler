@@ -3,7 +3,7 @@ import { EventService } from '../../shared/event.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthorizationService } from '../../../authorization/shared/authorization.service';
 import { DatePipe } from '@angular/common';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { Event } from '../../shared/event.model';
 
 @Component({
@@ -74,12 +74,13 @@ export class EditComponent {
         const exercises = this.createForm.get('exercises') as FormArray;
         exercises.clear();
 
-        eventData.exercises.forEach((exercise: { id: number; title: string; quantityApproaches: number; quantityRepetions: number; }) => {
+        eventData.exercises.forEach((exercise: { id: number; title: string; quantityApproaches: number; quantityRepetions: number; weight: number }) => {
           exercises.push(this.formBuilder.group({
             id: [exercise.id],
             title: [exercise.title],
             quantityApproaches: [exercise.quantityApproaches],
-            quantityRepetions: [exercise.quantityRepetions]
+            quantityRepetions: [exercise.quantityRepetions],
+            weight: [exercise.weight]
           }))
         });
       },
@@ -103,7 +104,8 @@ export class EditComponent {
     return this.formBuilder.group({
       title: ['', Validators.required],
       quantityApproaches: [0, Validators.required],
-      quantityRepetions: [0, Validators.required]
+      quantityRepetions: [0, Validators.required],
+      weight: [0, Validators.required]
     })
   }
 
@@ -114,8 +116,12 @@ export class EditComponent {
   }
 
   open(content: TemplateRef<any>) {
+    const options: NgbModalOptions = {
+      size: 'lg',
+      ariaLabelledBy: 'modal-basic-title'
+    };
     this.getEvent();
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+    this.modalService.open(content, options);
   }
 
 }

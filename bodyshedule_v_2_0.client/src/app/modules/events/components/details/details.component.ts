@@ -1,6 +1,6 @@
 import { Component, Input, TemplateRef, inject } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { EventService } from '../../shared/event.service';
 
@@ -40,13 +40,14 @@ export class DetailsComponent {
         const exercises = this.detailsForm.get('exercises') as FormArray;
         exercises.clear();
 
-        eventData.exercises.forEach((exercise: { id: number; title: string; quantityApproaches: number; quantityRepetions: number; }) =>
+        eventData.exercises.forEach((exercise: { id: number; title: string; quantityApproaches: number; quantityRepetions: number; weight: number }) =>
         {
           exercises.push(this.formBuilder.group({
             id: [exercise.id],
             title: [exercise.title],
             quantityApproaches: [exercise.quantityApproaches],
-            quantityRepetions: [exercise.quantityRepetions]
+            quantityRepetions: [exercise.quantityRepetions],
+            weight: [exercise.weight]
           }));
         })
 
@@ -62,8 +63,12 @@ export class DetailsComponent {
   }
 
   open(content: TemplateRef<any>) {
+    const options: NgbModalOptions = {
+      size: 'lg',
+      ariaLabelledBy: 'modal-basic-title'
+    };
     this.getEvent();
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+    this.modalService.open(content, options);
   }
 
 }

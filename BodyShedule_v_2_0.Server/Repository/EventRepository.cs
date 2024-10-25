@@ -29,6 +29,7 @@ namespace BodyShedule_v_2_0.Server.Repository
                     Title = x.Title,
                     QuantityApproaches = x.QuantityApproaches,
                     QuantityRepetions = x.QuantityRepetions,
+                    Weight = x.Weight
                 })
                 .ToList() ;
 
@@ -85,6 +86,7 @@ namespace BodyShedule_v_2_0.Server.Repository
                     Title = x.Title,
                     QuantityApproaches = x.QuantityApproaches,
                     QuantityRepetions = x.QuantityRepetions,
+                    Weight = x.Weight,
                     Event = editEvent
                 })
                 .ToList();
@@ -103,6 +105,7 @@ namespace BodyShedule_v_2_0.Server.Repository
                             Title = exercise.Title,
                             QuantityApproaches = exercise.QuantityApproaches,
                             QuantityRepetions = exercise.QuantityRepetions,
+                            Weight = exercise.Weight,
                             Event = editEvent,
                             User = user,
                             EventId = exercise.Id,
@@ -147,6 +150,7 @@ namespace BodyShedule_v_2_0.Server.Repository
                     Title = x.Title,
                     QuantityApproaches = x.QuantityApproaches,
                     QuantityRepetions = x.QuantityRepetions,
+                    Weight = x.Weight
                 })
                 .ToArray()
             });
@@ -195,6 +199,7 @@ namespace BodyShedule_v_2_0.Server.Repository
                                 Title = exercise.Title,
                                 QuantityApproaches = exercise.QuantityApproaches,
                                 QuantityRepetions = exercise.QuantityRepetions,
+                                Weight = exercise.Weight,
                                 User = user
                             });
                         }

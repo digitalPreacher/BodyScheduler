@@ -11,7 +11,9 @@ namespace BodyShedule_v_2_0.Server.Models
         public string Description { get; set; } = string.Empty;
         [Required]
         public DateTimeOffset StartTime { get; set; }
-        public ICollection<Exercise>? Exercises { get; set; }
+        public int? WeeksTrainingId { get; set; }
+        public virtual WeeksTraining? WeeksTraining { get; set; }
+        public ICollection<Exercise> Exercises { get; set; }
         public virtual ApplicationUser? User { get; set; }
 
     }

@@ -45,21 +45,23 @@
           </div>
         </div>
         <div class="form-group mt-2" formArrayName="exercises">
-          <div class="row col-12">
-            <div class="col-12 d-inline-flex mx-auto">
-              <div class="col-8">
-                <label for="title-exercise-create-form-field">Упражнение</label>
-              </div>
-              <div class="col-2 mx-2">
-                <label for="quantity-approaches-create-form-field">Подходы</label>
-              </div>
-              <div class="col-2">
-                <label for="quantity-repetions-create-form-field">Повт-ия</label>
-              </div>
+          <div class="col-12 d-inline-flex mx-auto">
+            <div class="col-8">
+              <label for="title-exercise-create-form-field">Упражнение</label>
             </div>
+            <div class="col-1 mx-2">
+              <label for="quantity-approaches-create-form-field">Подходы</label>
+            </div>
+            <div class="col-1">
+              <label for="quantity-repetions-create-form-field">Повт-ия</label>
+            </div>
+            <div class="mx-4" >
+              <label for="weight-create-form-field">Вес</label>
+            </div>
+          </div>
             <div *ngFor="let exercise of fields.controls; let i=index">
               <div [formGroupName]="i">
-                <div class="d-inline-flex mx-auto mt-2">
+                <div class="col-12 d-inline-flex mx-auto mt-2">
                   <div class="col-8">
                     <input type="text"
                            class="form-control"
@@ -72,31 +74,40 @@
                       Поле обязательно для заполнения
                     </div>
                   </div>
-                  <div class="col-2 mx-2">
+                  <div class="col-1 mx-2">
                     <input type="number"
                            class="form-control"
                            id="quantity-approaches-create-form-field"
                            required
                            formControlName="quantityApproaches"
                            name="quantity-approaches-field"
-                           min="0"/>
+                           min="0" />
                   </div>
-                  <div class="col-2">
+                  <div class="col-1">
                     <input type="number"
                            class="form-control"
                            id="quantity-repetions-create-form-field"
                            required
                            formControlName="quantityRepetions"
                            name="quantity-repetions-field"
-                           min="0"/>
+                           min="0" />
                   </div>
-                  <div class="mx-2">
+                  <div class="col-1 mx-2">
+                    <input type="number"
+                           class="form-control"
+                           id="weight-create-form-field"
+                           required
+                           formControlName="weight"
+                           name="weight-field"
+                           step="0.1"
+                           min="0" />
+                  </div>
+                  <div class="col-1">
                     <button (click)="removeField(i)">X</button>
                   </div>
                 </div>
             </div>
             </div>
-          </div>
           <div class="col-12">
             <button class="w-100 btn btn-outline-secondary mt-2 mx-auto" (click)="addField()">Добавить упражнение</button>
           </div>
