@@ -10,7 +10,7 @@ import { FullCalendarModule } from '@fullcalendar/angular'
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './modules/authorization/components/login/login.component';
-import { HomeComponent } from './modules/events/components/home/home.component';
+import { HomeComponent } from './modules/home/components/home/home.component';
 import { RegistrationComponent } from './modules/registration/components/registration/registration.component';
 import { HttpInterceptorService } from './modules/authorization/shared/http-interceptor.service';
 import { CreateComponent } from './modules/events/components/create/create.component';
@@ -19,6 +19,7 @@ import { EditComponent } from './modules/events/components/edit/edit.component';
 import { DeleteComponent } from './modules/events/components/delete/delete.component';
 import { DetailsComponent } from './modules/events/components/details/details.component';
 import { NavbarComponent } from './modules/navbar/components/navbar/navbar.component';
+import { CreateTrainingProgramComponent } from './modules/training-programs/components/create-training-program/create-training-program.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { NavbarComponent } from './modules/navbar/components/navbar/navbar.compo
     DeleteComponent,
     DetailsComponent,
     NavbarComponent,
+    CreateTrainingProgramComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule,
