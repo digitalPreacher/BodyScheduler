@@ -19,7 +19,7 @@ export class TrainingProgramService {
 }
 
   addTrainingProgram(programData: any) {
-    return this.httpClient.post<any>(this.baseUrl + "/Event/AddTrainingProgram", programData)
+    return this.httpClient.post<any>(this.baseUrl + "/TrainingProgram/AddTrainingProgram", programData)
       .pipe(
         result => {
           return result;

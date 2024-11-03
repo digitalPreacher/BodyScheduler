@@ -143,19 +143,5 @@ namespace BodyShedule_v_2_0.Server.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-        [HttpPost]
-        [Route("AddTrainingProgram")]
-        public async Task<IActionResult> AddTrainingProgramAsync(AddTrainingProgramDTO trainingProgramInfo)
-        {
-            var result = await _service.AddTrainingProgramAsync(trainingProgramInfo);
-
-            if (result)
-            {
-                return Ok();
-            }
-
-            return BadRequest();
-        }
     }
 }

@@ -11,6 +11,5 @@ namespace BodyShedule_v_2_0.Server.Repository
         public Task<bool> EditEventAsync(EditEventDTO eventInfo);
         public Task<GetEventDTO[]> GetEventAsync(int id);
         public Task<bool> DeleteEventAsync(int id);
-        public Task<bool> AddTrainingProgramAsync(AddTrainingProgramDTO trainingProgramInfo);
     }
 }
