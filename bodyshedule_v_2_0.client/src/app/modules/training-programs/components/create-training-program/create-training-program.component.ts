@@ -3,7 +3,8 @@ import { FormGroup, FormBuilder, Validators, FormArray, Form } from '@angular/fo
 import { ModalDismissReasons, NgbDatepickerModule, NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { DatePipe } from '@angular/common';
 import { AuthorizationService } from '../../../authorization/shared/authorization.service';
-import { TrainingProgramService } from '../../shared/training-program.service'
+import { TrainingProgramService } from '../../shared/training-program.service';
+import { EventService } from '../../../events/shared/event.service';
 
 
 @Component({
@@ -21,7 +22,7 @@ export class CreateTrainingProgramComponent {
   @Output() submittedClick = false;
 
   constructor(private programService: TrainingProgramService, private formBuilder: FormBuilder,
-    private authService: AuthorizationService, private datePipe: DatePipe)
+    private authService: AuthorizationService, private datePipe: DatePipe, private eventService: EventService)
   {
     this.userDataSubscribtion = this.authService.userData$.asObservable().subscribe(data => {
       this.userId = data.userId;
@@ -70,6 +71,7 @@ export class CreateTrainingProgramComponent {
   //return form group of event for adding in array of events to week
   addEventsField(): FormGroup {
     return this.formBuilder.group({
+      userId: [this.userId, Validators.required],
       title: ['', Validators.required],
       description: ['', Validators.required],
       startTime: ['', Validators.required],
@@ -130,6 +132,26 @@ export class CreateTrainingProgramComponent {
   }
 
   create() {
+    if (this.createForm.valid) {
+      for (let i = 0; i < this.weeks.length; i++) {
+        const events = this.getEventsFormArray(i);
+        events.controls.forEach((e) => {
+          const currStartTime = this.datePipe.transform(e.get('startTime')?.value, 'yyyy-MM-ddTHH:mm:ss.ssS', 'UTC') + 'Z';
+          e.get('startTime')?.setValue(currStartTime);
+        })
+
+      }
+      this.programService.addTrainingProgram(this.createForm.value).subscribe({
+        next: result => {
+          this.createForm.reset();
+          this.modalService.dismissAll();
+          this.eventService.eventChangeData$.next(true);
+        },
+        error: err => {
+          console.log(err)
+        }
+      })
+    }
   }
 
   //opening modal window of training program form 

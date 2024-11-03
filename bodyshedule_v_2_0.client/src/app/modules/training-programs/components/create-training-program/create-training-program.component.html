@@ -6,7 +6,7 @@
     <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
   </div>
   <div class="modal-body">
-    <form class="p-3 text-center" [formGroup]="createForm" (ngSubmit)="create()">
+    <form class="p-3 text-center" [formGroup]="createForm">
       <div class="form-group">
         <label>Заголовок</label>
         <input type="text"
@@ -36,7 +36,7 @@
       <div class="form-group mt-2" formArrayName="weeks">
         <div class="col-12 d-inline-flex mx-auto">
           <div class="col-8">
-            <label for="weeks-create-form-field">Неделя</label>
+            <label for="weeks-create-training-form-field">Неделя</label>
           </div>
         </div>
         <div *ngFor="let week of weeks.controls; let i=index">
@@ -53,7 +53,7 @@
                        readonly />
               </div>
               <button class="btn btn-outline-secondary" (click)="openDays(addDays)">+</button>
-              <button class="" (click)="removeWeek(i)">Х</button>
+              <button (click)="removeWeek(i)">Х</button>
               <ng-template #addDays let-modal>
                 <div class="modal-header">
                   <h3 class="modal-title" id="modal-create-title" style="text-align:center">Добавить дни</h3>
@@ -67,13 +67,13 @@
                           <label>День {{ j + 1 }}</label>
                         </div>
                         <div class="form-group">
-                          <label>Описание</label>
+                          <label for="title-create-training-form-field">Описание</label>
                           <input type="text"
                                  class="form-control"
-                                 id="event-create-training-form-field"
+                                 id="title-create-training-form-field"
                                  required
                                  formControlName="title"
-                                 name="event-field" />
+                                 name="title-field" />
                         </div>
                         <div class="form-group">
                           <label>Описание</label>
@@ -174,7 +174,7 @@
         </div>
       </div>
       <div class="modal-footer mt-3">
-        <button type="submit" class="w-100 btn btn-outline-secondary mt-3" (click)="submittedClick=true">Добавить</button>
+        <button type="submit" class="w-100 btn btn-outline-secondary mt-3" (click)="create(); submittedClick=true">Добавить</button>
       </div>
     </form>
   </div>
