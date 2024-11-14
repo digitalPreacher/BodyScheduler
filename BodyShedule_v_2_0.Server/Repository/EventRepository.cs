@@ -29,6 +29,7 @@ namespace BodyShedule_v_2_0.Server.Repository
                     Title = x.Title,
                     QuantityApproaches = x.QuantityApproaches,
                     QuantityRepetions = x.QuantityRepetions,
+                    Weight = x.Weight
                 })
                 .ToList() ;
 
@@ -38,7 +39,6 @@ namespace BodyShedule_v_2_0.Server.Repository
                     Title = eventInfo.Title,
                     Description = eventInfo.Description,
                     StartTime = eventInfo.StartTime,
-                    EndTime = eventInfo.EndTime,
                     Exercises = exercises
                 };
 
@@ -60,7 +60,6 @@ namespace BodyShedule_v_2_0.Server.Repository
                 Title = x.Title,
                 Description = x.Description,
                 Start = x.StartTime,
-                End = x.EndTime
             })
             .ToListAsync();
 
@@ -78,7 +77,6 @@ namespace BodyShedule_v_2_0.Server.Repository
                     Title = eventInfo.Title,
                     Description = eventInfo.Description,
                     StartTime = eventInfo.StartTime,
-                    EndTime = eventInfo.EndTime,
                     User = user
                 };
 
@@ -88,6 +86,7 @@ namespace BodyShedule_v_2_0.Server.Repository
                     Title = x.Title,
                     QuantityApproaches = x.QuantityApproaches,
                     QuantityRepetions = x.QuantityRepetions,
+                    Weight = x.Weight,
                     Event = editEvent
                 })
                 .ToList();
@@ -106,6 +105,7 @@ namespace BodyShedule_v_2_0.Server.Repository
                             Title = exercise.Title,
                             QuantityApproaches = exercise.QuantityApproaches,
                             QuantityRepetions = exercise.QuantityRepetions,
+                            Weight = exercise.Weight,
                             Event = editEvent,
                             User = user,
                             EventId = exercise.Id,
@@ -136,32 +136,33 @@ namespace BodyShedule_v_2_0.Server.Repository
             return false;
         }
 
-        public async Task<GetEventDTO[]> GetEventAsync(int id)
+        public async Task<List<GetEventDTO>> GetEventAsync(int id)
         {
             var getEvent = _db.Events.Where(x => x.Id == id).Select(x => new GetEventDTO
             {
-                Id = x.Id.ToString(),
+                Id = x.Id,
                 Title = x.Title,
                 Description = x.Description,
                 StartTime = x.StartTime,
-                EndTime = x.EndTime,
                 Exercises = x.Exercises.Select(x => new ExerciseDTO
                 {
                     Id = x.Id,
                     Title = x.Title,
                     QuantityApproaches = x.QuantityApproaches,
                     QuantityRepetions = x.QuantityRepetions,
+                    Weight = x.Weight
                 })
-                .ToArray()
+                .ToList()
             });
             
 
-            return getEvent.ToArray();
+            return getEvent.ToList();
         }
 
         public async Task<bool> DeleteEventAsync(int id)
         {
             var getEvent = await _db.Events.FirstOrDefaultAsync(x => x.Id == id);
+
             if (getEvent != null) 
             {
                 _db.Remove(getEvent);
@@ -173,7 +174,6 @@ namespace BodyShedule_v_2_0.Server.Repository
             {
                 return false;
             }
-
         }
     }
 }

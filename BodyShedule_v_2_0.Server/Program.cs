@@ -75,6 +75,8 @@ builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IEventService, EventService>();
+builder.Services.AddScoped<ITrainingProgramRepository, TrainingProgramRepository>();
+builder.Services.AddScoped<ITrainingProgramService, TrainingProgramService>();
 
 var app = builder.Build();
 

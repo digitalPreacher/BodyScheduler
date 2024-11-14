@@ -5,9 +5,9 @@ import ruLocale from '@fullcalendar/core/locales/ru';
 
 import { UserInactivityService } from '../../../authorization/shared/user-inactivity.service';
 import { AuthorizationService } from '../../../authorization/shared/authorization.service';
-import { EventService } from '../../shared/event.service';
+import { EventService } from '../../../events/shared/event.service';
 import { pipe } from 'rxjs';
-import { Event } from '../../shared/event.model';
+import { Event } from '../../../events/shared/event.model';
 
 @Component({
   selector: 'app-home',
@@ -47,6 +47,7 @@ export class HomeComponent implements OnInit {
     })
   }
 
+  //receiving data of events and display it in fullcalendar
   loadData() {
     this.eventService.getEvents().subscribe({
       next: events => {

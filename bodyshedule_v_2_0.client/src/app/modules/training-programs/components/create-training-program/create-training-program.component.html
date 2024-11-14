@@ -1,0 +1,182 @@
+<button class="btn btn-outline-secondary" (click)="openMain(content)">+</button>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h3 class="modal-title" id="modal-create-title" style="text-align:center">Добавление</h3>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form class="p-3 text-center" [formGroup]="createForm">
+      <div class="form-group">
+        <label>Заголовок</label>
+        <input type="text"
+               class="form-control"
+               id="title-create-training-form-field"
+               required
+               formControlName="title"
+               name="title-field" />
+        <div *ngIf="createForm.get('title')?.hasError('required') && submittedClick"
+             class="alert alert-danger mt-2">
+          Поле обязательно для заполнения
+        </div>
+      </div>
+      <div class="form-group mt-2">
+        <label>Описание</label>
+        <input type="text"
+               class="form-control"
+               id="description-create-training-form-field"
+               required
+               formControlName="description"
+               name="description-field" />
+        <div *ngIf="createForm.get('description')?.hasError('required') && submittedClick"
+             class="alert alert-danger mt-2">
+          Поле обязательно для заполнения
+        </div>
+      </div>
+      <div class="form-group mt-2" formArrayName="weeks">
+        <div class="col-12 d-inline-flex mx-auto">
+          <div class="col-8">
+            <label for="weeks-create-training-form-field">Неделя</label>
+          </div>
+        </div>
+        <div *ngFor="let week of weeks.controls; let i=index">
+          <div [formGroupName]="i">
+            <div class="col-12 d-inline-flex mx-auto mt-2">
+              <div class="col-2 mx-2">
+                <input type="number"
+                       class="form-control"
+                       id="weeks-create-training-form-field"
+                       required
+                       formControlName="weekNumber"
+                       name="weeks-field"
+                       min="0"
+                       readonly />
+              </div>
+              <button class="btn btn-outline-secondary" (click)="openDays(addDays)">+</button>
+              <button (click)="removeWeek(i)">Х</button>
+              <ng-template #addDays let-modal>
+                <div class="modal-header">
+                  <h3 class="modal-title" id="modal-create-title" style="text-align:center">Добавить дни</h3>
+                  <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+                </div>
+                <div class="modal-body" formArrayName="events">
+                  <div *ngFor="let event of getEventsControls(i); let j=index">
+                    <div [formGroupName]="j">
+                      <div class="border border-rounded p-3 mt-2">
+                        <div class="text-center">
+                          <label>День {{ j + 1 }}</label>
+                        </div>
+                        <div class="form-group">
+                          <label for="title-create-training-form-field">Описание</label>
+                          <input type="text"
+                                 class="form-control"
+                                 id="title-create-training-form-field"
+                                 required
+                                 formControlName="title"
+                                 name="title-field" />
+                        </div>
+                        <div class="form-group">
+                          <label>Описание</label>
+                          <input type="text"
+                                 class="form-control"
+                                 id="description-create-training-form-field"
+                                 required
+                                 formControlName="description"
+                                 name="description-field" />
+                        </div>
+                        <div class="form-group">
+                          <label>Начало</label>
+                          <input type="datetime-local"
+                                 class="form-control"
+                                 id="start-time-create-training-form-field"
+                                 required
+                                 formControlName="startTime"
+                                 name="start-time-field" />
+                        </div>
+                        <div class="form-group mt-2" formArrayName="exercises">
+                          <div class="col-12 d-inline-flex mx-auto">
+                            <div class="col-8">
+                              <label for="title-exercise-create-training-form-field">Упражнение</label>
+                            </div>
+                            <div class="col-1 mx-2">
+                              <label for="quantity-approaches-create-training-form-field">Подходы</label>
+                            </div>
+                            <div class="col-1">
+                              <label for="quantity-repetions-create-training-form-field">Повт-ия</label>
+                            </div>
+                            <div class="mx-4">
+                              <label for="weight-create-training-form-field">Вес</label>
+                            </div>
+                          </div>
+                          <div *ngFor="let exercise of getExercisesControls(i,j); let k=index">
+                            <div [formGroupName]="k">
+                              <div class="col-12 d-inline-flex mx-auto mt-2">
+                                <div class="col-8">
+                                  <input type="text"
+                                         class="form-control"
+                                         id="title-exercise-create-training-form-field"
+                                         required
+                                         formControlName="title"
+                                         name="title-exercise-field" />
+                                </div>
+                                <div class="col-1 mx-2">
+                                  <input type="number"
+                                         class="form-control"
+                                         id="quantity-approaches-create-training-form-field"
+                                         required
+                                         formControlName="quantityApproaches"
+                                         name="quantity-approaches-field"
+                                         min="0" />
+                                </div>
+                                <div class="col-1">
+                                  <input type="number"
+                                         class="form-control"
+                                         id="quantity-repetions-create-training-form-field"
+                                         required
+                                         formControlName="quantityRepetions"
+                                         name="quantity-repetions-field"
+                                         min="0" />
+                                </div>
+                                <div class="col-1 mx-2">
+                                  <input type="number"
+                                         class="form-control"
+                                         id="weight-create-training-form-field"
+                                         required
+                                         formControlName="weight"
+                                         name="weight-field"
+                                         step="0.1"
+                                         min="0" />
+                                </div>
+                                <div class="col-1">
+                                  <button (click)="removeExercisesField(i,j,k)">X</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-12">
+                            <button class="w-100 btn btn-outline-secondary mt-2 mx-auto" (click)="addExecise(i,j)">Добавить упражнение</button>
+                          </div>
+                        </div>
+                        <div class="col-12">
+                          <button class="w-100 btn btn-outline-secondary mt-2 mx-auto" (click)="removeEvent(i,j)">Удалить день</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <button *ngIf="getEventsControls(i).length < 7" class="btn btn-outline-secondary mt-2" (click)="addEvent(i)">+</button>
+                </div>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <button class="w-100 btn btn-outline-secondary mt-2 mx-auto" (click)="addWeeks()">Добавить Неделю</button>
+        </div>
+      </div>
+      <div class="modal-footer mt-3">
+        <button type="submit" class="w-100 btn btn-outline-secondary mt-3" (click)="create(); submittedClick=true">Добавить</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+

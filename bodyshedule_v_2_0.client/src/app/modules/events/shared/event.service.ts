@@ -22,6 +22,7 @@ export class EventService {
     })
   }
 
+  //get all user events by id
   getEvents(): Observable<any[]> {
     return this.httpClient.get<any[]>(this.baseUrl + `/Event/GetEvents/${this.userId}`)
       .pipe(
@@ -34,6 +35,7 @@ export class EventService {
       );
   }
 
+  //getting event by id
   getEvent(id: number): Observable<any> {
     return this.httpClient.get<any>(this.baseUrl + `/Event/GetEvent/${id}`)
       .pipe(
@@ -46,6 +48,7 @@ export class EventService {
       );
   }
 
+  //editing data of event
   editEvent(model: any) {
     return this.httpClient.put<any>(this.baseUrl + "/Event/EditEvent", model).
       pipe(
@@ -58,6 +61,7 @@ export class EventService {
       );
   }
 
+  //adding new event
   addEvent(model: any) {
     return this.httpClient.post<any>(this.baseUrl + "/Event/AddEvent", model)
       .pipe(
@@ -70,6 +74,7 @@ export class EventService {
       );
   }
 
+  //delete event by id
   deleteEvent(id: number) {
     return this.httpClient.delete(this.baseUrl + `/Event/DeleteEvent/${id}`)
       .pipe(

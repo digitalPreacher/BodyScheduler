@@ -13,9 +13,6 @@
       <th>
         Начало
       </th>
-      <th>
-        Завершение
-      </th>
       <th></th>
       <th></th>
       <th></th>
@@ -25,8 +22,7 @@
     <tr>
       <td> {{ event.title }} </td>
       <td> {{ event.description }} </td>
-      <td> {{ event.start | date : "M/d/yy HH:mm"}} </td>
-      <td> {{ event.end | date : "M/d/yy HH:mm" }} </td>
+      <td> {{ event.start | date : "M/d/yy"}} </td>
       <td><app-edit [eventId]="event.id"></app-edit></td>
       <td><app-delete [eventId]="event.id"></app-delete></td>
       <td><app-details [eventId]="event.id"></app-details></td>

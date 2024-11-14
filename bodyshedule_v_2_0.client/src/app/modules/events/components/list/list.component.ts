@@ -22,6 +22,7 @@ export class ListComponent implements OnInit {
     })
   }
 
+  //getting data of events
   loadData() {
     this.eventService.getEvents().subscribe({
       next: events => {
