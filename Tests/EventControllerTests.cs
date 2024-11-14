@@ -142,9 +142,9 @@ namespace Tests
         public async Task GetEventOkResult()
         {
             //arrange
-            GetEventDTO[] getEvent = {
+            List<GetEventDTO> getEvent = new List<GetEventDTO>{
                 new GetEventDTO {
-                    Id = "1", Title = "test1",
+                    Id = 1, Title = "test1",
                     Description = "test",
                     StartTime = DateTimeOffset.Parse("2024-10-15T21:33:29.9291418+03:00"),
                     Exercises = [new ExerciseDTO
@@ -165,7 +165,7 @@ namespace Tests
             Assert.IsType<OkObjectResult>(result);
             var objectResult = result as OkObjectResult;
             Assert.NotNull(objectResult);
-            var actualEvent = objectResult.Value as GetEventDTO[];
+            var actualEvent = objectResult.Value as List<GetEventDTO>;
             Assert.NotNull(actualEvent);
             Assert.Equal(getEvent, actualEvent);
         }
