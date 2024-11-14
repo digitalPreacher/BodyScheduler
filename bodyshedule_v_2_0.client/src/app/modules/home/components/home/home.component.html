@@ -1,0 +1,10 @@
+<div class="d-flex justify-content-start mb-2">
+  <app-create></app-create>
+  <app-create-training-program></app-create-training-program>
+</div>
+<full-calendar [options]="calendarOptions">
+  <ng-template #eventContent let-arg>
+    <b>{{arg.timeText}}</b>
+    <i>{{arg.event.title}}</i>
+  </ng-template>
+</full-calendar>

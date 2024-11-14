@@ -10,7 +10,7 @@ namespace BodyShedule_v_2_0.Server.Models
         public string Title { get; set; }
         public int QuantityApproaches { get; set; }
         public int QuantityRepetions { get; set; }
-        [ForeignKey("Event")]
+        public float Weight { get; set; }
         public int EventId { get; internal set; }
         public DateTime CreateAt { get; set; } = DateTime.Now.ToUniversalTime();
         public virtual Event Event { get; set; }

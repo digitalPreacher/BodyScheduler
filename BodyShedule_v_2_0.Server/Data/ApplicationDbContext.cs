@@ -24,14 +24,14 @@ namespace BodyShedule_v_2_0.Server.Data
                 var admin = new IdentityRole<int>()
                 {
                     Id = 1,
-                    Name = "admin",
+                    Name = "Admin",
                     NormalizedName = "ADMIN"
                 };
 
                 var user = new IdentityRole<int>()
                 {
                     Id = 2,
-                    Name = "user",
+                    Name = "User",
                     NormalizedName = "USER"
                 };
 
@@ -62,6 +62,8 @@ namespace BodyShedule_v_2_0.Server.Data
 
         public DbSet<Event> Events { get; set; }
         public DbSet<Exercise> Exercises { get; set; }
+        public DbSet<TrainingProgram> TrainingProgramSet { get; set; }
+        public DbSet<WeeksTraining> WeeksTrainingSet { get; set; }  
 
     }
 }

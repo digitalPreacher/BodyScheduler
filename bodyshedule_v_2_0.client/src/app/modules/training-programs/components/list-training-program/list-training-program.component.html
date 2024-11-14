@@ -1,0 +1,27 @@
+<div class="d-flex justify-content-start mb-2">
+  <app-create-training-program></app-create-training-program>
+</div>
+<table class="table">
+  <thead>
+    <tr>
+      <th>
+        Название
+      </th>
+      <th>
+        Описание
+      </th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody *ngFor="let program of trainingPrograms">
+    <tr>
+      <td> {{ program.title }} </td>
+      <td> {{ program.description }} </td>
+      <td><app-details-training-program [programId]="program.id"></app-details-training-program></td>
+      <td><app-delete-training-program [programId]="program.id"></app-delete-training-program></td>
+      <td><app-edit-training-program [programId]="program.id"></app-edit-training-program></td>
+    </tr>
+  </tbody>
+</table>

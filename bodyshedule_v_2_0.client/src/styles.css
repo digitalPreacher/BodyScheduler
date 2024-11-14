@@ -1,1 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+  --fc-border-color: #b5b5b5  ;
+  --fc-daygrid-event-dot-width: 5px;
+}
+
+
+.fc-daygrid-day-number{
+  color: #323232;
+}
+
+
+.fc-col-header-cell-cushion {
+  color: #323232;
+}
+
+.fc a {
+  text-decoration-line: none;
+}

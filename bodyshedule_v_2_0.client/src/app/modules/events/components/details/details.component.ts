@@ -1,6 +1,6 @@
 import { Component, Input, TemplateRef, inject } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { EventService } from '../../shared/event.service';
 
@@ -21,35 +21,35 @@ export class DetailsComponent {
       title: [''],
       description: [''],
       startTime: [''],
-      endTime: [''],
       exercises: this.formBuilder.array([])
     });
   }
 
+  //getting data of event and pushing it to form
   getEvent() {
     this.eventService.getEvent(this.eventId).subscribe({
       next: result => {
         const eventData = result[0];
         const currStartTime = this.datePipe.transform(eventData.startTime, 'yyyy-MM-ddTHH:mm');
-        const currEndTime = this.datePipe.transform(eventData.endTime, 'yyyy-MM-ddTHH:mm');
         this.detailsForm.patchValue({
           id: eventData.id,
           title: eventData.title,
           description: eventData.description,
-          startTime: currStartTime,
-          endTime: currEndTime,
+          startTime: currStartTime
         });
 
         const exercises = this.detailsForm.get('exercises') as FormArray;
         exercises.clear();
 
-        eventData.exercises.forEach((exercise: { id: number; title: string; quantityApproaches: number; quantityRepetions: number; }) =>
+        //pushing each exercise to form
+        eventData.exercises.forEach((exercise: { id: number; title: string; quantityApproaches: number; quantityRepetions: number; weight: number }) =>
         {
           exercises.push(this.formBuilder.group({
             id: [exercise.id],
             title: [exercise.title],
             quantityApproaches: [exercise.quantityApproaches],
-            quantityRepetions: [exercise.quantityRepetions]
+            quantityRepetions: [exercise.quantityRepetions],
+            weight: [exercise.weight]
           }));
         })
 
@@ -60,13 +60,19 @@ export class DetailsComponent {
     });
   }
 
+  //exercises FormArray getter
   get getExercise() {
     return this.detailsForm.get('exercises') as FormArray;
   }
 
+  //open modal form
   open(content: TemplateRef<any>) {
+    const options: NgbModalOptions = {
+      size: 'lg',
+      ariaLabelledBy: 'modal-basic-title'
+    };
     this.getEvent();
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+    this.modalService.open(content, options);
   }
 
 }

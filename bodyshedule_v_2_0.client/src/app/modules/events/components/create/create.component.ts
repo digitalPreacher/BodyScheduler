@@ -2,7 +2,7 @@ import { Component, Output, inject, TemplateRef, OnInit } from '@angular/core';
 import { Event } from '../../shared/event.model';
 import { EventService } from '../../shared/event.service';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
-import { ModalDismissReasons, NgbDatepickerModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalDismissReasons, NgbDatepickerModule, NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { formatDate } from "@angular/common";
 
 import { AuthorizationService } from '../../../authorization/shared/authorization.service';
@@ -35,7 +35,6 @@ export class CreateComponent implements OnInit {
       title: ['', Validators.required],
       description: ['', Validators.required],
       startTime: ['', Validators.required],
-      endTime: ['', Validators.required],
       exercises: this.formBuilder.array([this.createdItem()])
     });
   }
@@ -48,20 +47,18 @@ export class CreateComponent implements OnInit {
           title: ['', Validators.required],
           description: ['', Validators.required],
           startTime: ['', Validators.required],
-          endTime: ['', Validators.required],
           exercises: this.formBuilder.array([this.createdItem()])
         });
       }
     })
   }
 
+  //send data to backend 
   create() {
     if (this.createForm.valid) {
       const currStartTime = this.datePipe.transform(this.createForm.get('startTime')?.value, 'yyyy-MM-ddTHH:mm:ss.ssS', 'UTC') + 'Z';
-      const currEndTime = this.datePipe.transform(this.createForm.get('endTime')?.value, 'yyyy-MM-ddTHH:mm:ss.ssS', 'UTC') + 'Z';
       this.createForm.patchValue({
         startTime: currStartTime,
-        endTime: currEndTime
       });
       this.eventService.addEvent(this.createForm.value).subscribe({
         next: result => {
@@ -77,31 +74,41 @@ export class CreateComponent implements OnInit {
     }
   }
 
+  //add additional exercise fields to form
   createdItem(): FormGroup {
     return this.formBuilder.group({
       title: ['', Validators.required],
       quantityApproaches: [0, Validators.required],
-      quantityRepetions: [0, Validators.required]
+      quantityRepetions: [0, Validators.required],
+      weight: [0, Validators.required]
     })
   }
 
+  //exercises getter 
   get fields() {
     return this.createForm.get('exercises') as FormArray;
   }
 
+  //adding additional fields of exercises to events form
   addField() {
     const formGroup = this.createdItem();
     const exercises = this.createForm.get('exercises') as FormArray;
     exercises.push(formGroup);
   }
 
+  //remove additional fields of exercises to events form
   removeField(id: number) {
     const exercises = this.createForm.get('exercises') as FormArray;
     exercises.removeAt(id);
     console.log("remove item with id: " + id);
   }
 
+  //open modal form
   open(content: TemplateRef<any>) {
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+    const options: NgbModalOptions = {
+      size: 'lg',
+      ariaLabelledBy: 'modal-basic-title'
+    };
+    this.modalService.open(content, options);
   }
 }

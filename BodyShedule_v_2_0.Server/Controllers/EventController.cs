@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace BodyShedule_v_2_0.Server.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class EventController : ControllerBase
