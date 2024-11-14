@@ -47,6 +47,7 @@ export class HomeComponent implements OnInit {
     })
   }
 
+  //receiving data of events and display it in fullcalendar
   loadData() {
     this.eventService.getEvents().subscribe({
       next: events => {

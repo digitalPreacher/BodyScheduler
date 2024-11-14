@@ -4,16 +4,10 @@ namespace BodyShedule_v_2_0.Server.DataTransferObjects
 {
     public class GetEventDTO
     {
-        [Required]
-        public string Id { get; set; }
-        [Required]
+        public int Id { get; set; }
         public string Title { get; set; } = string.Empty;
-        [Required]
         public string Description { get; set; } = string.Empty;
-
-        [Required]
         public DateTimeOffset StartTime { get; set; }
-        [Required]
-        public ExerciseDTO[] Exercises { get; set; }
+        public List<ExerciseDTO> Exercises { get; set; }
     }
 }

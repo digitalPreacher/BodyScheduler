@@ -136,11 +136,11 @@ namespace BodyShedule_v_2_0.Server.Repository
             return false;
         }
 
-        public async Task<GetEventDTO[]> GetEventAsync(int id)
+        public async Task<List<GetEventDTO>> GetEventAsync(int id)
         {
             var getEvent = _db.Events.Where(x => x.Id == id).Select(x => new GetEventDTO
             {
-                Id = x.Id.ToString(),
+                Id = x.Id,
                 Title = x.Title,
                 Description = x.Description,
                 StartTime = x.StartTime,
@@ -152,11 +152,11 @@ namespace BodyShedule_v_2_0.Server.Repository
                     QuantityRepetions = x.QuantityRepetions,
                     Weight = x.Weight
                 })
-                .ToArray()
+                .ToList()
             });
             
 
-            return getEvent.ToArray();
+            return getEvent.ToList();
         }
 
         public async Task<bool> DeleteEventAsync(int id)

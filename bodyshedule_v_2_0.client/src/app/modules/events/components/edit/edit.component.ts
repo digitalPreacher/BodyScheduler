@@ -40,6 +40,7 @@ export class EditComponent {
     });
   }
 
+  //send data to backend
   saveEvent() {
     if (this.createForm.valid) {
       const currStartTime = this.datePipe.transform(this.createForm.get('startTime')?.value, 'yyyy-MM-ddTHH:mm:ss.ssS', 'UTC') + 'Z';
@@ -59,6 +60,7 @@ export class EditComponent {
     }
   }
 
+  //getting data of event and pushing it to form
   getEvent() {
     this.eventService.getEvent(this.eventId).subscribe({
       next: result => {
@@ -90,16 +92,20 @@ export class EditComponent {
     });
   }
 
+  //exercise FormArray getter
   get getExercise() {
     return this.createForm.get('exercises') as FormArray;
   }
 
+
+  //add additional exercise fields to form
   addField() {
     const formGroup = this.createdItem();
     const exercises = this.createForm.get('exercises') as FormArray;
     exercises.push(formGroup);
   }
 
+  //return exercise FormGroup
   createdItem(): FormGroup {
     return this.formBuilder.group({
       title: ['', Validators.required],
@@ -109,12 +115,14 @@ export class EditComponent {
     })
   }
 
+  //remove exercise fields to form
   removeField(id: number) {
     const exercises = this.createForm.get('exercises') as FormArray;
     exercises.removeAt(id);
     console.log("remove item with id: " + id);
   }
 
+  //open modal form
   open(content: TemplateRef<any>) {
     const options: NgbModalOptions = {
       size: 'lg',

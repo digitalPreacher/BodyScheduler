@@ -25,6 +25,7 @@ export class DetailsComponent {
     });
   }
 
+  //getting data of event and pushing it to form
   getEvent() {
     this.eventService.getEvent(this.eventId).subscribe({
       next: result => {
@@ -40,6 +41,7 @@ export class DetailsComponent {
         const exercises = this.detailsForm.get('exercises') as FormArray;
         exercises.clear();
 
+        //pushing each exercise to form
         eventData.exercises.forEach((exercise: { id: number; title: string; quantityApproaches: number; quantityRepetions: number; weight: number }) =>
         {
           exercises.push(this.formBuilder.group({
@@ -58,10 +60,12 @@ export class DetailsComponent {
     });
   }
 
+  //exercises FormArray getter
   get getExercise() {
     return this.detailsForm.get('exercises') as FormArray;
   }
 
+  //open modal form
   open(content: TemplateRef<any>) {
     const options: NgbModalOptions = {
       size: 'lg',

@@ -53,6 +53,7 @@ export class CreateComponent implements OnInit {
     })
   }
 
+  //send data to backend 
   create() {
     if (this.createForm.valid) {
       const currStartTime = this.datePipe.transform(this.createForm.get('startTime')?.value, 'yyyy-MM-ddTHH:mm:ss.ssS', 'UTC') + 'Z';
@@ -73,6 +74,7 @@ export class CreateComponent implements OnInit {
     }
   }
 
+  //add additional exercise fields to form
   createdItem(): FormGroup {
     return this.formBuilder.group({
       title: ['', Validators.required],
@@ -82,22 +84,26 @@ export class CreateComponent implements OnInit {
     })
   }
 
+  //exercises getter 
   get fields() {
     return this.createForm.get('exercises') as FormArray;
   }
 
+  //adding additional fields of exercises to events form
   addField() {
     const formGroup = this.createdItem();
     const exercises = this.createForm.get('exercises') as FormArray;
     exercises.push(formGroup);
   }
 
+  //remove additional fields of exercises to events form
   removeField(id: number) {
     const exercises = this.createForm.get('exercises') as FormArray;
     exercises.removeAt(id);
     console.log("remove item with id: " + id);
   }
 
+  //open modal form
   open(content: TemplateRef<any>) {
     const options: NgbModalOptions = {
       size: 'lg',

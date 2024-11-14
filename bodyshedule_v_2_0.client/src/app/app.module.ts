@@ -20,6 +20,10 @@ import { DeleteComponent } from './modules/events/components/delete/delete.compo
 import { DetailsComponent } from './modules/events/components/details/details.component';
 import { NavbarComponent } from './modules/navbar/components/navbar/navbar.component';
 import { CreateTrainingProgramComponent } from './modules/training-programs/components/create-training-program/create-training-program.component';
+import { ListTrainingProgramComponent } from './modules/training-programs/components/list-training-program/list-training-program.component';
+import { DetailsTrainingProgramComponent } from './modules/training-programs/components/details-training-program/details-training-program.component';
+import { DeleteTrainingProgramComponent } from './modules/training-programs/components/delete-training-program/delete-training-program.component';
+import { EditTrainingProgramComponent } from './modules/training-programs/components/edit-training-program/edit-training-program.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +38,10 @@ import { CreateTrainingProgramComponent } from './modules/training-programs/comp
     DetailsComponent,
     NavbarComponent,
     CreateTrainingProgramComponent,
+    ListTrainingProgramComponent,
+    DetailsTrainingProgramComponent,
+    DeleteTrainingProgramComponent,
+    EditTrainingProgramComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule,
