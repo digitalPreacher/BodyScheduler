@@ -207,7 +207,7 @@ export class EditTrainingProgramComponent implements OnInit {
   //opening modal window of training program form 
   openMain(content: TemplateRef<any>) {
     const options: NgbModalOptions = {
-      size: 'lg',
+      size: 'md',
       ariaLabelledBy: 'modal-basic-title'
     };
     this.modalService.open(content, options);
