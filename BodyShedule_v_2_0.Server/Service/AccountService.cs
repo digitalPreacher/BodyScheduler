@@ -30,5 +30,10 @@ namespace BodyShedule_v_2_0.Server.Service
         {
             return await _repository.GetUserIdAsync(userLogin);
         }
+
+        public async Task<IdentityResult> ChangeUserPasswordAsync(ChangeUserPasswordDTO changePasswordInfo)
+        {
+            return await _repository.ChangeUserPasswordAsync(changePasswordInfo);
+        }
     }
 }

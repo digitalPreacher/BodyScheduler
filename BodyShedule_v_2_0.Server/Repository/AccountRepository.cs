@@ -59,5 +59,14 @@ namespace BodyShedule_v_2_0.Server.Repository
 
             return user.Id;
         }
+
+        public async Task<IdentityResult> ChangeUserPasswordAsync(ChangeUserPasswordDTO changePasswordInfo)
+        {
+            var user = await _userManager.FindByNameAsync(changePasswordInfo.UserLogin) ?? throw new InvalidOperationException($"User {changePasswordInfo.UserLogin} not found");
+           
+            var result = await _userManager.ChangePasswordAsync(user, changePasswordInfo.OldPassword, changePasswordInfo.NewPassword);
+
+            return result;
+        }
     }
 }
