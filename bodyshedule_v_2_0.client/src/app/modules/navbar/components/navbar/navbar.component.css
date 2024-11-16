@@ -2,3 +2,7 @@
   background: transparent;
   backdrop-filter: blur(5px);
 }
+
+#drop-down{
+    right: 40px;
+}

@@ -9,5 +9,6 @@ namespace BodyShedule_v_2_0.Server.Service
         public Task<SignInResult> SignInAsync(UserLoginDTO userCredentials);
         public Task<IList<string>> GetUserRolesAsync(UserLoginDTO userCredentials);
         public Task<int> GetUserIdAsync(string userLogin);
+        public Task<IdentityResult> ChangeUserPasswordAsync(ChangeUserPasswordDTO changePasswordInfo);
     }
 }

@@ -2,6 +2,7 @@
 using BodyShedule_v_2_0.Server.Helpers;
 using BodyShedule_v_2_0.Server.Service;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BodyShedule_v_2_0.Server.Controllers
@@ -74,6 +75,30 @@ namespace BodyShedule_v_2_0.Server.Controllers
                 _logger.LogInformation("Error: {Message}", ex.Message);
 
                 return BadRequest(new InvalidOperationException("Произошла неизвестная ошибка"));
+            }
+        }
+
+        [HttpPost]
+        [Route("ChangePassword")]
+        public async Task<ActionResult> ChangeUserPasswordAsync([FromBody]ChangeUserPasswordDTO changePasswordInfo)
+        {
+            try
+            {
+                var result = await _accountService.ChangeUserPasswordAsync(changePasswordInfo);
+                if(result.Succeeded)
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return Unauthorized( new { Message = "Введен некорректный пароль пользователя"});
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation(ex.Message);
+                return BadRequest(ex.Message);  
             }
         }
     }
