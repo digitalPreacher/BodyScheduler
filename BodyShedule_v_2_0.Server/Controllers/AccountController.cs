@@ -78,6 +78,7 @@ namespace BodyShedule_v_2_0.Server.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         [Route("ChangePassword")]
         public async Task<ActionResult> ChangeUserPasswordAsync([FromBody]ChangeUserPasswordDTO changePasswordInfo)
