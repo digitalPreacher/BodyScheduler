@@ -4,6 +4,7 @@ import { User } from './user.model';
 import { BehaviorSubject, catchError, map, Subject, throwError } from 'rxjs';
 import { UserData } from './user-data.model';
 import { Router } from '@angular/router';
+import { ChangeUserPasswordData } from '../shared/change-user-password-data.model';
 
 
 @Injectable({
@@ -52,6 +53,42 @@ export class AuthorizationService {
 
       this.userData$.next(userDetails);
     }
+  }
+
+  changeUserPassword(changeUserPasswordData: ChangeUserPasswordData) {
+    return this.http.post(this.baseUrl + "/Account/ChangePassword", changeUserPasswordData)
+      .pipe(
+        result => {
+          return result;
+        },
+        catchError(error => {
+          return throwError(error.error.message || ["Произошла неизвестная ошибка"])
+        })
+      );
+  }
+
+  forgotUserPassword(email: any) {
+    return this.http.post<any>(this.baseUrl + "/Account/ForgotPassword", email)
+      .pipe(
+        result => {
+          return result;
+        },
+        catchError(error => {
+          return throwError(error.error.message || ["Произошла неизвестная ошибка"])
+        })
+      );
+  }
+
+  resetUserPassword(resetPasswordData: any) {
+    return this.http.post<any>(this.baseUrl + "/Account/ResetPassword", resetPasswordData)
+      .pipe(
+        result => {
+          return result;
+        },
+        catchError(error => {
+          return throwError(error.error.message || ["Произошла неизвестная ошибка"])
+        })
+      );
   }
 
   logout() {

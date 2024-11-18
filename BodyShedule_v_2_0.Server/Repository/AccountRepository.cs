@@ -1,7 +1,14 @@
 ﻿using BodyShedule_v_2_0.Server.Data;
 using BodyShedule_v_2_0.Server.DataTransferObjects;
+using BodyShedule_v_2_0.Server.Helpers;
 using BodyShedule_v_2_0.Server.Models;
+using BodyShedule_v_2_0.Server.Utilities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
+using System;
+using System.Diagnostics;
+using System.Text;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BodyShedule_v_2_0.Server.Repository
 {
@@ -58,6 +65,74 @@ namespace BodyShedule_v_2_0.Server.Repository
             var user = await _userManager.FindByNameAsync(userLogin) ?? throw new InvalidOperationException($"User {userLogin} not found");  
 
             return user.Id;
+        }
+
+        public async Task<IdentityResult> ChangeUserPasswordAsync(ChangeUserPasswordDTO changePasswordInfo)
+        {
+            var user = await _userManager.FindByNameAsync(changePasswordInfo.UserLogin) ?? throw new InvalidOperationException($"User {changePasswordInfo.UserLogin} not found");
+           
+            var result = await _userManager.ChangePasswordAsync(user, changePasswordInfo.OldPassword, changePasswordInfo.NewPassword);
+
+            return result;
+        }
+
+        public async Task<bool> ForgotUserPasswordAsync(string email)
+        {
+            try
+            {
+
+                var user = await _userManager.FindByEmailAsync(email);
+                if(user != null)
+                {
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    var domainName = Environment.GetEnvironmentVariable("DOMAIN_NAME");
+                    var link = AbsoluteUrlGenerateHelper.GenerateAbsoluteUrl("reset-password", "account", token, domainName, email);
+
+                    EmailSender emailSender = new EmailSender();
+                    var result = emailSender.SendEmailPasswordReset(email, link);
+                    if (result)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return false;
+            }
+        }
+
+        public async Task<bool> ResetUserPasswordAsync(ResetUserPasswordDTO resetPasswordInfo)
+        {
+            var user = await _userManager.FindByEmailAsync(resetPasswordInfo.Email);
+            if(user != null)
+            {
+                var result = await _userManager.ResetPasswordAsync(user, resetPasswordInfo.Token, resetPasswordInfo.Password);
+                if (result.Succeeded)
+                {
+                    return true;
+                }
+                else
+                {
+                    foreach(var error in result.Errors)
+                    {
+                        Debug.WriteLine(error.Description);
+                    }
+                    return false;
+                }
+            }
+
+            return false;
         }
     }
 }

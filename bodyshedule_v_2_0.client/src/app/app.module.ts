@@ -24,6 +24,9 @@ import { ListTrainingProgramComponent } from './modules/training-programs/compon
 import { DetailsTrainingProgramComponent } from './modules/training-programs/components/details-training-program/details-training-program.component';
 import { DeleteTrainingProgramComponent } from './modules/training-programs/components/delete-training-program/delete-training-program.component';
 import { EditTrainingProgramComponent } from './modules/training-programs/components/edit-training-program/edit-training-program.component';
+import { ChangeUserPasswordComponent } from './modules/authorization/components/change-user-password/change-user-password.component';
+import { ResetUserPasswordComponent } from './modules/authorization/components/reset-user-password/reset-user-password.component';
+import { ForgotUserPasswordComponent } from './modules/authorization/components/forgot-user-password/forgot-user-password.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +45,9 @@ import { EditTrainingProgramComponent } from './modules/training-programs/compon
     DetailsTrainingProgramComponent,
     DeleteTrainingProgramComponent,
     EditTrainingProgramComponent,
+    ChangeUserPasswordComponent,
+    ResetUserPasswordComponent,
+    ForgotUserPasswordComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule,

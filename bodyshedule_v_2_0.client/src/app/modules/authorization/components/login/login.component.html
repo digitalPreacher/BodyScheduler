@@ -13,8 +13,7 @@
                  id="login"
                  required
                  formControlName="login"
-                 name="loginField"
-                 />
+                 name="loginField" />
           <div *ngIf="loginForm.get('login')?.hasError('required') && submittedClick"
                class="alert alert-danger mt-2">
             Поле обязательно для заполнения
@@ -27,8 +26,7 @@
                  id="password"
                  required
                  formControlName="password"
-                 name="passwordField"
-                 />
+                 name="passwordField" />
           <div *ngIf="loginForm.get('password')?.hasError('required') && submittedClick"
                class="alert alert-danger mt-2">
             Поле обязательно для заполнения
@@ -36,6 +34,9 @@
         </div>
         <button type="submit" class="w-100 btn btn-outline-secondary mt-3" (click)="submittedClick=true">Войти</button>
         <a routerLink="/registration">Регистрация</a>
+        <p>
+         <a routerLink="/account/forgot-password">Сбросить пароль</a>
+        </p>
       </form>
     </div>
   </div>

@@ -11,6 +11,17 @@
         <a class="nav-link" routerLink="/programs/list">Мои программы</a>
       </li>
     </ul>
-    <button class="btn btn-outline-secondary" (click)="logout()">Выйти</button>
+    <div ngbDropdown class="mx-5" id="drop-down">
+      <a class="btn" id="profile-dropdown"
+              ngbDropdownToggle>
+        {{ login }}
+      </a>
+      <div ngbDropdownMenu="profile-dropdown">
+        <a class="btn" routerLink="/account/change-user-password">Изменить пароль</a>
+        <button ngbDropdownItem (click)="logout()">Выйти</button>
+      </div>
+    </div>
   </div>
 </nav>
+
+
