@@ -4,6 +4,7 @@ using BodyShedule_v_2_0.Server.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace BodyShedule_v_2_0.Server.Controllers
 {
@@ -102,5 +103,57 @@ namespace BodyShedule_v_2_0.Server.Controllers
                 return BadRequest(ex.Message);  
             }
         }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("ForgotPassword")]
+        public async Task<IActionResult> ForgotUserPasswordAsync([FromBody]ForgotPasswordDTO forgotPasswordInfo)
+        {
+            try
+            {
+                var result = await _accountService.ForgotUserPasswordAsync(forgotPasswordInfo.Email);
+
+                if (result)
+                {
+                    return Ok();
+
+                }
+                else
+                {
+                    return BadRequest();
+                }
+                
+            }
+            catch(Exception ex)
+            {
+                _logger.LogInformation(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("ResetPassword")]
+        public async Task<IActionResult> ResetUserPasswordAsync([FromBody]ResetUserPasswordDTO resetPasswordInfo)
+        {
+            try
+            {
+                var result = await _accountService.ResetUserPasswordAsync(resetPasswordInfo);
+                if (result)
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
     }
+
 }

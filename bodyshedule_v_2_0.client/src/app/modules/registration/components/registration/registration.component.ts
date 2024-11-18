@@ -15,10 +15,10 @@ export class RegistrationComponent {
   registrationForm: FormGroup;
   confirmedPassword = '';
 
-  @Output() submittedClick: boolean = false;
-  @Output() getErrorMessage = false;
-  @Output() errorMessages: string[] = [];
-  @Output() confirmedPasswordResult: boolean = false;
+  submittedClick: boolean = false;
+  getErrorMessage = false;
+  errorMessages: string[] = [];
+  confirmedPasswordResult: boolean = false;
 
   emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;

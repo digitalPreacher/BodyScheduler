@@ -14,6 +14,8 @@ import { CreateTrainingProgramComponent } from './modules/training-programs/comp
 import { ListTrainingProgramComponent } from './modules/training-programs/components/list-training-program/list-training-program.component';
 import { DetailsTrainingProgramComponent } from './modules/training-programs/components/details-training-program/details-training-program.component';
 import { ChangeUserPasswordComponent } from './modules/authorization/components/change-user-password/change-user-password.component'
+import { ResetUserPasswordComponent } from './modules/authorization/components/reset-user-password/reset-user-password.component';
+import { ForgotUserPasswordComponent } from './modules/authorization/components/forgot-user-password/forgot-user-password.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthorizationUserGuard] },
@@ -28,6 +30,9 @@ const routes: Routes = [
   { path: 'programs/list', component: ListTrainingProgramComponent, canActivate: [AuthorizationUserGuard] },
   { path: 'programs/details', component: DetailsTrainingProgramComponent, canActivate: [AuthorizationUserGuard] },
   { path: 'account/change-user-password', component: ChangeUserPasswordComponent, canActivate: [AuthorizationUserGuard] },
+  { path: 'account/reset-password', component: ResetUserPasswordComponent },
+  { path: 'account/forgot-password', component: ForgotUserPasswordComponent },
+
   
 ];
 
