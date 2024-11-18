@@ -67,6 +67,30 @@ export class AuthorizationService {
       );
   }
 
+  forgotUserPassword(email: any) {
+    return this.http.post<any>(this.baseUrl + "/Account/ForgotPassword", email)
+      .pipe(
+        result => {
+          return result;
+        },
+        catchError(error => {
+          return throwError(error.error.message || ["Произошла неизвестная ошибка"])
+        })
+      );
+  }
+
+  resetUserPassword(resetPasswordData: any) {
+    return this.http.post<any>(this.baseUrl + "/Account/ResetPassword", resetPasswordData)
+      .pipe(
+        result => {
+          return result;
+        },
+        catchError(error => {
+          return throwError(error.error.message || ["Произошла неизвестная ошибка"])
+        })
+      );
+  }
+
   logout() {
     localStorage.removeItem('authToken');
     window.location.href = '/login';

@@ -47,6 +47,7 @@ builder.Services.AddCors(options =>
     .AllowAnyHeader());
 });
 
+
 builder.Services.AddAuthentication(x =>
 {
     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

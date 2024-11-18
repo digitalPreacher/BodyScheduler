@@ -40,7 +40,6 @@ export class ChangeUserPasswordComponent {
           next: result => {
             this.model = new ChangeUserPasswordData();
             this.changeUserPasswordForm.reset();
-            console.log(result);
             this.confirmedPasswordResult = false;
             this.submittedClick = false;
             this.confirmedPassword = '';
