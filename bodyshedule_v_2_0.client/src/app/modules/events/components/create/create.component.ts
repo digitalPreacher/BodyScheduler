@@ -62,10 +62,9 @@ export class CreateComponent implements OnInit {
       });
       this.eventService.addEvent(this.createForm.value).subscribe({
         next: result => {
-          this.submittedClick = false;
-          this.createForm.reset();
           this.modalService.dismissAll();
           this.eventService.eventChangeData$.next(true);
+          this.resetForm();
         },
         error: err => {
           console.log(err)
@@ -101,6 +100,24 @@ export class CreateComponent implements OnInit {
     const exercises = this.createForm.get('exercises') as FormArray;
     exercises.removeAt(id);
     console.log("remove item with id: " + id);
+  }
+
+  //return default form fields
+  setDefaultCreateForm() {
+    return this.formBuilder.group({
+      userId: [this.userId, Validators.required],
+      title: ['', Validators.required],
+      description: ['', Validators.required],
+      startTime: ['', Validators.required],
+      exercises: this.formBuilder.array([this.createdItem()])
+    })
+  }
+
+  //reset reactive form
+  resetForm() {
+    const defaultCreateForm = this.setDefaultCreateForm();
+    this.submittedClick = false;
+    this.createForm = defaultCreateForm;
   }
 
   //open modal form

@@ -19,7 +19,7 @@ export class CreateTrainingProgramComponent {
   userId: string = '';
   createForm: FormGroup;
 
-  @Output() submittedClick = false;
+  submittedClick = false;
 
   constructor(private programService: TrainingProgramService, private formBuilder: FormBuilder,
     private authService: AuthorizationService, private datePipe: DatePipe, private eventService: EventService)
@@ -34,6 +34,7 @@ export class CreateTrainingProgramComponent {
       description: ['', Validators.required],
       weeks: this.formBuilder.array([])
     })
+
   }
 
   //return FormGroup of weeks fiels for adding to create form
@@ -130,6 +131,16 @@ export class CreateTrainingProgramComponent {
     exercises.removeAt(exerciseIndex);
   }
 
+  //retrun default create form
+  setDefaultCreateForm() {
+    return this.formBuilder.group({
+      userId: [this.userId, Validators.required],
+      title: ['', Validators.required],
+      description: ['', Validators.required],
+      weeks: this.formBuilder.array([])
+    });
+  }
+
   //sending data to backend
   create() {
     if (this.createForm.valid) {
@@ -144,10 +155,10 @@ export class CreateTrainingProgramComponent {
       this.programService.addTrainingProgram(this.createForm.value).subscribe({
         next: result => {
           console.log(this.createForm.value);
-          this.createForm.reset();
           this.modalService.dismissAll();
           this.eventService.eventChangeData$.next(true);
           this.programService.programChangeData$.next(true);
+          this.resetForm();
         },
         error: err => {
           console.log(err)
@@ -159,10 +170,16 @@ export class CreateTrainingProgramComponent {
   //opening modal window of training program form 
   openMain(content: TemplateRef<any>) {
     const options: NgbModalOptions = {
-      size: 'lg',
+      size: 'xs',
       ariaLabelledBy: 'modal-basic-title'
     };
     this.modalService.open(content, options);
+  }
+
+  resetForm() {
+    const defaultCreateForm = this.setDefaultCreateForm();
+    this.submittedClick = false;
+    this.createForm = defaultCreateForm;
   }
 
   //opening modal window adding of training days 
