@@ -10,11 +10,12 @@ import { AuthorizationService } from '../../../authorization/shared/authorizatio
 import moment, { utc } from 'moment';
 import { DatePipe } from '@angular/common';
 import { ex } from '@fullcalendar/core/internal-common';
+import { startWith } from 'rxjs';
 
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
-  styles: '',
+  styleUrl: './create.component.css',
   providers: [DatePipe]
 })
 export class CreateComponent implements OnInit {
@@ -23,7 +24,10 @@ export class CreateComponent implements OnInit {
   modalService = inject(NgbModal);
   userId: string = '';
 
-  @Output() submittedClick = false;
+  listValue: string[] = [];
+  filterListValue: any[] = [];
+
+  submittedClick = false;
 
   constructor(private eventService: EventService, private formBuilder: FormBuilder,
     private authService: AuthorizationService, private datePipe: DatePipe) {
@@ -50,7 +54,17 @@ export class CreateComponent implements OnInit {
           exercises: this.formBuilder.array([this.createdItem()])
         });
       }
-    })
+    });
+
+    this.eventService.getExerciseTitles().subscribe(data => {
+      this.listValue = data;
+    });
+  }
+
+  //Enter value to input field for title of exercise
+  enterKeyUp(enterValue: string) {
+    this.filterListValue = this.listValue.filter(value =>
+      value.toLowerCase().includes(enterValue.toLowerCase()));
   }
 
   //send data to backend 

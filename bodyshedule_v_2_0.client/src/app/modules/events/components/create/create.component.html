@@ -64,11 +64,19 @@
                 <div class="col-12 d-inline-flex mx-auto mt-2">
                   <div class="col-8">
                     <input type="text"
+                           #insertTitleBar
                            class="form-control"
                            id="title-exercise-create-form-field"
                            required
+                           (keyup)="enterKeyUp(insertTitleBar.value)"
                            formControlName="title"
+                           list="titleOptions"
                            name="title-exercise-field" />
+                    <datalist id="titleOptions">
+                      <option *ngFor="let value of filterListValue">
+                        {{ value }}
+                      </option>
+                    </datalist>
                     <div *ngIf="fields.at(i).get('title')?.hasError('required') && submittedClick"
                          class="alert alert-danger mt-2">
                       Поле обязательно для заполнения
@@ -118,5 +126,6 @@
       </form>
   </div>
 </ng-template>
+
 
 <button class="btn btn-outline-secondary" (click)="open(content); resetForm()">+</button>

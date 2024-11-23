@@ -17,6 +17,8 @@ export class EditTrainingProgramComponent implements OnInit {
   editForm: FormGroup;
   userDataSubscribtion: any;
   userId = '';
+  listValue: string[] = ['start'];
+  filterListValue: any[] = [];
 
   @Input() programId!: number;
 
@@ -36,7 +38,18 @@ export class EditTrainingProgramComponent implements OnInit {
 
   ngOnInit() {
     this.getTrainingProgram();
+
+    this.eventService.getExerciseTitles().subscribe(data => {
+      this.listValue = data;
+    });
   }
+
+  //Enter value to input field for title of exercise
+  enterKeyUp(enterValue: string) {
+    this.filterListValue = this.listValue.filter(value =>
+      value.toLowerCase().includes(enterValue.toLowerCase()));
+  }
+
 
   //getting data of training program
   getTrainingProgram() {

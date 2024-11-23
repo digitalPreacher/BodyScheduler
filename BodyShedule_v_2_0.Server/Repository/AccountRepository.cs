@@ -4,11 +4,7 @@ using BodyShedule_v_2_0.Server.Helpers;
 using BodyShedule_v_2_0.Server.Models;
 using BodyShedule_v_2_0.Server.Utilities;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.WebUtilities;
-using System;
 using System.Diagnostics;
-using System.Text;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BodyShedule_v_2_0.Server.Repository
 {
