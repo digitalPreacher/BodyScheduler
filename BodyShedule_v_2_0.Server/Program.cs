@@ -78,6 +78,8 @@ builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<ITrainingProgramRepository, TrainingProgramRepository>();
 builder.Services.AddScoped<ITrainingProgramService, TrainingProgramService>();
+builder.Services.AddScoped<IExportExerciseTitlesRepository, ExportExerciseTitlesRepository>();
+builder.Services.AddScoped<IExportExerciseTitlesService, ExportExerciseTitlesService>();
 
 var app = builder.Build();
 

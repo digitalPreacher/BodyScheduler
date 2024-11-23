@@ -18,6 +18,8 @@ export class CreateTrainingProgramComponent {
   userDataSubscribtion: any;
   userId: string = '';
   createForm: FormGroup;
+  listValue: string[] = [];
+  filterListValue: any[] = [];
 
   submittedClick = false;
 
@@ -35,6 +37,16 @@ export class CreateTrainingProgramComponent {
       weeks: this.formBuilder.array([])
     })
 
+    this.eventService.getExerciseTitles().subscribe(data => {
+      this.listValue = data;
+    });
+
+  }
+
+  //Enter value to input field for title of exercise
+  enterKeyUp(enterValue: string) {
+    this.filterListValue = this.listValue.filter(value =>
+      value.toLowerCase().includes(enterValue.toLowerCase()));
   }
 
   //return FormGroup of weeks fiels for adding to create form
