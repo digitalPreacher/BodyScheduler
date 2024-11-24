@@ -5,6 +5,9 @@
   <thead>
     <tr>
       <th>
+        #
+      </th>
+      <th>
         Название
       </th>
       <th>
@@ -18,8 +21,9 @@
       <th></th>
     </tr>
   </thead>
-  <tbody *ngFor="let event of events">
+  <tbody *ngFor="let event of events | slice: (page - 1) * pageSize : page * pageSize; let i=index">
     <tr>
+      <td> {{ (page - 1) * pageSize + i + 1 }}</td>
       <td> {{ event.title }} </td>
       <td> {{ event.description }} </td>
       <td> {{ event.start | date : "M/d/yy"}} </td>
@@ -29,3 +33,6 @@
     </tr>
   </tbody>
 </table>
+
+<ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [maxSize]="5" [boundaryLinks]="true"
+                [pageSize]="pageSize" class="d-flex justify-content-center"></ngb-pagination>
