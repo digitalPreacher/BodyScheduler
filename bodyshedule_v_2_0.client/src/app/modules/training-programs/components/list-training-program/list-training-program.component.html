@@ -5,6 +5,9 @@
   <thead>
     <tr>
       <th>
+        #
+      </th>
+      <th>
         Название
       </th>
       <th>
@@ -15,8 +18,9 @@
       <th></th>
     </tr>
   </thead>
-  <tbody *ngFor="let program of trainingPrograms">
+  <tbody *ngFor="let program of trainingPrograms | slice: (page - 1) * pageSize : page * pageSize; let i=index">
     <tr>
+      <td> {{ (page - 1) * pageSize + i + 1 }}</td>
       <td> {{ program.title }} </td>
       <td> {{ program.description }} </td>
       <td><app-details-training-program [programId]="program.id"></app-details-training-program></td>
@@ -25,3 +29,6 @@
     </tr>
   </tbody>
 </table>
+
+<ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [maxSize]="5" [boundaryLinks]="true"
+                [pageSize]="pageSize" class="d-flex justify-content-center"></ngb-pagination>
