@@ -8,6 +8,9 @@ import { TrainingProgramService } from '../../shared/training-program.service';
 })
 export class ListTrainingProgramComponent implements OnInit {
   trainingPrograms: any[] = [];
+  collectionSize!: number;
+  page = 1;
+  pageSize = 10;
 
   constructor(private trainingProgramsService: TrainingProgramService) { }
 
@@ -25,6 +28,7 @@ export class ListTrainingProgramComponent implements OnInit {
     this.trainingProgramsService.getTrainingPrograms().subscribe({
       next: result => {
         this.trainingPrograms = result;
+        this.collectionSize = result.length;
       }
     });
   }

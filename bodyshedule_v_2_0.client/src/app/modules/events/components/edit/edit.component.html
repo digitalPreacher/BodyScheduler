@@ -69,8 +69,17 @@
                            class="form-control"
                            id="title-exercise-details-form-field"
                            required
+                           #insertTitleBar
+                           (keyup)="enterKeyUp(insertTitleBar.value)"
                            formControlName="title"
-                           name="title-exercise-field" />
+                           name="title-exercise-field"
+                           list="titleOptions"
+                           />
+                    <datalist id="titleOptions">
+                      <option *ngFor="let value of filterListValue">
+                        {{ value }}
+                      </option>
+                    </datalist>
                   </div>
                   <div class="col-1 mx-2">
                     <input type="number"

@@ -1,4 +1,4 @@
-import { Component, Input, Output, TemplateRef, inject } from '@angular/core';
+import { Component, Input, Output, TemplateRef, inject , OnInit} from '@angular/core';
 import { EventService } from '../../shared/event.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthorizationService } from '../../../authorization/shared/authorization.service';
@@ -12,15 +12,17 @@ import { Event } from '../../shared/event.model';
   styles: ``,
   providers: [DatePipe]
 })
-export class EditComponent {
+export class EditComponent implements OnInit {
   userDataSubscribtion: any;
   modalService = inject(NgbModal);
   userId: any;
   title: string = '';
   createForm: FormGroup;
+  listValue: string[] = [];
+  filterListValue: any[] = [];
  
 
-  @Output() submittedClick = false;
+  submittedClick = false;
 
   @Input() eventId!: number;
   
@@ -37,6 +39,12 @@ export class EditComponent {
       description: ['', Validators.required],
       startTime: ['', Validators.required],
       exercises: this.formBuilder.array([])
+    });
+  }
+
+  ngOnInit() {
+    this.eventService.getExerciseTitles().subscribe(data => {
+      this.listValue = data;
     });
   }
 
@@ -58,6 +66,12 @@ export class EditComponent {
         }
       });
     }
+  }
+
+  //Enter value to input field for title of exercise
+  enterKeyUp(enterValue: string) {
+    this.filterListValue = this.listValue.filter(value =>
+      value.toLowerCase().includes(enterValue.toLowerCase()));
   }
 
   //getting data of event and pushing it to form

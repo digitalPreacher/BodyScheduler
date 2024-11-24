@@ -87,4 +87,16 @@ export class EventService {
       );
   }
 
+  //get titles of exercise
+  getExerciseTitles() {
+    return this.httpClient.get<any[]>(this.baseUrl + `/ExerciseTitles/GetExerciseTitles`)
+    .pipe(
+        result => {
+          return result;
+        },
+        catchError(error => {
+          return throwError(error.error.message)
+        })
+      );
+  }
 }

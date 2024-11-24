@@ -10,6 +10,9 @@ import { Event } from '../../shared/event.model';
 })
 export class ListComponent implements OnInit {
   events: any[] = [];
+  collectionSize!: number;
+  page = 1;
+  pageSize = 10;
 
   constructor(private authService: AuthorizationService, private eventService: EventService) { }
 
@@ -27,8 +30,7 @@ export class ListComponent implements OnInit {
     this.eventService.getEvents().subscribe({
       next: events => {
         this.events = events;
-        console.log(this.events);
-        console.log(events);  
+        this.collectionSize = events.length;
       },
       error: err => {
         console.log(err);

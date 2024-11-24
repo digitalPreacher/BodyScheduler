@@ -10,11 +10,12 @@ import { AuthorizationService } from '../../../authorization/shared/authorizatio
 import moment, { utc } from 'moment';
 import { DatePipe } from '@angular/common';
 import { ex } from '@fullcalendar/core/internal-common';
+import { startWith } from 'rxjs';
 
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
-  styles: '',
+  styleUrl: './create.component.css',
   providers: [DatePipe]
 })
 export class CreateComponent implements OnInit {
@@ -23,7 +24,10 @@ export class CreateComponent implements OnInit {
   modalService = inject(NgbModal);
   userId: string = '';
 
-  @Output() submittedClick = false;
+  listValue: string[] = [];
+  filterListValue: any[] = [];
+
+  submittedClick = false;
 
   constructor(private eventService: EventService, private formBuilder: FormBuilder,
     private authService: AuthorizationService, private datePipe: DatePipe) {
@@ -50,7 +54,17 @@ export class CreateComponent implements OnInit {
           exercises: this.formBuilder.array([this.createdItem()])
         });
       }
-    })
+    });
+
+    this.eventService.getExerciseTitles().subscribe(data => {
+      this.listValue = data;
+    });
+  }
+
+  //Enter value to input field for title of exercise
+  enterKeyUp(enterValue: string) {
+    this.filterListValue = this.listValue.filter(value =>
+      value.toLowerCase().includes(enterValue.toLowerCase()));
   }
 
   //send data to backend 
@@ -62,10 +76,9 @@ export class CreateComponent implements OnInit {
       });
       this.eventService.addEvent(this.createForm.value).subscribe({
         next: result => {
-          this.submittedClick = false;
-          this.createForm.reset();
           this.modalService.dismissAll();
           this.eventService.eventChangeData$.next(true);
+          this.resetForm();
         },
         error: err => {
           console.log(err)
@@ -101,6 +114,24 @@ export class CreateComponent implements OnInit {
     const exercises = this.createForm.get('exercises') as FormArray;
     exercises.removeAt(id);
     console.log("remove item with id: " + id);
+  }
+
+  //return default form fields
+  setDefaultCreateForm() {
+    return this.formBuilder.group({
+      userId: [this.userId, Validators.required],
+      title: ['', Validators.required],
+      description: ['', Validators.required],
+      startTime: ['', Validators.required],
+      exercises: this.formBuilder.array([this.createdItem()])
+    })
+  }
+
+  //reset reactive form
+  resetForm() {
+    const defaultCreateForm = this.setDefaultCreateForm();
+    this.submittedClick = false;
+    this.createForm = defaultCreateForm;
   }
 
   //open modal form
