@@ -58,6 +58,9 @@ namespace BodyShedule_v_2_0.Server.Data
             {
                 entity.ToTable(name: "UserTokens");
             });
+            builder.Entity<Event>()
+                .Property(x => x.Status)
+                .HasDefaultValue("inProgress");
         }
 
         public DbSet<Event> Events { get; set; }

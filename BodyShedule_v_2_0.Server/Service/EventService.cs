@@ -18,9 +18,9 @@ namespace BodyShedule_v_2_0.Server.Service
             return await _repository.AddEventAsync(eventInfo);
         }
 
-        public async Task<List<GetEventsDTO>> GetEventsAsync(string userId)
+        public async Task<List<GetEventsDTO>> GetEventsAsync(string userId, string status)
         {
-            return await _repository.GetEventsAsync(userId);
+            return await _repository.GetEventsAsync(userId, status);
         }
 
         public async Task<bool> EditEventAsync(EditEventDTO eventInfo)
@@ -36,6 +36,11 @@ namespace BodyShedule_v_2_0.Server.Service
         public async Task<bool> DeleteEventAsync(int id)
         {
             return await _repository.DeleteEventAsync(id);
+        }
+
+        public async Task<bool> ChangeEventStatusAsync(ChangeEventStatusDTO eventStatusInfo)
+        {
+            return await _repository.ChangeEventStatusAsync(eventStatusInfo);   
         }
     }
 }

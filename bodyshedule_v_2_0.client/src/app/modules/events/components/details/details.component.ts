@@ -3,6 +3,7 @@ import { DatePipe } from '@angular/common';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { EventService } from '../../shared/event.service';
+import { ChangeEventStatus } from '../../shared/change-event-status.model';
 
 @Component({
   selector: 'app-details',
@@ -12,6 +13,7 @@ import { EventService } from '../../shared/event.service';
 export class DetailsComponent {
   modalService = inject(NgbModal);
   detailsForm: FormGroup;
+  model: ChangeEventStatus = new ChangeEventStatus();
 
   @Input() eventId!: number;
 
@@ -21,6 +23,7 @@ export class DetailsComponent {
       title: [''],
       description: [''],
       startTime: [''],
+      status: [''],
       exercises: this.formBuilder.array([])
     });
   }
@@ -35,10 +38,12 @@ export class DetailsComponent {
           id: eventData.id,
           title: eventData.title,
           description: eventData.description,
-          startTime: currStartTime
+          startTime: currStartTime,
+          status: eventData.status
         });
 
         const exercises = this.detailsForm.get('exercises') as FormArray;
+
         exercises.clear();
 
         //pushing each exercise to form
@@ -52,7 +57,6 @@ export class DetailsComponent {
             weight: [exercise.weight]
           }));
         })
-
       },
       error: err => {
         console.log(err);
@@ -63,6 +67,22 @@ export class DetailsComponent {
   //exercises FormArray getter
   get getExercise() {
     return this.detailsForm.get('exercises') as FormArray;
+  }
+
+  //change status of an event
+  changeEventStatus(status: string) {
+    this.model.id = this.eventId!;
+    this.model.status = status;
+    console.log(this.model.status);
+    this.eventService.changeEventStatus(this.model).subscribe({
+      next: result => {
+        this.modalService.dismissAll();
+        this.eventService.eventChangeData$.next(true);
+      },
+      error: err => {
+        console.log(err);
+      }
+    });
   }
 
   //open modal form

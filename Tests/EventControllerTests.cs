@@ -39,21 +39,23 @@ namespace Tests
                     Id = "1",
                     Title = "test1",
                     Description = "test",
-                    Start = DateTimeOffset.Parse("2024-10-15T21:33:29.9291418+03:00")
+                    Start = DateTimeOffset.Parse("2024-10-15T21:33:29.9291418+03:00"),
+                    Status = "test"
                 },
                  new GetEventsDTO
                 {
                     Id = "2",
                     Title = "test2",
                     Description = "test",
-                    Start = DateTimeOffset.Parse("2024-10-15T21:33:29.9291418+03:00")
+                    Start = DateTimeOffset.Parse("2024-10-15T21:33:29.9291418+03:00"),
+                    Status = "test"
                 }
             };
 
-            _eventServiceMock.Setup(x => x.GetEventsAsync(It.IsAny<string>())).ReturnsAsync(eventList);
+            _eventServiceMock.Setup(x => x.GetEventsAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(eventList);
 
             //act
-            var result = await _controller.GetEventsAsync("asdasasd123");
+            var result = await _controller.GetEventsAsync("asdasasd123", "test");
 
             //assert
             Assert.IsType<OkObjectResult>(result);
