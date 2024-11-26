@@ -110,7 +110,10 @@
         </div>
       </div>
       <div class="modal-footer mt-3">
-        <button type="submit" class="w-100 btn btn-outline-secondary mt-3" (click)="modal.dismiss()">Отмена</button>
+        <div class="d-inline-flex">
+          <button type="submit" class="btn btn-outline-secondary mt-3 shadow mx-2" (click)="changeEventStatus('completed')">Завершить тренировку</button>
+          <button type="submit" class="btn btn-outline-secondary mt-3" (click)="modal.dismiss()">Отмена</button>
+        </div>
       </div>
     </form>
   </div>

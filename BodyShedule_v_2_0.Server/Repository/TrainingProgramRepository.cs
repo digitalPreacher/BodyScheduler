@@ -138,6 +138,7 @@ namespace BodyShedule_v_2_0.Server.Repository
                             Title = getEvent.Title,
                             Description = getEvent.Description,
                             StartTime = getEvent.StartTime,
+                            Status = getEvent.Status,
                             Exercises = exercises
                         });
 
@@ -206,6 +207,7 @@ namespace BodyShedule_v_2_0.Server.Repository
                             Title = eventDto.Title,
                             Description = eventDto.Description,
                             StartTime = eventDto.StartTime,
+                            Status = eventDto.Status,
                             User = user,
                             Exercises = eventDto.Exercises.Select(exerciseDto => new Exercise
                             {

@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, Subject, catchError, throwError } from 'rxjs';
 
 import { AuthorizationService } from '../../authorization/shared/authorization.service';
+import { options } from '@fullcalendar/core/preact';
+import { ChangeEventStatus } from './change-event-status.model';
 
 @Injectable({
   providedIn: 'root'
@@ -23,8 +25,8 @@ export class EventService {
   }
 
   //get all user events by id
-  getEvents(): Observable<any[]> {
-    return this.httpClient.get<any[]>(this.baseUrl + `/Event/GetEvents/${this.userId}`)
+  getEvents(status: string): Observable<any[]> {
+    return this.httpClient.get<any[]>(this.baseUrl + `/Event/GetEvents/${this.userId}/${status}`)
       .pipe(
         result => {
           return result;
@@ -91,6 +93,18 @@ export class EventService {
   getExerciseTitles() {
     return this.httpClient.get<any[]>(this.baseUrl + `/ExerciseTitles/GetExerciseTitles`)
     .pipe(
+        result => {
+          return result;
+        },
+        catchError(error => {
+          return throwError(error.error.message)
+        })
+      );
+  }
+
+  changeEventStatus(model: ChangeEventStatus) {
+    return this.httpClient.put<ChangeEventStatus>(this.baseUrl + `/Event/ChangeEventStatus`, model)
+      .pipe(
         result => {
           return result;
         },

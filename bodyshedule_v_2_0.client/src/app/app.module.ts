@@ -27,6 +27,8 @@ import { EditTrainingProgramComponent } from './modules/training-programs/compon
 import { ChangeUserPasswordComponent } from './modules/authorization/components/change-user-password/change-user-password.component';
 import { ResetUserPasswordComponent } from './modules/authorization/components/reset-user-password/reset-user-password.component';
 import { ForgotUserPasswordComponent } from './modules/authorization/components/forgot-user-password/forgot-user-password.component';
+import { MdbTabsModule } from 'mdb-angular-ui-kit/tabs';
+
 
 @NgModule({
   declarations: [
@@ -52,9 +54,9 @@ import { ForgotUserPasswordComponent } from './modules/authorization/components/
   imports: [
     BrowserModule, HttpClientModule,
     AppRoutingModule, FormsModule, NgbModule,
-    ReactiveFormsModule, FullCalendarModule
+    ReactiveFormsModule, FullCalendarModule,MdbTabsModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true }],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }
