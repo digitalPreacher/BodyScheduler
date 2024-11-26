@@ -11,6 +11,8 @@ import { AuthorizationService } from '../../../authorization/shared/authorizatio
 import { EventService } from '../../../events/shared/event.service';
 import { pipe } from 'rxjs';
 import { Event } from '../../../events/shared/event.model';
+import { ChangeEventStatus } from '../../../events/shared/change-event-status.model';
+
 
 @Component({
   selector: 'app-home',
@@ -21,6 +23,8 @@ import { Event } from '../../../events/shared/event.model';
 export class HomeComponent implements OnInit {
   modalService = inject(NgbModal);
   events: any;
+  eventStatus: string = 'inProgress';
+  model: ChangeEventStatus = new ChangeEventStatus();
 
   detailsForm: FormGroup;
 
@@ -47,6 +51,7 @@ export class HomeComponent implements OnInit {
       title: [''],
       description: [''],
       startTime: [''],
+      status: [''],
       exercises: this.formBuilder.array([])
     });
   }
@@ -62,7 +67,7 @@ export class HomeComponent implements OnInit {
 
   //receiving data of events and display it in fullcalendar
   loadData() {
-    this.eventService.getEvents().subscribe({
+    this.eventService.getEvents(this.eventStatus).subscribe({
       next: events => {
         this.events = events;
         this.calendarOptions = {
@@ -80,6 +85,7 @@ export class HomeComponent implements OnInit {
     this.eventService.getEvent(eventId).subscribe({
       next: result => {
         const eventData = result[0];
+        this.model.id = eventData.id!;
         const currStartTime = this.datePipe.transform(eventData.startTime, 'yyyy-MM-ddTHH:mm');
         this.detailsForm.patchValue({
           id: eventData.id,
@@ -122,6 +128,21 @@ export class HomeComponent implements OnInit {
     };
     this.getEvent(eventId);
     this.modalService.open(content, options);
+  }
+
+  //change status of an event
+  changeEventStatus(status: string) {
+    this.model.status = status;
+    console.log(this.model.status);
+    this.eventService.changeEventStatus(this.model).subscribe({
+      next: result => {
+        this.modalService.dismissAll();
+        this.eventService.eventChangeData$.next(true);
+      },
+      error: err => {
+        console.log(err);
+      }
+    });
   }
 
   //logout app

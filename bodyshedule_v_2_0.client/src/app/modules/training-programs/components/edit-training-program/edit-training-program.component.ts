@@ -17,7 +17,7 @@ export class EditTrainingProgramComponent implements OnInit {
   editForm: FormGroup;
   userDataSubscribtion: any;
   userId = '';
-  listValue: string[] = ['start'];
+  listValue: string[] = [];
   filterListValue: any[] = [];
 
   @Input() programId!: number;
@@ -80,6 +80,7 @@ export class EditTrainingProgramComponent implements OnInit {
               id: eventData.weeks[i].events[j].id,
               title: eventData.weeks[i].events[j].title,
               description: eventData.weeks[i].events[j].description,
+              status: eventData.weeks[i].events[j].status,
               startTime: this.datePipe.transform(eventData.weeks[i].events[j].startTime, 'yyyy-MM-ddTHH:mm'),
               exercises: this.formBuilder.array([])
             }));
@@ -138,6 +139,7 @@ export class EditTrainingProgramComponent implements OnInit {
       title: ['', Validators.required],
       description: ['', Validators.required],
       startTime: ['', Validators.required],
+      status: ['', Validators.required],
       exercises: this.formBuilder.array([])
     })
   }

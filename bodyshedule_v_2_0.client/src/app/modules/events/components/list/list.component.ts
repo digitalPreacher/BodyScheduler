@@ -9,10 +9,15 @@ import { Event } from '../../shared/event.model';
   styles: ``
 })
 export class ListComponent implements OnInit {
-  events: any[] = [];
-  collectionSize!: number;
-  page = 1;
-  pageSize = 10;
+  inProgressEvents: any[] = [];
+  completedEvents: any[] = [];
+  collectionProgressEventsSize!: number;
+  collectionCompletedEventsSize!: number;
+  progressEventsPage = 1;
+  completedEventsPage = 1;
+  pageSize = 5;
+  inProgressEventStatus: string = 'inProgress';
+  completedEventStatus: string = 'completed';
 
   constructor(private authService: AuthorizationService, private eventService: EventService) { }
 
@@ -27,10 +32,22 @@ export class ListComponent implements OnInit {
 
   //getting data of events
   loadData() {
-    this.eventService.getEvents().subscribe({
+    //get events with inProgress status
+    this.eventService.getEvents(this.inProgressEventStatus).subscribe({
       next: events => {
-        this.events = events;
-        this.collectionSize = events.length;
+        this.inProgressEvents = events;
+        this.collectionProgressEventsSize = events.length;
+      },
+      error: err => {
+        console.log(err);
+      }
+    });
+
+    //get events with completed status
+    this.eventService.getEvents(this.completedEventStatus).subscribe({
+      next: events => {
+        this.completedEvents = events;
+        this.collectionCompletedEventsSize = events.length;
       },
       error: err => {
         console.log(err);

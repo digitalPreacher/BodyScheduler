@@ -21,14 +21,14 @@ namespace BodyShedule_v_2_0.Server.Controllers
 
         //Get all user events
         [HttpGet]
-        [Route("GetEvents/{userId}")]
-        public async Task<IActionResult> GetEventsAsync(string userId)
+        [Route("GetEvents/{userId}/{status}")]
+        public async Task<IActionResult> GetEventsAsync(string userId, string status)
         {
             try
             {
                 if (userId != null)
                 {
-                    var events = await _service.GetEventsAsync(userId);
+                    var events = await _service.GetEventsAsync(userId, status);
 
                     return Ok(events);
                 }
@@ -121,6 +121,7 @@ namespace BodyShedule_v_2_0.Server.Controllers
             }
         }
 
+        //Delete user event
         [HttpDelete]
         [Route("DeleteEvent/{id}")]
         public async Task<IActionResult> DeleteEvent(int id)
@@ -135,6 +136,30 @@ namespace BodyShedule_v_2_0.Server.Controllers
                 else
                 {
                     return NotFound(new { Message = $"Запись с id: {id} не найдена" });
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        //Change status for user event
+        [HttpPut]
+        [Route("ChangeEventStatus")]
+        public async Task<IActionResult> ChangeEventStatusAsync(ChangeEventStatusDTO eventStatusInfo)
+        {
+            try
+            {
+                var result = await _service.ChangeEventStatusAsync(eventStatusInfo);
+                if (result)
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest();
                 }
             }
             catch (Exception ex)

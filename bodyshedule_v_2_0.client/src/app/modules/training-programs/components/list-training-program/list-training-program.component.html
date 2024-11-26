@@ -23,9 +23,9 @@
       <td> {{ (page - 1) * pageSize + i + 1 }}</td>
       <td> {{ program.title }} </td>
       <td> {{ program.description }} </td>
+      <td><app-edit-training-program [programId]="program.id"></app-edit-training-program></td>
       <td><app-details-training-program [programId]="program.id"></app-details-training-program></td>
       <td><app-delete-training-program [programId]="program.id"></app-delete-training-program></td>
-      <td><app-edit-training-program [programId]="program.id"></app-edit-training-program></td>
     </tr>
   </tbody>
 </table>

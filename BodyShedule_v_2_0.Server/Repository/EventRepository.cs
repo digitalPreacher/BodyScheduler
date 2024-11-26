@@ -51,15 +51,16 @@ namespace BodyShedule_v_2_0.Server.Repository
             return false;
         }
 
-        public async Task<List<GetEventsDTO>> GetEventsAsync(string userId)
+        public async Task<List<GetEventsDTO>> GetEventsAsync(string userId, string status)
         {
             var user = await _userManager.FindByIdAsync(userId);
-            var events = await _db.Events.Where(x => x.User == user).Select(x => new GetEventsDTO
+            var events = await _db.Events.Where(x => x.User == user && x.Status == status).Select(x => new GetEventsDTO
             {
                 Id = x.Id.ToString(),
                 Title = x.Title,
                 Description = x.Description,
                 Start = x.StartTime,
+                Status = x.Status
             })
             .ToListAsync();
 
@@ -144,6 +145,7 @@ namespace BodyShedule_v_2_0.Server.Repository
                 Title = x.Title,
                 Description = x.Description,
                 StartTime = x.StartTime,
+                Status = x.Status,
                 Exercises = x.Exercises.Select(x => new ExerciseDTO
                 {
                     Id = x.Id,
@@ -174,6 +176,23 @@ namespace BodyShedule_v_2_0.Server.Repository
             {
                 return false;
             }
+        }
+
+        public async Task<bool> ChangeEventStatusAsync(ChangeEventStatusDTO eventStatusInfo)
+        {
+            var getEvent = await _db.Events.FirstOrDefaultAsync(x => x.Id == eventStatusInfo.Id);
+            if (getEvent != null) {
+
+                getEvent.Status = eventStatusInfo.Status;
+                _db.Entry(getEvent).State = EntityState.Modified;
+
+                await _db.SaveChangesAsync();
+
+                return true;
+            }
+
+            return false;
+
         }
     }
 }

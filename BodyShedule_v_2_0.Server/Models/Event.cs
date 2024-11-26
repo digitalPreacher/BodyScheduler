@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace BodyShedule_v_2_0.Server.Models
 {
@@ -13,6 +14,8 @@ namespace BodyShedule_v_2_0.Server.Models
         public DateTimeOffset StartTime { get; set; }
 
         public int? WeeksTrainingId { get; set; }
+
+        public string Status { get; set; }
 
         public ICollection<Exercise> Exercises { get; set; }
         public virtual WeeksTraining? WeeksTraining { get; set; }
