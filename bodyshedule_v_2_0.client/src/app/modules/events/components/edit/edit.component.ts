@@ -38,6 +38,7 @@ export class EditComponent implements OnInit {
       title: ['', Validators.required],
       description: ['', Validators.required],
       startTime: ['', Validators.required],
+      status: ['', Validators.required],
       exercises: this.formBuilder.array([])
     });
   }
@@ -85,7 +86,8 @@ export class EditComponent implements OnInit {
           title: eventData.title,
           description: eventData.description,
           startTime: currStartTime,
-        })
+          status: eventData.status
+        });
 
         const exercises = this.createForm.get('exercises') as FormArray;
         exercises.clear();

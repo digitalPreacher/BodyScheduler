@@ -80,6 +80,8 @@ builder.Services.AddScoped<ITrainingProgramRepository, TrainingProgramRepository
 builder.Services.AddScoped<ITrainingProgramService, TrainingProgramService>();
 builder.Services.AddScoped<IExportExerciseTitlesRepository, ExportExerciseTitlesRepository>();
 builder.Services.AddScoped<IExportExerciseTitlesService, ExportExerciseTitlesService>();
+builder.Services.AddScoped<IBodyMeasureRepository, BodyMeasureRepository>();
+builder.Services.AddScoped<IBodyMeasureService, BodyMeasureService>();
 
 var app = builder.Build();
 

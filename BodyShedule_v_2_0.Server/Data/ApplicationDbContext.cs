@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace BodyShedule_v_2_0.Server.Data
 {
@@ -58,9 +59,15 @@ namespace BodyShedule_v_2_0.Server.Data
             {
                 entity.ToTable(name: "UserTokens");
             });
+
             builder.Entity<Event>()
                 .Property(x => x.Status)
                 .HasDefaultValue("inProgress");
+
+            builder.Entity<BodyMeasure>()
+            .Property(x => x.CreateAt)
+            .HasColumnType("timestamp without time zone")
+            .HasDefaultValueSql("now()");
         }
 
         public DbSet<Event> Events { get; set; }
@@ -68,6 +75,8 @@ namespace BodyShedule_v_2_0.Server.Data
         public DbSet<TrainingProgram> TrainingProgramSet { get; set; }
         public DbSet<WeeksTraining> WeeksTrainingSet { get; set; }  
         public DbSet<ExerciseTitle> ExerciseTitleSet { get; set; }
+
+        public DbSet<BodyMeasure> BodyMeasureSet { get; set; }
 
     }
 }

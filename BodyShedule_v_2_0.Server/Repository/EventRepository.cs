@@ -78,6 +78,7 @@ namespace BodyShedule_v_2_0.Server.Repository
                     Title = eventInfo.Title,
                     Description = eventInfo.Description,
                     StartTime = eventInfo.StartTime,
+                    Status = eventInfo.Status,
                     User = user
                 };
 
