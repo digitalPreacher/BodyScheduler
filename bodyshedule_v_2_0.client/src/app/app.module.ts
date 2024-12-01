@@ -5,7 +5,9 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FullCalendarModule } from '@fullcalendar/angular'
+import { FullCalendarModule } from '@fullcalendar/angular';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 import { AppComponent } from './app.component';
@@ -30,6 +32,7 @@ import { ForgotUserPasswordComponent } from './modules/authorization/components/
 import { MdbTabsModule } from 'mdb-angular-ui-kit/tabs';
 import { CreateBodyMeasureComponent } from './modules/body-measure/components/create-body-measure/create-body-measure.component';
 import { DetailsBodyMeasureComponent } from './modules/body-measure/components/details-body-measure/details-body-measure.component';
+import { LineChartBodyMeasureComponent } from './modules/body-measure/components/line-chart-body-measure/line-chart-body-measure.component';
 
 
 
@@ -54,12 +57,14 @@ import { DetailsBodyMeasureComponent } from './modules/body-measure/components/d
     ResetUserPasswordComponent,
     ForgotUserPasswordComponent,
     CreateBodyMeasureComponent,
-    DetailsBodyMeasureComponent
+    DetailsBodyMeasureComponent,
+    LineChartBodyMeasureComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,
     AppRoutingModule, FormsModule, NgbModule,
-    ReactiveFormsModule, FullCalendarModule,MdbTabsModule
+    ReactiveFormsModule, FullCalendarModule, MdbTabsModule,
+    NgxChartsModule, BrowserAnimationsModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true }],
   bootstrap: [AppComponent],
