@@ -1,0 +1,19 @@
+<form [formGroup]="createForm" (ngSubmit)="addBodyMeasure()">
+  <div class="form-group" formArrayName="bodyMeasureSet">
+    <div *ngFor="let bodyMeasure of bodyMeasureArray.controls; let i = index" class="d-inline-flex">
+      <div [formGroupName]="i">
+        <label for="musclesSize-create-form-field">{{bodyMeasure.get('muscleName')?.value}}</label>
+        <div class="mx-2">
+          <input type="number"
+                  class="form-control"
+                  id="musclesSize-create-form-field"
+                  formControlName="musclesSize"
+                  name="musclesSize-field"
+                  step="0.1"
+                  min="0"/>
+        </div>
+       </div>
+    </div>
+  </div>
+  <button type="submit" class="btn btn-outline-secondary mt-2">Сохранить</button>
+</form>

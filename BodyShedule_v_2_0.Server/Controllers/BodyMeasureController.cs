@@ -40,5 +40,28 @@ namespace BodyShedule_v_2_0.Server.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetUniqueBodyMeasure/{userId}")]
+        public async Task<IActionResult> GetUniqueBodyMeasureAsync(string userId)
+        {
+            try
+            {
+                var bodyMeasures = await _bodyMeasureService.GetUniqueBodyMeasureAsync(userId);
+                if (bodyMeasures != null)
+                {
+                    return Ok(bodyMeasures);
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation(ex.Message);
+                return StatusCode(500, ex.Message);
+
+            }
+        }
     }
 }

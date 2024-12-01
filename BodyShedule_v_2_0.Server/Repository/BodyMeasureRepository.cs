@@ -2,6 +2,7 @@
 using BodyShedule_v_2_0.Server.DataTransferObjects;
 using BodyShedule_v_2_0.Server.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace BodyShedule_v_2_0.Server.Repository
 {
@@ -28,7 +29,7 @@ namespace BodyShedule_v_2_0.Server.Repository
                     CreateAt = DateTime.Now,
                     User = user
                 })
-                .Where(x => x.MuscleName != string.Empty)
+                .Where(x => x.MuscleName != string.Empty && x.MuscleSize > 0)
                 .ToList();
 
                 _db.AddRange(BodyMeasureList);
@@ -39,6 +40,25 @@ namespace BodyShedule_v_2_0.Server.Repository
 
             return false;
 
+        }
+
+        public async Task<List<GetUniqueBodyMeasureDTO>> GetUniqueBodyMeasureAsync(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            var bodyMeasures = await _db.BodyMeasureSet
+                .Where(x => x.User.Id == int.Parse(userId))
+                .Select(x => new GetUniqueBodyMeasureDTO
+                {
+                    MuscleName = x.MuscleName,
+                    MusclesSize = x.MuscleSize,
+                    CreateAt = x.CreateAt
+                })
+                .GroupBy(x => x.MuscleName )
+                .Select(x => x.OrderByDescending(j => j.CreateAt).First())
+                .ToListAsync();
+
+            return bodyMeasures;
         }
     }
 }
