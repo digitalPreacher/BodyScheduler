@@ -28,6 +28,9 @@ import { ChangeUserPasswordComponent } from './modules/authorization/components/
 import { ResetUserPasswordComponent } from './modules/authorization/components/reset-user-password/reset-user-password.component';
 import { ForgotUserPasswordComponent } from './modules/authorization/components/forgot-user-password/forgot-user-password.component';
 import { MdbTabsModule } from 'mdb-angular-ui-kit/tabs';
+import { CreateBodyMeasureComponent } from './modules/body-measure/components/create-body-measure/create-body-measure.component';
+import { DetailsBodyMeasureComponent } from './modules/body-measure/components/details-body-measure/details-body-measure.component';
+
 
 
 @NgModule({
@@ -50,6 +53,8 @@ import { MdbTabsModule } from 'mdb-angular-ui-kit/tabs';
     ChangeUserPasswordComponent,
     ResetUserPasswordComponent,
     ForgotUserPasswordComponent,
+    CreateBodyMeasureComponent,
+    DetailsBodyMeasureComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,

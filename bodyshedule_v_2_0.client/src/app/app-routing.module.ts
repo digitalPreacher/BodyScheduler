@@ -16,6 +16,8 @@ import { DetailsTrainingProgramComponent } from './modules/training-programs/com
 import { ChangeUserPasswordComponent } from './modules/authorization/components/change-user-password/change-user-password.component'
 import { ResetUserPasswordComponent } from './modules/authorization/components/reset-user-password/reset-user-password.component';
 import { ForgotUserPasswordComponent } from './modules/authorization/components/forgot-user-password/forgot-user-password.component';
+import { CreateBodyMeasureComponent } from './modules/body-measure/components/create-body-measure/create-body-measure.component';
+import { DetailsBodyMeasureComponent } from './modules/body-measure/components/details-body-measure/details-body-measure.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthorizationUserGuard] },
@@ -32,8 +34,8 @@ const routes: Routes = [
   { path: 'account/change-user-password', component: ChangeUserPasswordComponent, canActivate: [AuthorizationUserGuard] },
   { path: 'account/reset-password', component: ResetUserPasswordComponent },
   { path: 'account/forgot-password', component: ForgotUserPasswordComponent },
-
-  
+  { path: 'body-measure/create-body-measure', component: CreateBodyMeasureComponent, canActivate: [AuthorizationUserGuard] },
+  { path: 'body-measure/details-body-measure', component: DetailsBodyMeasureComponent, canActivate: [AuthorizationUserGuard] }
 ];
 
 @NgModule({
