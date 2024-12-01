@@ -20,5 +20,10 @@ namespace BodyShedule_v_2_0.Server.Service
         {
             return await _bodyMeasureRepository.GetUniqueBodyMeasureAsync(userId);
         }
+
+        public async Task<List<GetBodyMeasuresToLineChartDTO>> GetBodyMeasuresToLineChartAsync(string userId)
+        {
+            return await _bodyMeasureRepository.GetBodyMeasuresToLineChartAsync(userId);
+        }
     }
 }

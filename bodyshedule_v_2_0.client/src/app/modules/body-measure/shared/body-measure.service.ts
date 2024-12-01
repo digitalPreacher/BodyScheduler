@@ -46,4 +46,16 @@ export class BodyMeasureService {
         })
       );
   }
+
+  getBodyMeasuresDataToLineChart() {
+    return this.httpClient.get<any[]>(this.baseUrl + `/BodyMeasure/GetBodyMeasuresToLineChart/${this.userId}`)
+      .pipe(
+        result => {
+          return result;
+        },
+        catchError(error => {
+          return throwError(error.error.message)
+        })
+      );
+  }
 }
