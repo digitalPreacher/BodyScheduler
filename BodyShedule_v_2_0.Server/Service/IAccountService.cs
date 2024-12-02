@@ -1,4 +1,4 @@
-﻿using BodyShedule_v_2_0.Server.DataTransferObjects;
+﻿using BodyShedule_v_2_0.Server.DataTransferObjects.AccountDTOs;
 using Microsoft.AspNetCore.Identity;
 
 namespace BodyShedule_v_2_0.Server.Service

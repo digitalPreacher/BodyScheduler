@@ -1,5 +1,5 @@
 ﻿using BodyShedule_v_2_0.Server.Controllers;
-using BodyShedule_v_2_0.Server.DataTransferObjects;
+using BodyShedule_v_2_0.Server.DataTransferObjects.EventDTOs;
 using BodyShedule_v_2_0.Server.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

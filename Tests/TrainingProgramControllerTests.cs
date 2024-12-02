@@ -2,8 +2,9 @@
 using BodyShedule_v_2_0.Server.Controllers;
 using BodyShedule_v_2_0.Server.Service;
 using Microsoft.Extensions.Logging;
-using BodyShedule_v_2_0.Server.DataTransferObjects;
 using Microsoft.AspNetCore.Mvc;
+using BodyShedule_v_2_0.Server.DataTransferObjects.EventDTOs;
+using BodyShedule_v_2_0.Server.DataTransferObjects.TrainingProgramDTOs;
 
 namespace Tests
 {

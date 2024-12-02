@@ -139,7 +139,7 @@ export class EditTrainingProgramComponent implements OnInit {
       title: ['', Validators.required],
       description: ['', Validators.required],
       startTime: ['', Validators.required],
-      status: ['', Validators.required],
+      status: ['inProgress', Validators.required],
       exercises: this.formBuilder.array([])
     })
   }

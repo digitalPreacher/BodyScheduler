@@ -1,9 +1,8 @@
 ﻿using BodyShedule_v_2_0.Server.Data;
-using BodyShedule_v_2_0.Server.DataTransferObjects;
+using BodyShedule_v_2_0.Server.DataTransferObjects.BodyMeasureDTOs;
 using BodyShedule_v_2_0.Server.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 
 namespace BodyShedule_v_2_0.Server.Repository
 {

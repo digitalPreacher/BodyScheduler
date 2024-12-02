@@ -1,4 +1,4 @@
-﻿using BodyShedule_v_2_0.Server.DataTransferObjects;
+﻿using BodyShedule_v_2_0.Server.DataTransferObjects.TrainingProgramDTOs;
 
 namespace BodyShedule_v_2_0.Server.Service
 {

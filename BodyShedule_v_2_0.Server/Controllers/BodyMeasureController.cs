@@ -1,9 +1,11 @@
-﻿using BodyShedule_v_2_0.Server.DataTransferObjects;
+﻿using BodyShedule_v_2_0.Server.DataTransferObjects.BodyMeasureDTOs;
 using BodyShedule_v_2_0.Server.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BodyShedule_v_2_0.Server.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class BodyMeasureController : ControllerBase

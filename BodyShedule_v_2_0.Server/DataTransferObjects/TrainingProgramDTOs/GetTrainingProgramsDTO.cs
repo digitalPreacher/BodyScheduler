@@ -1,6 +1,6 @@
 ﻿using BodyShedule_v_2_0.Server.Models;
 
-namespace BodyShedule_v_2_0.Server.DataTransferObjects
+namespace BodyShedule_v_2_0.Server.DataTransferObjects.TrainingProgramDTOs
 {
     public class GetTrainingProgramsDTO
     {

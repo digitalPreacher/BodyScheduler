@@ -1,5 +1,6 @@
 ﻿using BodyShedule_v_2_0.Server.Data;
-using BodyShedule_v_2_0.Server.DataTransferObjects;
+using BodyShedule_v_2_0.Server.DataTransferObjects.EventDTOs;
+using BodyShedule_v_2_0.Server.DataTransferObjects.TrainingProgramDTOs;
 using BodyShedule_v_2_0.Server.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
