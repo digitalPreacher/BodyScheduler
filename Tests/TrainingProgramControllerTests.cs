@@ -136,6 +136,7 @@ namespace Tests
                                 Title = "test",
                                 Description = "test",
                                 StartTime = DateTimeOffset.Parse("2024-10-15T21:33:29.9291418+03:00"),
+                                Status = "inProgress",
                                 Exercises = new List<ExerciseDTO>
                                 {
                                     new ExerciseDTO
