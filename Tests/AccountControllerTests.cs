@@ -1,10 +1,10 @@
-using BodyShedule_v_2_0.Server.DataTransferObjects;
 using BodyShedule_v_2_0.Server.Service;
 using Microsoft.AspNetCore.Identity;
 using Moq;
 using BodyShedule_v_2_0.Server.Controllers;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc;
+using BodyShedule_v_2_0.Server.DataTransferObjects.AccountDTOs;
 
 namespace Tests;
 

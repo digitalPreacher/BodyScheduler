@@ -1,7 +1,7 @@
-﻿using BodyShedule_v_2_0.Server.DataTransferObjects;
-using BodyShedule_v_2_0.Server.Service;
+﻿using BodyShedule_v_2_0.Server.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using BodyShedule_v_2_0.Server.DataTransferObjects.EventDTOs;
 
 namespace BodyShedule_v_2_0.Server.Controllers
 {
