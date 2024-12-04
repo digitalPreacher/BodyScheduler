@@ -82,12 +82,12 @@ namespace Tests
                     Description = "test",
                 }
             };
-
-            //act
             _serviceMock.Setup(x => x.GetTrainingProgramsAsync(It.IsAny<string>())).ReturnsAsync(trainingProgramList);
 
-            //assert
+            //act
             var result = await _controller.GetTrainingProgramsAsync("1");
+
+            //assert
             Assert.IsType<OkObjectResult>(result);
             var objectResult = result as ObjectResult;
             Assert.NotNull(objectResult);
@@ -136,6 +136,7 @@ namespace Tests
                                 Title = "test",
                                 Description = "test",
                                 StartTime = DateTimeOffset.Parse("2024-10-15T21:33:29.9291418+03:00"),
+                                Status = "inProgress",
                                 Exercises = new List<ExerciseDTO>
                                 {
                                     new ExerciseDTO
