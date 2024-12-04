@@ -82,12 +82,12 @@ namespace Tests
                     Description = "test",
                 }
             };
-
-            //act
             _serviceMock.Setup(x => x.GetTrainingProgramsAsync(It.IsAny<string>())).ReturnsAsync(trainingProgramList);
 
-            //assert
+            //act
             var result = await _controller.GetTrainingProgramsAsync("1");
+
+            //assert
             Assert.IsType<OkObjectResult>(result);
             var objectResult = result as ObjectResult;
             Assert.NotNull(objectResult);

@@ -19,6 +19,7 @@ namespace Tests
             _controller = new ExerciseTitlesController(_service.Object, _logger.Object);
         }
 
+        //testing positive reuslt by request data of exercise titles
         [Fact]
         public async Task GetExerciseTitlesOkResult()
         {
@@ -41,9 +42,6 @@ namespace Tests
             var actualExerciseTitles = objectResult.Value as List<string>;
             Assert.NotNull(actualExerciseTitles);
             Assert.Equal(exerciseTitlesList, actualExerciseTitles);
-
-
-
         }
     }
 }
