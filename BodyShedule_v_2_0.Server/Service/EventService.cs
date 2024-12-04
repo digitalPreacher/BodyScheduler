@@ -1,4 +1,4 @@
-﻿using BodyShedule_v_2_0.Server.DataTransferObjects;
+﻿using BodyShedule_v_2_0.Server.DataTransferObjects.EventDTOs;
 using BodyShedule_v_2_0.Server.Models;
 using BodyShedule_v_2_0.Server.Repository;
 

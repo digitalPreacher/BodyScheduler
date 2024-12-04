@@ -82,7 +82,7 @@ export class CreateBodyMeasureComponent implements OnInit {
   addBodyMeasure() {
     this.bodyMeasureService.addBodyMeasure(this.createForm.value).subscribe({
       next: result => {
-        console.log(result);
+        this.bodyMeasureService.changeData$.next(true);
       },
       error: err => {
         console.log(err);
@@ -106,8 +106,6 @@ export class CreateBodyMeasureComponent implements OnInit {
             }
           });
         });
-
-        this.bodyMeasureService.changeData$.next(true);
       },
       error: err => {
         console.log(err);

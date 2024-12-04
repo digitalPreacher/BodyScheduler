@@ -1,4 +1,4 @@
-﻿using BodyShedule_v_2_0.Server.DataTransferObjects;
+﻿using BodyShedule_v_2_0.Server.DataTransferObjects.AccountDTOs;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;

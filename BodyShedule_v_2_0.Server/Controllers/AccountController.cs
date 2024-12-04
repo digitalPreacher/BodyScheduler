@@ -1,4 +1,4 @@
-﻿using BodyShedule_v_2_0.Server.DataTransferObjects;
+﻿using BodyShedule_v_2_0.Server.DataTransferObjects.AccountDTOs;
 using BodyShedule_v_2_0.Server.Helpers;
 using BodyShedule_v_2_0.Server.Service;
 using Microsoft.AspNetCore.Authorization;

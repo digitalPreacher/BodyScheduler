@@ -1,5 +1,5 @@
 ﻿using BodyShedule_v_2_0.Server.Data;
-using BodyShedule_v_2_0.Server.DataTransferObjects;
+using BodyShedule_v_2_0.Server.DataTransferObjects.BodyMeasureDTOs;
 using BodyShedule_v_2_0.Server.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -59,6 +59,27 @@ namespace BodyShedule_v_2_0.Server.Repository
                 .ToListAsync();
 
             return bodyMeasures;
+        }
+
+        public async Task<List<GetBodyMeasuresToLineChartDTO>> GetBodyMeasuresToLineChartAsync(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            var bodyMeasuresToLineChartData = _db.BodyMeasureSet.
+                Where(x => x.User.Id == user.Id)
+                .Select(x => new GetBodyMeasuresToLineChartDTO
+                {
+                    Name = x.MuscleName,
+                    Series = _db.BodyMeasureSet.Where(k => k.MuscleName == x.MuscleName).Select(j => new MusclesSizeToLineChartDTO
+                    {
+                        Value = j.MuscleSize,
+                        Name = j.CreateAt.ToString("yyyy/MM/dd")
+                    })
+                    .ToArray()
+                })
+                .ToList();
+
+            return bodyMeasuresToLineChartData;
         }
     }
 }

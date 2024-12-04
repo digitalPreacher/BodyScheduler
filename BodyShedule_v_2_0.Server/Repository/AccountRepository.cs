@@ -1,5 +1,5 @@
 ﻿using BodyShedule_v_2_0.Server.Data;
-using BodyShedule_v_2_0.Server.DataTransferObjects;
+using BodyShedule_v_2_0.Server.DataTransferObjects.AccountDTOs;
 using BodyShedule_v_2_0.Server.Helpers;
 using BodyShedule_v_2_0.Server.Models;
 using BodyShedule_v_2_0.Server.Utilities;

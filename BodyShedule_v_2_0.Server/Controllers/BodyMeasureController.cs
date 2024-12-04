@@ -1,9 +1,11 @@
-﻿using BodyShedule_v_2_0.Server.DataTransferObjects;
+﻿using BodyShedule_v_2_0.Server.DataTransferObjects.BodyMeasureDTOs;
 using BodyShedule_v_2_0.Server.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BodyShedule_v_2_0.Server.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class BodyMeasureController : ControllerBase
@@ -61,6 +63,29 @@ namespace BodyShedule_v_2_0.Server.Controllers
                 _logger.LogInformation(ex.Message);
                 return StatusCode(500, ex.Message);
 
+            }
+        }
+
+        [HttpGet]
+        [Route("GetBodyMeasuresToLineChart/{userId}")]
+        public async Task<IActionResult> GetBodyMeasuresToLineChartAsync(string userId)
+        {
+            try
+            {
+                var result = await _bodyMeasureService.GetBodyMeasuresToLineChartAsync(userId);
+                if(result != null)
+                {
+                    return Ok(result);
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation(ex.Message);
+                return StatusCode(500, ex.Message);
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿using BodyShedule_v_2_0.Server.DataTransferObjects;
+﻿using BodyShedule_v_2_0.Server.DataTransferObjects.BodyMeasureDTOs;
 
 namespace BodyShedule_v_2_0.Server.Service
 {
@@ -6,5 +6,7 @@ namespace BodyShedule_v_2_0.Server.Service
     {
         public Task<bool> AddBodyMeasureAsync(AddBodyMeasureDTO bodyMeasureInfo);
         public Task<List<GetUniqueBodyMeasureDTO>> GetUniqueBodyMeasureAsync(string userId);
+
+        public Task<List<GetBodyMeasuresToLineChartDTO>> GetBodyMeasuresToLineChartAsync(string userId);
     }
 }
