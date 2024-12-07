@@ -37,8 +37,6 @@ export class EditTrainingProgramComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getTrainingProgram();
-
     this.eventService.getExerciseTitles().subscribe(data => {
       this.listValue = data;
     });
@@ -225,6 +223,7 @@ export class EditTrainingProgramComponent implements OnInit {
       size: 'md',
       ariaLabelledBy: 'modal-basic-title'
     };
+    this.getTrainingProgram();
     this.modalService.open(content, options);
   }
 

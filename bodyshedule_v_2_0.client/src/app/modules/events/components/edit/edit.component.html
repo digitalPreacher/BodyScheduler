@@ -1,130 +1,141 @@
 <ng-template #content let-modal>
-  <div class="modal-header">
-    <h3 class="modal-title" id="modal-edit-title" style="text-align:center">Добавление</h3>
-    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
-  </div>
-  <div class="modal-body">
-    <form class="p-3 text-center" [formGroup]="createForm" (ngSubmit)="saveEvent()">
-      <div class="form-group">
-        <label>Заголовок</label>
-        <input type="text"
-               class="form-control"
-               id="title"
-               required
-               formControlName="title"
-               name="titleField"/>
-        <div *ngIf="createForm.get('title')?.hasError('required') && submittedClick"
-             class="alert alert-danger mt-2">
-          Поле обязательно для заполнения
+  <div class="bg-dark text-light">
+    <div class="modal-header">
+      <h3 class="modal-title" id="modal-edit-title" style="text-align:center">Редактирование</h3>
+      <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <form class="p-3 text-center" [formGroup]="createForm" (ngSubmit)="saveEvent()">
+        <div class="form-group">
+          <label>Заголовок</label>
+          <input type="text"
+                 class="form-control"
+                 id="title"
+                 required
+                 formControlName="title"
+                 name="titleField"/>
+          <div *ngIf="createForm.get('title')?.hasError('required') && submittedClick"
+               class="alert alert-danger mt-2">
+            Поле обязательно для заполнения
+          </div>
         </div>
-      </div>
-      <div class="form-group mt-2">
-        <label>Описание</label>
-        <input type="text"
-               class="form-control"
-               id="description"
-               required
-               formControlName="description"
-               name="descriptionField" />
-        <div *ngIf="createForm.get('description')?.hasError('required') && submittedClick"
-             class="alert alert-danger mt-2">
-          Поле обязательно для заполнения
-        </div>
-      </div>
-      <div class="form-group mt-2">
-        <label>Начало</label>
-        <input type="datetime-local"
-               class="form-control"
-               id="startTime"
-               required
-               formControlName="startTime"
-               name="startTimeField"
-               />
-        <div *ngIf="createForm.get('startTime')?.hasError('required') && submittedClick"
-             class="alert alert-danger mt-2">
-          Поле обязательно для заполнения
-        </div>
-      </div>
-      <div>
-        <div class="form-group mt-2" formArrayName="exercises">
-          <div class="col-12 d-inline-flex mx-auto">
-            <div class="col-8">
-              <label for="title-exercise-details-form-field">Упражнение</label>
-            </div>
-            <div class="col-1 mx-2">
-              <label for="quantity-approaches-details-form-field">Подходы</label>
-            </div>
-            <div class="col-1">
-              <label for="quantity-repetions-details-form-field">Повт-ия</label>
-            </div>
-            <div class="mx-4">
-              <label for="weight-edit-form-field">Вес</label>
+        <div class="d-inline-flex col-12 mt-2">
+          <div class="form-group me-2 col-8">
+            <label for="description">Описание</label>
+            <textarea type="text"
+                   class="form-control"
+                   id="description"
+                   required
+                   formControlName="description"
+                   name="descriptionField"></textarea>
+            <div *ngIf="createForm.get('description')?.hasError('required') && submittedClick"
+                 class="alert alert-danger mt-2">
+              Поле обязательно для заполнения
             </div>
           </div>
+          <div class="form-group col-3">
+            <label for="startTime">Начало</label>
+            <input type="datetime-local"
+                   class="form-control"
+                   id="startTime"
+                   required
+                   formControlName="startTime"
+                   name="startTimeField"
+                   />
+            <div *ngIf="createForm.get('startTime')?.hasError('required') && submittedClick"
+                 class="alert alert-danger mt-2">
+              Поле обязательно для заполнения
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="form-group mt-2" formArrayName="exercises">
+            <div class="col-12 d-inline-flex mx-auto" *ngIf="getExercise.length > 0">
+              <div class="col-5">
+                <label for="title-exercise-details-form-field">Упражнение</label>
+              </div>
+              <div class="col-2 mx-2">
+                <label for="quantity-approaches-details-form-field">Подходы</label>
+              </div>
+              <div class="col-2">
+                <label for="quantity-repetions-details-form-field">Повт-ия</label>
+              </div>
+              <div class="col-2">
+                <label for="weight-edit-form-field">Вес</label>
+              </div>
+            </div>
             <div *ngFor="let exercise of getExercise.controls; let i=index">
               <div [formGroupName]="i">
-                <div class="col-12 d-inline-flex mx-auto mt-2">
-                  <div class="col-8">
+                <div class="col-12 d-inline-flex mt-2">
+                  <div class="col-5">
                     <input type="text"
-                           class="form-control"
-                           id="title-exercise-details-form-field"
-                           required
-                           #insertTitleBar
-                           (keyup)="enterKeyUp(insertTitleBar.value)"
-                           formControlName="title"
-                           name="title-exercise-field"
-                           list="titleOptions"
-                           />
+                            class="form-control"
+                            id="title-exercise-details-form-field"
+                            required
+                            #insertTitleBar
+                            (keyup)="enterKeyUp(insertTitleBar.value)"
+                            formControlName="title"
+                            name="title-exercise-field"
+                            list="titleOptions"
+                            placeholder="Становая тяга"/>
                     <datalist id="titleOptions">
                       <option *ngFor="let value of filterListValue">
                         {{ value }}
                       </option>
                     </datalist>
                   </div>
-                  <div class="col-1 mx-2">
+                  <div class="col-2 mx-1">
                     <input type="number"
-                           class="form-control"
-                           id="quantity-approaches-details-form-field"
-                           required
-                           formControlName="quantityApproaches"
-                           name="quantity-approaches-field"
-                           min="0" />
+                            class="form-control"
+                            id="quantity-approaches-details-form-field"
+                            required
+                            formControlName="quantityApproaches"
+                            name="quantity-approaches-field"
+                            min="0" />
                   </div>
-                  <div class="col-1">
+                  <div class="col-2 me-1">
                     <input type="number"
-                           class="form-control"
-                           id="quantity-repetions-details-form-field"
-                           required
-                           formControlName="quantityRepetions"
-                           name="quantity-repetions-field"
-                           min="0" />
+                            class="form-control"
+                            id="quantity-repetions-details-form-field"
+                            required
+                            formControlName="quantityRepetions"
+                            name="quantity-repetions-field"
+                            min="0" />
                   </div>
-                  <div class="col-1 mx-2">
+                  <div class="col-2">
                     <input type="number"
-                           class="form-control"
-                           id="weight-edit-form-field"
-                           required
-                           formControlName="weight"
-                           name="weight-field"
-                           step="0.1"
-                           min="0" />
+                            class="form-control"
+                            id="weight-edit-form-field"
+                            required
+                            formControlName="weight"
+                            name="weight-field"
+                            step="0.1"
+                            min="0" />
                   </div>
-                  <div class="col-1">
-                    <button (click)="removeField(i)">X</button>
+                  <div>
+                    <button class="btn btn-outline-danger ms-1" (click)="removeField(i)"><i class="bi bi-trash"></i></button>
                   </div>
                 </div>
               </div>
             </div>
-          <div class="col-12">
-            <button class="w-100 btn btn-outline-secondary mt-2 mx-auto" (click)="addField()">Добавить упражнение</button>
+            <div class="col-12">
+              <button class="w-100 btn btn-outline-secondary mt-2 mx-auto text-light" (click)="addField()">Добавить упражнение</button>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="modal-footer mt-3">
-        <button type="submit" class="w-100 btn btn-outline-secondary mt-3" (click)="submittedClick=true">Добавить</button>
-      </div>
-    </form>
+        <div class="modal-footer mt-3">
+          <div class="d-inline-flex col-12">
+            <div class="col-6 me-2">
+              <button type="submit" class="w-100 btn btn-outline-success mt-3 text-light" (click)="submittedClick=true">Сохранить</button>
+            </div>
+            <div class="col-6">
+              <button class="w-100 btn btn-outline-danger mt-3 text-light" (click)="modal.dismiss()">Отменить</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
   </div>
 </ng-template>
 
-<button class="btn btn-lg btn-outline-secondary shadow" (click)="open(content)"><i class="bi bi-pencil-square"></i></button>
+<button class="btn btn-outline-primary shadow" (click)="open(content)"><i class="bi bi-pencil-square"></i></button>

@@ -6,7 +6,7 @@ import { Event } from '../../shared/event.model';
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
-  styles: ``
+  styleUrl: './list.component.css'
 })
 export class ListComponent implements OnInit {
   inProgressEvents: any[] = [];

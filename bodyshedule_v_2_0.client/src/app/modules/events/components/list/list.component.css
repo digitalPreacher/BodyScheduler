@@ -1,0 +1,8 @@
+
+.nav-link:active {
+  background-color: red !important; 
+}
+
+.create-event-button {
+  border-color: transparent !important;
+}
