@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit {
     weekends: true,
     editable: true,
     selectable: true,
-    eventDisplay: 'block',
+    eventDisplay: 'block'
   };
 
   constructor(private authService: AuthorizationService, private inactivityService: UserInactivityService,

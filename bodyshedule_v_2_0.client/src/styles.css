@@ -6,14 +6,20 @@
 
 
 .fc-daygrid-day-number{
-  color: #323232;
+  color: white;
 }
 
 
 .fc-col-header-cell-cushion {
-  color: #323232;
+  color: white;
+}
+
+.fc-toolbar-title {
+    color: white  ;
 }
 
 .fc a {
   text-decoration-line: none;
 }
+
+

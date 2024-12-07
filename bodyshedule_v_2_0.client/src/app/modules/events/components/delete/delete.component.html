@@ -1,14 +1,23 @@
 <ng-template #content let-modal>
-  <div class="modal-header">
-    <h3 class="modal-title" id="modal-delete-title" style="text-align">Удаление записи</h3>
-    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
-  </div>
-  <div class="modal-body">
-    <h4>Вы действительно хотите сделать это?</h4>
-    <div class="modal-footer mt-3">
-      <button type="submit" class="w-100 btn btn-outline-secondary mt-3" (click)="deleteEvent()">Да</button>
+  <div class="bg-dark text-light">
+    <div class="modal-header">
+      <h3 class="modal-title" id="modal-delete-title" style="text-align">Удаление записи</h3>
+      <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <h4>Вы действительно хотите сделать это?</h4>
+      <div class="modal-footer mt-3">
+        <div class="d-inline-flex col-12">
+          <div class="col-6 me-2">
+            <button type="submit" class="w-100 btn btn-outline-success mt-3 text-light" (click)="deleteEvent()">Да</button>
+          </div>
+          <div class="col-6">
+            <button type="submit" class="w-100 btn btn-outline-danger mt-3 text-light" (click)="modal.dismiss()">Нет</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </ng-template>
 
-<button class="btn btn-lg btn-outline-secondary shadow" (click)="open(content)"><i class="bi bi-trash"></i></button>
+<button class="btn btn-outline-danger shadow" (click)="open(content)"><i class="bi bi-trash"></i></button>

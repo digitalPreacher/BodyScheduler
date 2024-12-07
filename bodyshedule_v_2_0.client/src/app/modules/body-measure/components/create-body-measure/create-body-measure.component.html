@@ -1,4 +1,4 @@
-<form [formGroup]="createForm" (ngSubmit)="addBodyMeasure()">
+<form class="border rounded-3 p-3 bg-dark text-light" [formGroup]="createForm" (ngSubmit)="addBodyMeasure()">
   <div class="form-group" formArrayName="bodyMeasureSet">
     <div *ngFor="let bodyMeasure of bodyMeasureArray.controls; let i = index" class="d-inline-flex">
       <div [formGroupName]="i">
@@ -15,5 +15,5 @@
        </div>
     </div>
   </div>
-  <button type="submit" class="btn btn-outline-secondary mt-2">Сохранить</button>
+  <button type="submit" class="btn btn-outline-success mt-4 text-light">Сохранить</button>
 </form>

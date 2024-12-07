@@ -8,3 +8,12 @@ i {
   overflow: hidden; /* Hide content that overflows */
   max-width: 6em; /* Set the maximum width for the cell content */
 }
+
+#fullcalendar, .create-event-button {
+
+  border-color: transparent !important;
+}
+
+
+
+
