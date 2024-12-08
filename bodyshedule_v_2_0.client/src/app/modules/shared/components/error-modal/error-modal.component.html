@@ -1,0 +1,18 @@
+<ng-template #errorContent let-modal>
+  <div class="bg-dark text-light">
+    <div class="modal-header">
+      <h3 class="modal-title"  id="modal-delete-title" style="color:red">Возникла ошибка</h3>
+      <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <h4 style="color:red">{{ errorMessage }}</h4>
+      <div class="modal-footer mt-3">
+        <div class="d-inline-flex col-12">
+          <div class="col-6">
+            <button type="submit" class="w-100 btn btn-outline-danger mt-3 text-light" (click)="modal.dismiss()">Ок</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TrainingProgramService } from '../../shared/training-program.service';
+import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component';
 
 @Component({
   selector: 'app-list-training-program',
@@ -11,6 +12,8 @@ export class ListTrainingProgramComponent implements OnInit {
   collectionSize!: number;
   page = 1;
   pageSize = 10;
+
+  @ViewChild('errorModal') errorModal!: ErrorModalComponent;
 
   constructor(private trainingProgramsService: TrainingProgramService) { }
 
@@ -29,6 +32,9 @@ export class ListTrainingProgramComponent implements OnInit {
       next: result => {
         this.trainingPrograms = result;
         this.collectionSize = result.length;
+      },
+      error: err => {
+        this.errorModal.openModal(err);
       }
     });
   }

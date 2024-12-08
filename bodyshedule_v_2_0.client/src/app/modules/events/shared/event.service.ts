@@ -14,6 +14,7 @@ export class EventService {
   eventChangeData$: Subject<boolean> = new Subject<boolean>();
   subscribed: any;
   userId = '';
+  occurredErrorMessage = 'Произошла неизвестная ошибка, повторите попытку чуть позже или сообщите в техподдержку';
 
   baseUrl = 'https://localhost:7191';
 
@@ -32,7 +33,7 @@ export class EventService {
           return result;
         },
         catchError(error => {
-          return throwError(error.error.message)
+          return throwError(error.error.message || this.occurredErrorMessage);
         })
       );
   }
@@ -45,7 +46,7 @@ export class EventService {
           return result;
         },
         catchError(error => {
-          return throwError(error.error.message)
+          return throwError(error.error.message || this.occurredErrorMessage);
         })
       );
   }
@@ -58,7 +59,7 @@ export class EventService {
           return result;
         },
         catchError(error => {
-          return throwError(error.error.message);
+          return throwError(error.error.message || this.occurredErrorMessage);
         })
       );
   }
@@ -71,7 +72,7 @@ export class EventService {
           return result;
         },
         catchError(error => {
-          return throwError(error.error.message)
+          return throwError(error.error.message || this.occurredErrorMessage);
         })
       );
   }
@@ -84,7 +85,7 @@ export class EventService {
           return result;
         },
         catchError(error => {
-          return throwError(error.error.message)
+          return throwError(error.error.message || this.occurredErrorMessage);
         })
       );
   }
@@ -97,7 +98,7 @@ export class EventService {
           return result;
         },
         catchError(error => {
-          return throwError(error.error.message)
+          return throwError(error.error.message || this.occurredErrorMessage);
         })
       );
   }
@@ -109,7 +110,7 @@ export class EventService {
           return result;
         },
         catchError(error => {
-          return throwError(error.error.message)
+          return throwError(error.error.message || this.occurredErrorMessage);
         })
       );
   }

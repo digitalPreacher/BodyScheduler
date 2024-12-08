@@ -6,3 +6,17 @@
 #drop-down{
     right: 40px;
 }
+
+
+a {
+  color: white;
+}
+
+.navbar-custom {
+  --bs-navbar-hover-color: #685d5d;
+  --navbar-color: red;
+}
+
+.drop-down-menu {
+  background-color: #2f2f2f;
+}

@@ -1,171 +1,180 @@
-<button class="btn btn-outline-secondary shadow" (click)="openMain(content)"><i class="bi bi-pencil-square"></i></button>
+<button class="btn btn-outline-primary" (click)="openMain(content)"><i class="bi bi-pencil-square"></i></button>
 
 <ng-template #content let-modal>
-  <div class="modal-header">
-    <h3 class="modal-title" id="modal-edit-title" style="text-align:center">Просмотр</h3>
-    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
-  </div>
-  <div class="modal-body">
-    <form class="p-3 text-center" [formGroup]="editForm">
-      <div class="form-group">
-        <label>Заголовок</label>
-        <input type="text"
-               class="form-control"
-               id="title-edit-training-form-field"
-               formControlName="title"
-               name="title-field" />
-      </div>
-      <div class="form-group mt-2">
-        <label>Описание</label>
-        <textarea type="text"
-               class="form-control"
-               id="description-edit-training-form-field"
-               formControlName="description"
-               name="description-field"></textarea>
-      </div>
-      <div class="form-group mt-2" formArrayName="weeks">
-        <div>
-          <label for="weeks-edit-training-form-field">Неделя</label>
+  <div class="bg-dark text-light">
+    <div class="modal-header">
+      <h3 class="modal-title" id="modal-edit-title">Просмотр</h3>
+      <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <form class="p-3 text-center" [formGroup]="editForm">
+        <div class="form-group">
+          <label>Название</label>
+          <input type="text"
+                 class="form-control"
+                 id="title-edit-training-form-field"
+                 formControlName="title"
+                 name="title-field" />
         </div>
-        <div *ngFor="let week of weeks.controls; let i=index" class="d-inline-flex col-6">
-          <div [formGroupName]="i">
-            <div class="mt-2 d-inline-flex">
-              <div class="mx-2">
-                <input type="number"
-                       class="form-control"
-                       id="weeks-edit-training-form-field"
-                       required
-                       formControlName="weekNumber"
-                       name="weeks-field"
-                       min="0"
-                       readonly />
-              </div>
-              <button class="btn btn-outline-secondary" (click)="openDays(getDays)">+</button>
-              <button (click)="removeWeek(i)">Х</button>
-              <ng-template #getDays let-modal>
-                <div class="modal-header">
-                  <h3 class="modal-title" id="modal-edit-title" style="text-align:center">Добавить дни</h3>
-                  <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+        <div class="form-group mt-2">
+          <label>Описание</label>
+          <textarea type="text"
+                 class="form-control"
+                 id="description-edit-training-form-field"
+                 formControlName="description"
+                 name="description-field"></textarea>
+        </div>
+        <div class="form-group mt-2" formArrayName="weeks">
+          <div *ngIf="weeks.length > 0">
+            <label for="weeks-edit-training-form-field">Недели</label>
+          </div>
+          <div *ngFor="let week of weeks.controls; let i=index" class="d-inline-flex col-6">
+            <div [formGroupName]="i">
+              <div class="mt-2 d-inline-flex">
+                <div class="mx-2">
+                  <input type="number"
+                         class="form-control"
+                         id="weeks-edit-training-form-field"
+                         required
+                         formControlName="weekNumber"
+                         name="weeks-field"
+                         min="0"
+                         readonly />
                 </div>
-                <div class="modal-body" formArrayName="events">
-                  <div *ngFor="let event of getEventsControls(i); let j=index">
-                    <div [formGroupName]="j">
-                      <div class="border border-rounded p-3 mt-2">
-                        <div class="text-center">
-                          <label>День {{ j + 1 }}</label>
-                        </div>
-                        <div class="form-group">
-                          <label for="title-edit-training-form-field">Описание</label>
-                          <input type="text"
-                                 class="form-control"
-                                 id="title-edit-training-form-field"
-                                 formControlName="title"
-                                 name="title-field" />
-                        </div>
-                        <div class="form-group">
-                          <label>Описание</label>
-                          <input type="text"
-                                 class="form-control"
-                                 id="description-edit-training-form-field"
-                                 required
-                                 formControlName="description"
-                                 name="description-field" />
-                        </div>
-                        <div class="form-group">
-                          <label>Начало</label>
-                          <input type="datetime-local"
-                                 class="form-control"
-                                 id="start-time-edit-training-form-field"
-                                 formControlName="startTime"
-                                 name="start-time-field" />
-                        </div>
-                        <div class="form-group mt-2" formArrayName="exercises">
-                          <div class="col-12 d-inline-flex mx-auto">
-                            <div class="col-8">
-                              <label for="title-exercise-edit-training-form-field">Упражнение</label>
+                <button class="btn btn-outline-primary me-2" (click)="openDays(getDays)"><i class="bi bi-pencil-square"></i></button>
+                <button class="btn btn-outline-danger" (click)="removeWeek(i)"><i class="bi bi-trash"></i></button>
+                <ng-template #getDays let-modal>
+                  <div class="bg-dark text-light">
+                    <div class="modal-header">
+                      <h3 class="modal-title" id="modal-edit-title" style="text-align:center">Редактирование дней недели</h3>
+                      <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="modal.dismiss()"></button>
+                    </div>
+                    <div class="modal-body" formArrayName="events">
+                      <div *ngFor="let event of getEventsControls(i); let j=index">
+                        <div [formGroupName]="j">
+                          <div class="border rounded p-3 mt-2">
+                            <div class="text-center">
+                              <label>День {{ j + 1 }}</label>
                             </div>
-                            <div class="col-1 mx-2">
-                              <label for="quantity-approaches-edit-training-form-field">Подходы</label>
+                            <div class="form-group">
+                              <label for="title-edit-training-form-field">Название</label>
+                              <input type="text"
+                                     class="form-control"
+                                     id="title-edit-training-form-field"
+                                     formControlName="title"
+                                     name="title-field" />
                             </div>
-                            <div class="col-1">
-                              <label for="quantity-repetions-edit-training-form-field">Повт-ия</label>
-                            </div>
-                            <div class="mx-4">
-                              <label for="weight-edit-training-form-field">Вес</label>
-                            </div>
-                          </div>
-                          <div *ngFor="let exercise of getExercisesControls(i,j); let k=index">
-                            <div [formGroupName]="k">
-                              <div class="col-12 d-inline-flex mx-auto mt-2">
-                                <div class="col-8">
-                                  <input type="text"
-                                         class="form-control"
-                                         id="title-exercise-edit-training-form-field"
-                                         formControlName="title"
-                                         name="title-exercise-field"
-                                         #insertTitleBar
-                                         (keyup)="enterKeyUp(insertTitleBar.value)"
-                                         list="titleOptions" />
-                                  <datalist id="titleOptions">
-                                    <option *ngFor="let value of filterListValue">
-                                      {{ value }}
-                                    </option>
-                                  </datalist>
-                                </div>
-                                <div class="col-1 mx-2">
-                                  <input type="number"
-                                         class="form-control"
-                                         id="quantity-approaches-edit-training-form-field"
-                                         formControlName="quantityApproaches"
-                                         name="quantity-approaches-field"
-                                         min="0" />
-                                </div>
-                                <div class="col-1">
-                                  <input type="number"
-                                         class="form-control"
-                                         id="quantity-repetions-edit-training-form-field"
-                                         formControlName="quantityRepetions"
-                                         name="quantity-repetions-field"
-                                         min="0" />
-                                </div>
-                                <div class="col-1 mx-2">
-                                  <input type="number"
-                                         class="form-control"
-                                         id="weight-edit-training-form-field"
-                                         formControlName="weight"
-                                         name="weight-field"
-                                         step="0.1"
-                                         min="0" />
-                                </div>
-                                <div class="col-1">
-                                  <button (click)="removeExercisesField(i,j,k)">X</button>
-                                </div>
+                            <div class="d-inline-flex col-12">
+                              <div class="form-group col-8 me-2">
+                                <label for="description-edit-training-form-field">Описание</label>
+                                <textarea type="text"
+                                       class="form-control"
+                                       id="description-edit-training-form-field"
+                                       required
+                                       formControlName="description"
+                                       name="description-field"></textarea>
+                              </div>
+                              <div class="form-group col-3">
+                                <label>Начало</label>
+                                <input type="datetime-local"
+                                       class="form-control"
+                                       id="start-time-edit-training-form-field"
+                                       formControlName="startTime"
+                                       name="start-time-field" />
                               </div>
                             </div>
+                            <div class="form-group mt-2" formArrayName="exercises">
+                              <div class="col-12 d-inline-flex mx-auto">
+                                <div class="col-5">
+                                  <label for="title-exercise-edit-training-form-field">Упражнение</label>
+                                </div>
+                                <div class="col-2 ms-1 ps-1">
+                                  <label for="quantity-approaches-edit-training-form-field">Подходы</label>
+                                </div>
+                                <div class="col-2 ms-1 ps-1">
+                                  <label for="quantity-repetions-edit-training-form-field">Повт-ия</label>
+                                </div>
+                                <div class="col-2 ms-1 ps-1">
+                                  <label for="weight-edit-training-form-field">Вес</label>
+                                </div>
+                              </div>
+                              <div *ngFor="let exercise of getExercisesControls(i,j); let k=index">
+                                <div [formGroupName]="k">
+                                  <div class="col-12 d-inline-flex mt-2">
+                                    <div class="col-5">
+                                      <input type="text"
+                                             class="form-control"
+                                             id="title-exercise-edit-training-form-field"
+                                             formControlName="title"
+                                             name="title-exercise-field"
+                                             #insertTitleBar
+                                             (keyup)="enterKeyUp(insertTitleBar.value)"
+                                             list="titleOptions"
+                                             placeholder="Становая тяга"/>
+                                      <datalist id="titleOptions">
+                                        <option *ngFor="let value of filterListValue">
+                                          {{ value }}
+                                        </option>
+                                      </datalist>
+                                    </div>
+                                    <div class="col-2 mx-1">
+                                      <input type="number"
+                                             class="form-control"
+                                             id="quantity-approaches-edit-training-form-field"
+                                             formControlName="quantityApproaches"
+                                             name="quantity-approaches-field"
+                                             min="0" />
+                                    </div>
+                                    <div class="col-2 me-1">
+                                      <input type="number"
+                                             class="form-control"
+                                             id="quantity-repetions-edit-training-form-field"
+                                             formControlName="quantityRepetions"
+                                             name="quantity-repetions-field"
+                                             min="0" />
+                                    </div>
+                                    <div class="col-2 me-1">
+                                      <input type="number"
+                                             class="form-control"
+                                             id="weight-edit-training-form-field"
+                                             formControlName="weight"
+                                             name="weight-field"
+                                             step="0.1"
+                                             min="0" />
+                                    </div>
+                                    <div>
+                                      <button class="btn btn-outline-danger" (click)="removeExercisesField(i,j,k)"><i class="bi bi-trash"></i></button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-12">
+                                <button class="w-100 btn btn-outline-secondary mt-2 mx-auto text-light" (click)="addExecise(i,j)">Добавить упражнение</button>
+                              </div>
+                            </div>
+                            <div class="col-12">
+                              <button class="btn btn-outline-danger mt-2 mx-auto text-light" (click)="removeEvent(i,j)">Удалить день</button>
+                            </div>
                           </div>
-                          <div class="col-12">
-                            <button class="w-100 btn btn-outline-secondary mt-2 mx-auto" (click)="addExecise(i,j)">Добавить упражнение</button>
-                          </div>
-                        </div>
-                        <div class="col-12">
-                          <button class="w-100 btn btn-outline-secondary mt-2 mx-auto" (click)="removeEvent(i,j)">Удалить день</button>
                         </div>
                       </div>
+                      <button *ngIf="getEventsControls(i).length < 7" class="btn btn-outline-secondary mt-2 text-light" (click)="addEvent(i)">Добавить день</button>
                     </div>
                   </div>
-                  <button *ngIf="getEventsControls(i).length < 7" class="btn btn-outline-secondary mt-2" (click)="addEvent(i)">+</button>
-                </div>
-              </ng-template>
+                </ng-template>
+              </div>
             </div>
           </div>
+          <div class="col-12">
+            <button class="w-100 btn btn-outline-secondary mt-2 mx-auto text-light" (click)="addWeeks()">Добавить Неделю</button>
+          </div>
         </div>
-        <div class="col-12">
-          <button class="w-100 btn btn-outline-secondary mt-2 mx-auto" (click)="addWeeks()">Добавить Неделю</button>
+        <div class="modal-footer mt-3">
+          <button type="submit" class="w-100 btn btn-outline-success mt-3 text-light" (click)="edit()">Сохранить</button>
         </div>
-      </div>
-      <div class="modal-footer mt-3">
-        <button type="submit" class="w-100 btn btn-outline-secondary mt-3" (click)="edit()">Добавить</button>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
 </ng-template>
+
+<app-error-modal #errorModal></app-error-modal>

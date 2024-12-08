@@ -1,8 +1,8 @@
-<div class="d-flex justify-content-start mb-2">
+<div class="d-flex justify-content-start mb-2 border rounded-3 p-2 bg-dark create-event-button">
   <app-create></app-create>
-  <app-create-training-program></app-create-training-program>
 </div>
-<full-calendar [options]="calendarOptions">
+
+<full-calendar [options]="calendarOptions" class="border rounded-4 p-4 bg-dark" id="fullcalendar">
   <ng-template #eventContent let-arg>
     <div (click)="open(content, arg.event.id)">
       <b>{{arg.timeText}}</b>
@@ -12,111 +12,120 @@
 </full-calendar>
 
 <ng-template #content let-modal>
-  <div class="modal-header">
-    <h3 class="modal-title" id="modal-details-title" style="text-align:center">Просмотр</h3>
-    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
-  </div>
-  <div class="modal-body">
-    <form class="p-3 text-center" [formGroup]="detailsForm">
-      <div class="form-group">
-        <label>Заголовок</label>
-        <input type="text"
-               class="form-control"
-               id="title-details-form-fiel"
-               required
-               formControlName="title"
-               name="title-field"
-               readonly />
-      </div>
-      <div class="form-group mt-2">
-        <label>Описание</label>
-        <input type="text"
-               class="form-control"
-               id="description-details-form-field"
-               required
-               formControlName="description"
-               name="description-field"
-               readonly />
-      </div>
-      <div class="form-group mt-2">
-        <label>Начало</label>
-        <input type="datetime-local"
-               class="form-control"
-               id="start-time-details-form-field"
-               required
-               formControlName="startTime"
-               name="start-time-field"
-               readonly />
-      </div>
-      <div class="form-group mt-2" formArrayName="exercises">
-        <div class="col-12 d-inline-flex mx-auto">
-          <div class="col-9">
-            <label for="title-exercise-details-form-field">Упражнение</label>
+  <div class="bg-dark text-light">
+    <div class="modal-header">
+      <h3 class="modal-title" id="modal-details-title" style="text-align:center">Просмотр</h3>
+      <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <form class="p-3 text-center" [formGroup]="detailsForm">
+        <div class="form-group">
+          <label>Заголовок</label>
+          <input type="text"
+                 class="form-control"
+                 id="title-details-form-fiel"
+                 required
+                 formControlName="title"
+                 name="title-field"
+                 readonly />
+        </div>
+        <div class="d-inline-flex mt-2 col-12">
+          <div class="form-group col-8 me-2">
+            <label for="description-details-form-field">Описание</label>
+            <textarea type="text"
+                      class="form-control"
+                      id="description-details-form-field"
+                      required
+                      formControlName="description"
+                      name="description-field"
+                      readonly></textarea>
           </div>
-          <div class="col-1 mx-2">
-            <label for="quantity-approaches-details-form-field">Подходы</label>
-          </div>
-          <div class="col-1">
-            <label for="quantity-repetions-details-form-field">Повт-ия</label>
-          </div>
-          <div class="col-1 mx-2">
-            <label for="weight-details-form-field">Вес</label>
+          <div class="form-group col-3">
+            <label for="start-time-details-form-field">Начало</label>
+            <input type="datetime-local"
+                   class="form-control"
+                   id="start-time-details-form-field"
+                   required
+                   formControlName="startTime"
+                   name="start-time-field"
+                   readonly />
           </div>
         </div>
-        <div *ngFor="let exercise of getExercise.controls; let i=index">
-          <div [formGroupName]="i">
-            <div class="col-12 d-inline-flex mx-auto mt-2">
-              <div class="col-9">
-                <input type="text"
-                       class="form-control"
-                       id="title-exercise-details-form-field"
-                       required
-                       formControlName="title"
-                       name="title-exercise-field"
-                       readonly />
-              </div>
-              <div class="col-1 mx-2">
-                <input type="number"
-                       class="form-control"
-                       id="quantity-approaches-details-form-field"
-                       required
-                       formControlName="quantityApproaches"
-                       name="quantity-approaches-field"
-                       min="0"
-                       readonly />
-              </div>
-              <div class="col-1">
-                <input type="number"
-                       class="form-control"
-                       id="quantity-repetions-details-form-field"
-                       required
-                       formControlName="quantityRepetions"
-                       name="quantity-repetions-field"
-                       min="0"
-                       readonly />
-              </div>
-              <div class="col-1 mx-2">
-                <input type="number"
-                       class="form-control"
-                       id="weight-details-form-field"
-                       required
-                       formControlName="weight"
-                       name="weight-field"
-                       min="0"
-                       readonly />
+        <div class="form-group mt-2" formArrayName="exercises">
+          <div class="col-12 d-inline-flex mx-auto">
+            <div class="col-6">
+              <label for="title-exercise-details-form-field">Упражнение</label>
+            </div>
+            <div class="col-2 mx-1">
+              <label for="quantity-approaches-details-form-field">Подходы</label>
+            </div>
+            <div class="col-2">
+              <label for="quantity-repetions-details-form-field">Повт-ия</label>
+            </div>
+            <div class="col-2">
+              <label for="weight-details-form-field">Вес</label>
+            </div>
+          </div>
+          <div *ngFor="let exercise of getExercise.controls; let i=index">
+            <div [formGroupName]="i">
+              <div class="col-12 d-inline-flex mt-2">
+                <div class="col-6">
+                  <input type="text"
+                         class="form-control"
+                         id="title-exercise-details-form-field"
+                         required
+                         formControlName="title"
+                         name="title-exercise-field"
+                         readonly />
+                </div>
+                <div class="col-2 mx-1">
+                  <input type="number"
+                         class="form-control"
+                         id="quantity-approaches-details-form-field"
+                         required
+                         formControlName="quantityApproaches"
+                         name="quantity-approaches-field"
+                         min="0"
+                         readonly />
+                </div>
+                <div class="col-2 me-1">
+                  <input type="number"
+                         class="form-control"
+                         id="quantity-repetions-details-form-field"
+                         required
+                         formControlName="quantityRepetions"
+                         name="quantity-repetions-field"
+                         min="0"
+                         readonly />
+                </div>
+                <div class="col-2 pe-3">
+                  <input type="number"
+                         class="form-control"
+                         id="weight-details-form-field"
+                         required
+                         formControlName="weight"
+                         name="weight-field"
+                         min="0"
+                         readonly />
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="modal-footer mt-3">
-        <div class="d-inline-flex">
-          <button type="submit" class="btn btn-outline-secondary mt-3 shadow mx-2" (click)="changeEventStatus('completed')">Завершить тренировку</button>
-          <button type="submit" class="btn btn-outline-secondary mt-3" (click)="modal.dismiss()">Отмена</button>
+        <div class="modal-footer mt-3">
+          <div class="d-inline-flex">
+            <div>
+              <button type="submit" class="btn btn-outline-success mt-3 shadow mx-2 text-light" (click)="changeEventStatus('completed')">Завершить тренировку</button>
+            </div>
+            <div>
+              <button type="button" class="btn btn-outline-danger mt-3 shadow text-light" (click)="modal.dismiss()">Отмена</button>
+            </div>
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
 </ng-template>
 
-<div #templateContainer></div>
+<app-error-modal #errorModal></app-error-modal>
+

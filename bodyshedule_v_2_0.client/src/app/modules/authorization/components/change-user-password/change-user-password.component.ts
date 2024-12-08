@@ -6,7 +6,7 @@ import { ChangeUserPasswordData } from '../../shared/change-user-password-data.m
 @Component({
   selector: 'app-change-user-password',
   templateUrl: './change-user-password.component.html',
-  styles: ``
+  styleUrl: './change-user-password.component.css',
 })
 export class ChangeUserPasswordComponent {
   model: ChangeUserPasswordData = new ChangeUserPasswordData();
