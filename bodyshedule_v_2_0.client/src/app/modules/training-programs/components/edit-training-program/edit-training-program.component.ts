@@ -6,6 +6,7 @@ import { TrainingProgramService } from '../../shared/training-program.service';
 import { EventService } from '../../../events/shared/event.service';
 import { AuthorizationService } from '../../../authorization/shared/authorization.service';
 import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-edit-training-program',
@@ -62,41 +63,40 @@ export class EditTrainingProgramComponent implements OnInit {
           description: eventData.description
         });
 
-        //push every week to form
-        eventData.weeks.forEach((week: { id: number, weekNumber: number }) => {
+        //clear all controls to weeks
+        this.weeks.clear();
+
+
+        eventData.weeks.forEach((week: { id: number, weekNumber: number, events: [] }, weekIndex: number) => {
           this.weeks.push(this.formBuilder.group({
-            id: week.id, 
+            id: week.id,
             weekNumber: week.weekNumber,
             events: this.formBuilder.array([])
           }))
-        });
 
-        //push events and exercise arrays to form
-        for (let i = 0; i < eventData.weeks.length; i++) {
-          const events = this.getEventsFormArray(i);
-
-          for (let j = 0; j < eventData.weeks[i].events.length; j++) {
-            events.push(this.formBuilder.group({
-              id: eventData.weeks[i].events[j].id,
-              title: eventData.weeks[i].events[j].title,
-              description: eventData.weeks[i].events[j].description,
-              status: eventData.weeks[i].events[j].status,
-              startTime: this.datePipe.transform(eventData.weeks[i].events[j].startTime, 'yyyy-MM-ddTHH:mm'),
+          week.events.forEach((event: { id: number, title: string, description: string, status: string, startTime: string, exercises: [] }, eventIndex: number) => {
+            const array = this.weeks.controls[weekIndex].get('events') as FormArray;
+            array.push(this.formBuilder.group({
+              id: event.id,
+              title: event.title,
+              description: event.description,
+              status: event.status,
+              startTime: this.datePipe.transform(event.startTime, 'yyyy-MM-ddTHH:mm'),
               exercises: this.formBuilder.array([])
-            }));
+            }))
 
-            for (let k = 0; k < eventData.weeks[i].events[j].exercises.length; k++) {
-              const exercises = this.getExercisesFormArray(i, j);
-              exercises.push(this.formBuilder.group({
-                id: eventData.weeks[i].events[j].exercises[k].id,
-                title: eventData.weeks[i].events[j].exercises[k].title,
-                quantityApproaches: eventData.weeks[i].events[j].exercises[k].quantityApproaches,
-                quantityRepetions: eventData.weeks[i].events[j].exercises[k].quantityRepetions,
-                weight: eventData.weeks[i].events[j].exercises[k].weight,
+            event.exercises.forEach((exercise: { id: number, title: string, quantityApproaches: number, quantityRepetions: number, weight: number }) => {
+              const exerciseArray = array.controls[eventIndex].get('exercises') as FormArray;
+              exerciseArray.push(this.formBuilder.group({
+                id: exercise.id,
+                title: exercise.title,
+                quantityApproaches: exercise.quantityApproaches,
+                quantityRepetions: exercise.quantityRepetions,
+                weight: exercise.weight
               }))
-            }
-          }
-        }
+            })
+          })
+        });
       },
       error: err => {
         this.errorModal.openModal(err);
