@@ -1,10 +1,11 @@
-import { Component, Input, Output, TemplateRef, inject , OnInit} from '@angular/core';
+import { Component, Input, Output, TemplateRef, inject , OnInit, ViewChild} from '@angular/core';
 import { EventService } from '../../shared/event.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthorizationService } from '../../../authorization/shared/authorization.service';
 import { DatePipe } from '@angular/common';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { Event } from '../../shared/event.model';
+import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component';
 
 @Component({
   selector: 'app-edit',
@@ -25,7 +26,7 @@ export class EditComponent implements OnInit {
   submittedClick = false;
 
   @Input() eventId!: number;
-  
+  @ViewChild('errorModal') errorModal!: ErrorModalComponent;
 
   constructor(private eventService: EventService, private formBuilder: FormBuilder,
     private authService: AuthorizationService, private datePipe: DatePipe) {
@@ -43,7 +44,7 @@ export class EditComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
+  ngOnInit() { 
     this.eventService.getExerciseTitles().subscribe(data => {
       this.listValue = data;
     });
@@ -63,7 +64,7 @@ export class EditComponent implements OnInit {
           this.eventService.eventChangeData$.next(true);
         },
         error: err => {
-          console.log(err)
+          this.errorModal.openModal(err);
         }
       });
     }
@@ -103,7 +104,7 @@ export class EditComponent implements OnInit {
         });
       },
       error: err => {
-        console.log(err);
+        this.errorModal.openModal(err);
       }
     });
   }
@@ -135,7 +136,6 @@ export class EditComponent implements OnInit {
   removeField(id: number) {
     const exercises = this.createForm.get('exercises') as FormArray;
     exercises.removeAt(id);
-    console.log("remove item with id: " + id);
   }
 
   //open modal form

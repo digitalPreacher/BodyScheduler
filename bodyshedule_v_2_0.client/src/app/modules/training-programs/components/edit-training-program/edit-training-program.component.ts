@@ -1,10 +1,11 @@
-import { Component, Input, OnInit, TemplateRef, inject } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { TrainingProgramService } from '../../shared/training-program.service';
 import { EventService } from '../../../events/shared/event.service';
 import { AuthorizationService } from '../../../authorization/shared/authorization.service';
+import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component';
 
 @Component({
   selector: 'app-edit-training-program',
@@ -21,6 +22,7 @@ export class EditTrainingProgramComponent implements OnInit {
   filterListValue: any[] = [];
 
   @Input() programId!: number;
+  @ViewChild('errorModal') errorModal!: ErrorModalComponent;
 
   constructor(private trainingProgramService: TrainingProgramService, private formBuilder: FormBuilder, private datePipe: DatePipe, private eventService: EventService, private authService: AuthorizationService) {
     this.userDataSubscribtion = this.authService.userData$.asObservable().subscribe(data => {
@@ -95,6 +97,9 @@ export class EditTrainingProgramComponent implements OnInit {
             }
           }
         }
+      },
+      error: err => {
+        this.errorModal.openModal(err);
       }
     })
   }
@@ -208,10 +213,9 @@ export class EditTrainingProgramComponent implements OnInit {
           this.modalService.dismissAll();
           this.eventService.eventChangeData$.next(true);
           this.trainingProgramService.programChangeData$.next(true);
-          console.log(this.editForm.value);
         },
         error: err => {
-          console.log(err);
+          this.errorModal.openModal(err);
         }
       })
     }

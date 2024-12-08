@@ -1,3 +1,5 @@
+<button class="btn btn-outline-info shadow" (click)="open(content)"><i class="bi bi-eye"></i></button>
+
 <ng-template #content let-modal>
   <div class="bg-dark text-light">
     <div class="modal-header">
@@ -117,4 +119,5 @@
   </div>
 </ng-template>
 
-<button class="btn btn-outline-info shadow" (click)="open(content)"><i class="bi bi-eye"></i></button>
+<app-error-modal #errorModal></app-error-modal>
+

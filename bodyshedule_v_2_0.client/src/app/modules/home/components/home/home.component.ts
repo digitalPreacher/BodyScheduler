@@ -12,6 +12,7 @@ import { EventService } from '../../../events/shared/event.service';
 import { pipe } from 'rxjs';
 import { Event } from '../../../events/shared/event.model';
 import { ChangeEventStatus } from '../../../events/shared/change-event-status.model';
+import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component';
 
 
 @Component({
@@ -27,6 +28,8 @@ export class HomeComponent implements OnInit {
   model: ChangeEventStatus = new ChangeEventStatus();
 
   detailsForm: FormGroup;
+
+  @ViewChild('errorModal') errorModal!: ErrorModalComponent;
 
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin],
@@ -75,7 +78,7 @@ export class HomeComponent implements OnInit {
         };
       },
       error: err => {
-        console.log(err);
+        this.errorModal.openModal(err);
       }
     });
   }
@@ -110,7 +113,7 @@ export class HomeComponent implements OnInit {
 
       },
       error: err => {
-        console.log(err);
+        this.errorModal.openModal(err);
       }
     });
   }
@@ -140,12 +143,12 @@ export class HomeComponent implements OnInit {
         this.eventService.eventChangeData$.next(true);
       },
       error: err => {
-        console.log(err);
+        this.errorModal.openModal(err);
       }
     });
   }
 
-  //logout app
+  //logout account
   logout() {
     this.authService.logout();
   }

@@ -1,4 +1,4 @@
-import { Component, Output, inject, TemplateRef, OnInit } from '@angular/core';
+import { Component, Output, inject, TemplateRef, OnInit, ViewChild } from '@angular/core';
 import { Event } from '../../shared/event.model';
 import { EventService } from '../../shared/event.service';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
@@ -11,6 +11,7 @@ import moment, { utc } from 'moment';
 import { DatePipe } from '@angular/common';
 import { ex } from '@fullcalendar/core/internal-common';
 import { startWith } from 'rxjs';
+import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component';
 
 @Component({
   selector: 'app-create',
@@ -28,6 +29,8 @@ export class CreateComponent implements OnInit {
   filterListValue: any[] = [];
 
   submittedClick = false;
+
+  @ViewChild('errorModal') errorModal!: ErrorModalComponent;
 
   constructor(private eventService: EventService, private formBuilder: FormBuilder,
     private authService: AuthorizationService, private datePipe: DatePipe) {
@@ -81,7 +84,7 @@ export class CreateComponent implements OnInit {
           this.resetForm();
         },
         error: err => {
-          console.log(err)
+          this.errorModal.openModal(err);
         }
       });
     }

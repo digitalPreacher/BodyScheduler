@@ -129,7 +129,7 @@
               <button type="submit" class="w-100 btn btn-outline-success mt-3 text-light" (click)="submittedClick=true">Сохранить</button>
             </div>
             <div class="col-6">
-              <button class="w-100 btn btn-outline-danger mt-3 text-light" (click)="modal.dismiss()">Отменить</button>
+              <button type="button" class="w-100 btn btn-outline-danger mt-3 text-light" (click)="modal.dismiss()">Отменить</button>
             </div>
           </div>
         </div>
@@ -137,5 +137,7 @@
     </div>
   </div>
 </ng-template>
+
+<app-error-modal #errorModal></app-error-modal>
 
 <button class="btn btn-outline-primary shadow" (click)="open(content)"><i class="bi bi-pencil-square"></i></button>

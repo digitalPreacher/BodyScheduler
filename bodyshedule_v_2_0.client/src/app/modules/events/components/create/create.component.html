@@ -1,3 +1,5 @@
+<button class="btn btn-outline-secondary text-light" (click)="open(content); resetForm()">Добавить тренировку</button>
+
 <ng-template #content let-modal>
   <div class="bg-dark text-light">
     <div class="modal-header">
@@ -137,5 +139,4 @@
   </div>
 </ng-template>
 
-
-<button class="btn btn-outline-secondary text-light" (click)="open(content); resetForm()">Добавить тренировку</button>
+<app-error-modal #errorModal></app-error-modal>

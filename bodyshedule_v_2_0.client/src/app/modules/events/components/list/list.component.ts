@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthorizationService } from '../../../authorization/shared/authorization.service';
 import { EventService } from '../../shared/event.service';
 import { Event } from '../../shared/event.model';
+import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component';
 
 @Component({
   selector: 'app-list',
@@ -18,6 +19,8 @@ export class ListComponent implements OnInit {
   pageSize = 5;
   inProgressEventStatus: string = 'inProgress';
   completedEventStatus: string = 'completed';
+
+  @ViewChild('errorModal') errorModal!: ErrorModalComponent;
 
   constructor(private authService: AuthorizationService, private eventService: EventService) { }
 
@@ -39,18 +42,18 @@ export class ListComponent implements OnInit {
         this.collectionProgressEventsSize = events.length;
       },
       error: err => {
-        console.log(err);
+        this.errorModal.openModal(err);
       }
     });
 
-    //get events with completed status
+    //get events with Completed status
     this.eventService.getEvents(this.completedEventStatus).subscribe({
       next: events => {
         this.completedEvents = events;
         this.collectionCompletedEventsSize = events.length;
       },
       error: err => {
-        console.log(err);
+        this.errorModal.openModal(err);
       }
     });
   }

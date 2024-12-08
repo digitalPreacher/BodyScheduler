@@ -1,6 +1,7 @@
-import { Component, Input, Output, TemplateRef, inject } from '@angular/core';
+import { Component, Input, Output, TemplateRef, ViewChild, inject } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TrainingProgramService } from '../../shared/training-program.service'
+import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component';
 
 @Component({
   selector: 'app-delete-training-program',
@@ -12,6 +13,8 @@ export class DeleteTrainingProgramComponent {
   modalService = inject(NgbModal);
 
   @Input() programId!: number;
+  @ViewChild('errorModal') errorModal!: ErrorModalComponent;
+
   constructor(private trainingProgramService: TrainingProgramService) { }
 
   deleteTrainingProgram() {
@@ -21,7 +24,7 @@ export class DeleteTrainingProgramComponent {
         this.modalService.dismissAll();
       },
        error: err => {
-        console.log(err);
+         this.errorModal.openModal(err);
       }
     })
   }
