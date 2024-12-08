@@ -1,85 +1,68 @@
-﻿using BodyShedule_v_2_0.Server.Controllers;
-using System.Diagnostics;
-using System.Net.Mail;
+﻿using System.Net.Mail;
 
 namespace BodyShedule_v_2_0.Server.Utilities
 {
-    public class EmailSender
+    public static class EmailSender
     {
-        private readonly string _host;
-        private readonly int _port;
-        private readonly string _username;
-        private readonly string _password;
-
-        public EmailSender()
+        public static bool SendEmailPasswordReset(string userEmail, string link)
         {
-            _host = Environment.GetEnvironmentVariable("SMTP_HOST") ?? throw new ArgumentException("Invalid SMTP host");
-            _port = int.TryParse(Environment.GetEnvironmentVariable("SMTP_PORT"), out int port)
-                ? _port = port : throw new ArgumentException("Invalid SMTP port");
-            _username = Environment.GetEnvironmentVariable("SMTP_HOST_LOGIN") ?? throw new ArgumentException("Invalid login to host");
-            _password = Environment.GetEnvironmentVariable("SMTP_HOST_PASSWORD") ?? throw new ArgumentException("Invalid login to host");
-
-        }
-        public bool SendEmailPasswordReset(string userEmail, string link)
-        {
-            MailMessage mailMessage = new MailMessage();
-            mailMessage.From = new MailAddress("info@password-storage.ru");
+            var host = Environment.GetEnvironmentVariable("SMTP_HOST") ?? throw new ArgumentException("Invalid SMTP host");
+            var port = int.TryParse(Environment.GetEnvironmentVariable("SMTP_PORT"), out int checkPort)
+                ? checkPort : throw new ArgumentException("Invalid SMTP port");
+            var userName = Environment.GetEnvironmentVariable("SMTP_HOST_LOGIN") ?? throw new ArgumentException("Invalid login to host");
+            var password = Environment.GetEnvironmentVariable("SMTP_HOST_PASSWORD") ?? throw new ArgumentException("Invalid login to host");
+            var senderEmail = Environment.GetEnvironmentVariable("SMTP_SENDER_EMAIL") ?? throw new ArgumentException("Invalid email sender");
+            
+            using MailMessage mailMessage = new MailMessage();
+            mailMessage.From = new MailAddress(senderEmail);
             mailMessage.To.Add(new MailAddress(userEmail));
 
             mailMessage.Subject = "Сброс пароля";
             mailMessage.IsBodyHtml = true;
             mailMessage.Body = link;
 
-            SmtpClient client = new SmtpClient();
-            client.Credentials = new System.Net.NetworkCredential(_username, _password);
-            client.Host = _host;
+            using SmtpClient client = new SmtpClient();
+            client.Credentials = new System.Net.NetworkCredential(userName, password);
+            client.Host = host;
             client.EnableSsl = true;
-            client.Port = _port;
+            client.Port = port;
             client.UseDefaultCredentials = false;
 
-            try
-            {
-                client.Send(mailMessage);
+            client.Send(mailMessage);
 
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
-
-            return false;
+            return true;
+        
         }
 
-        public bool SendEmailUserFeedback(string userEmail, string description)
+        public static bool SendEmailUserFeedback(string userEmail, string description)
         {
-            MailMessage mailMessage = new MailMessage();
-            mailMessage.From = new MailAddress("feedback@password-storage.ru");
-            mailMessage.To.Add(new MailAddress("watcman35@yandex.ru"));
+            var host = Environment.GetEnvironmentVariable("SMTP_HOST") ?? throw new ArgumentException("Invalid SMTP host");
+            var port = int.TryParse(Environment.GetEnvironmentVariable("SMTP_PORT"), out int checkPort)
+                ? checkPort : throw new ArgumentException("Invalid SMTP port");
+            var userName = Environment.GetEnvironmentVariable("SMTP_HOST_LOGIN") ?? throw new ArgumentException("Invalid login to host");
+            var password = Environment.GetEnvironmentVariable("SMTP_HOST_PASSWORD") ?? throw new ArgumentException("Invalid login to host");
+            var emailSender = Environment.GetEnvironmentVariable("SMTP_FEEDBACK_SENDER_EMAIL") ?? throw new ArgumentException("Invalid sender email");
+            var emailGetter = Environment.GetEnvironmentVariable("SMTP_FEEDBACK_GETTER_EMAIL") ?? throw new ArgumentException("Invalid getter email");
+
+            using MailMessage mailMessage = new MailMessage();
+            mailMessage.From = new MailAddress(emailSender);
+            mailMessage.To.Add(new MailAddress(emailGetter));
 
             mailMessage.Subject = $"Сообщение о проблеме";
             mailMessage.IsBodyHtml = true;
             mailMessage.Body = $"<p>Описание: {description}<p>" +
                 $"<p>Email: {userEmail}<p>";
 
-            SmtpClient client = new SmtpClient();
-            client.Credentials = new System.Net.NetworkCredential(_username, _password);
-            client.Host = _host;
+            using SmtpClient client = new SmtpClient();
+            client.Credentials = new System.Net.NetworkCredential(userName, password);
+            client.Host = host;
             client.EnableSsl = true;
-            client.Port = _port;
+            client.Port = port;
             client.UseDefaultCredentials = false;
 
-            try
-            {
-                client.Send(mailMessage);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
+            client.Send(mailMessage);
 
-            return false;
+            return true;
         }
     }
 }
