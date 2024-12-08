@@ -33,6 +33,7 @@ import { MdbTabsModule } from 'mdb-angular-ui-kit/tabs';
 import { CreateBodyMeasureComponent } from './modules/body-measure/components/create-body-measure/create-body-measure.component';
 import { DetailsBodyMeasureComponent } from './modules/body-measure/components/details-body-measure/details-body-measure.component';
 import { LineChartBodyMeasureComponent } from './modules/body-measure/components/line-chart-body-measure/line-chart-body-measure.component';
+import { ErrorModalComponent } from './modules/shared/components/error-modal/error-modal.component';
 
 
 
@@ -58,7 +59,8 @@ import { LineChartBodyMeasureComponent } from './modules/body-measure/components
     ForgotUserPasswordComponent,
     CreateBodyMeasureComponent,
     DetailsBodyMeasureComponent,
-    LineChartBodyMeasureComponent
+    LineChartBodyMeasureComponent,
+    ErrorModalComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,

@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { BodyMeasureService } from '../../shared/body-measure.service'
 import { Color, ScaleType } from '@swimlane/ngx-charts';
+import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component';
 
 @Component({
   selector: 'app-line-chart-body-measure',
@@ -9,7 +10,6 @@ import { Color, ScaleType } from '@swimlane/ngx-charts';
 })
 export class LineChartBodyMeasureComponent implements OnInit  {
   multi: any[] = []
-
   view: [number, number] = [1300, 500];
 
   // options ngx line chart
@@ -25,18 +25,29 @@ export class LineChartBodyMeasureComponent implements OnInit  {
   timeline: boolean = true;
   legendTitle: string = 'Тип'
 
+  @ViewChild('errorModal') errorModal!: ErrorModalComponent;
 
   constructor(private bodyMeasureService: BodyMeasureService) {
-    this.bodyMeasureService.getBodyMeasuresDataToLineChart().subscribe(data => {
-      this.multi = data;
+    this.bodyMeasureService.getBodyMeasuresDataToLineChart().subscribe({
+      next: data => {
+        this.multi = data;
+      },
+      error: err => {
+        this.errorModal.openModal(err);
+      }
     })
   }
 
   ngOnInit() {
     this.bodyMeasureService.changeData$.subscribe(data => {
       if (data) {
-        this.bodyMeasureService.getBodyMeasuresDataToLineChart().subscribe(data => {
-          this.multi = data;
+        this.bodyMeasureService.getBodyMeasuresDataToLineChart().subscribe({
+          next: data => {
+            this.multi = data;
+          },
+          error: err => {
+            this.errorModal.openModal(err);
+          }
         })
       }
     })

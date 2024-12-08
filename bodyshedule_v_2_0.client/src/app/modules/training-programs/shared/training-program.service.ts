@@ -11,6 +11,7 @@ export class TrainingProgramService {
   programChangeData$: Subject<boolean> = new Subject<boolean>();
   baseUrl = 'https://localhost:7191';
   userId = '';
+  occurredErrorMessage = 'Произошла неизвестная ошибка, повторите попытку чуть позже или сообщите в техподдержку';
 
   constructor(private httpClient: HttpClient, private authService: AuthorizationService) {
     this.userDataSubscribtion = this.authService.userData$.asObservable().subscribe(data => {
@@ -26,7 +27,7 @@ export class TrainingProgramService {
           return result;
         },
         catchError(error => {
-          return throwError(error.error.message);
+          return throwError(error.error.message || this.occurredErrorMessage);
         })
       );
   }
@@ -39,7 +40,7 @@ export class TrainingProgramService {
           return result; 
         },
         catchError(error => {
-          return throwError(error.error.message);
+          return throwError(error.error.message || this.occurredErrorMessage);
         })
       );
   }
@@ -51,7 +52,7 @@ export class TrainingProgramService {
         return result;
       },
       catchError(error => {
-        return throwError(error.error.message);
+        return throwError(error.error.message || this.occurredErrorMessage);
       })
     );
   }
@@ -64,7 +65,7 @@ export class TrainingProgramService {
           return result;
         },
         catchError(error => {
-          return throwError(error.error.message);
+          return throwError(error.error.message || this.occurredErrorMessage);
         })
       );
   }
@@ -77,7 +78,7 @@ export class TrainingProgramService {
           return result;
         },
         catchError(error => {
-          return throwError(error.error.message);
+          return throwError(error.error.message || this.occurredErrorMessage);
         })
       );
   }

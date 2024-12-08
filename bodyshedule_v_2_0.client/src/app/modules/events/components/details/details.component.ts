@@ -1,9 +1,10 @@
-import { Component, Input, TemplateRef, inject } from '@angular/core';
+import { Component, Input, TemplateRef, ViewChild, inject } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { EventService } from '../../shared/event.service';
 import { ChangeEventStatus } from '../../shared/change-event-status.model';
+import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component';
 
 @Component({
   selector: 'app-details',
@@ -16,6 +17,7 @@ export class DetailsComponent {
   model: ChangeEventStatus = new ChangeEventStatus();
 
   @Input() eventId!: number;
+  @ViewChild('errorModal') errorModal!: ErrorModalComponent;
 
   constructor(private eventService: EventService, private formBuilder: FormBuilder, private datePipe: DatePipe) {
     this.detailsForm = this.formBuilder.group({
@@ -59,7 +61,7 @@ export class DetailsComponent {
         })
       },
       error: err => {
-        console.log(err);
+        this.errorModal.openModal(err);
       }
     });
   }
@@ -80,7 +82,7 @@ export class DetailsComponent {
         this.eventService.eventChangeData$.next(true);
       },
       error: err => {
-        console.log(err);
+        this.errorModal.openModal(err);
       }
     });
   }

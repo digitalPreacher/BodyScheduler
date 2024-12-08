@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 
 import { BodyMeasureService } from '../../shared/body-measure.service'
 import { AuthorizationService } from '../../../authorization/shared/authorization.service';
+import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component';
 
 
 @Component({
@@ -16,6 +17,8 @@ export class CreateBodyMeasureComponent implements OnInit {
   uniqueLastBodyMeasureArray: any[] = [];
 
   createForm: FormGroup;
+
+  @ViewChild('errorModal') errorModal!: ErrorModalComponent;
 
   constructor(private bodyMeasureService: BodyMeasureService, private formBuilder: FormBuilder, private authService: AuthorizationService) {
     this.userDataSubscribtion = this.authService.userData$.asObservable().subscribe(data => {
@@ -85,7 +88,7 @@ export class CreateBodyMeasureComponent implements OnInit {
         this.bodyMeasureService.changeData$.next(true);
       },
       error: err => {
-        console.log(err);
+        this.errorModal.openModal(err);
       }
     })
   }
@@ -108,7 +111,7 @@ export class CreateBodyMeasureComponent implements OnInit {
         });
       },
       error: err => {
-        console.log(err);
+        this.errorModal.openModal(err);
       }
     })
   }

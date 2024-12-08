@@ -1,10 +1,11 @@
-import { Component, Output, inject, TemplateRef, OnInit, Input } from '@angular/core';
+import { Component, Output, inject, TemplateRef, OnInit, Input, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray, Form } from '@angular/forms';
 import { ModalDismissReasons, NgbDatepickerModule, NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { DatePipe } from '@angular/common';
 import { AuthorizationService } from '../../../authorization/shared/authorization.service';
 import { TrainingProgramService } from '../../shared/training-program.service';
 import { EventService } from '../../../events/shared/event.service';
+import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component';
 
 
 @Component({
@@ -22,6 +23,8 @@ export class CreateTrainingProgramComponent {
   filterListValue: any[] = [];
 
   submittedClick = false;
+
+  @ViewChild('errorModal') errorModal!: ErrorModalComponent;
 
   constructor(private programService: TrainingProgramService, private formBuilder: FormBuilder,
     private authService: AuthorizationService, private datePipe: DatePipe, private eventService: EventService)
@@ -166,14 +169,13 @@ export class CreateTrainingProgramComponent {
       }
       this.programService.addTrainingProgram(this.createForm.value).subscribe({
         next: result => {
-          console.log(this.createForm.value);
           this.modalService.dismissAll();
           this.eventService.eventChangeData$.next(true);
           this.programService.programChangeData$.next(true);
           this.resetForm();
         },
         error: err => {
-          console.log(err)
+          this.errorModal.openModal(err);
         }
       })
     }

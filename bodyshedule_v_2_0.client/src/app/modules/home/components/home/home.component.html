@@ -33,12 +33,12 @@
           <div class="form-group col-8 me-2">
             <label for="description-details-form-field">Описание</label>
             <textarea type="text"
-                   class="form-control"
-                   id="description-details-form-field"
-                   required
-                   formControlName="description"
-                   name="description-field"
-                   readonly></textarea>
+                      class="form-control"
+                      id="description-details-form-field"
+                      required
+                      formControlName="description"
+                      name="description-field"
+                      readonly></textarea>
           </div>
           <div class="form-group col-3">
             <label for="start-time-details-form-field">Начало</label>
@@ -118,7 +118,7 @@
               <button type="submit" class="btn btn-outline-success mt-3 shadow mx-2 text-light" (click)="changeEventStatus('completed')">Завершить тренировку</button>
             </div>
             <div>
-              <button class="btn btn-outline-danger mt-3 shadow text-light" (click)="modal.dismiss()">Отмена</button>
+              <button type="button" class="btn btn-outline-danger mt-3 shadow text-light" (click)="modal.dismiss()">Отмена</button>
             </div>
           </div>
         </div>
@@ -127,4 +127,5 @@
   </div>
 </ng-template>
 
-<div #templateContainer></div>
+<app-error-modal #errorModal></app-error-modal>
+

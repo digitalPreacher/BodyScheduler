@@ -1,8 +1,9 @@
-import { Component, Input, TemplateRef, inject, OnInit } from '@angular/core';
+import { Component, Input, TemplateRef, inject, OnInit, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { TrainingProgramService } from '../../shared/training-program.service';
+import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component';
 
 @Component({
   selector: 'app-details-training-program',
@@ -16,6 +17,7 @@ export class DetailsTrainingProgramComponent implements OnInit {
   detailsForm: FormGroup;
 
   @Input() programId!: number;
+  @ViewChild('errorModal') errorModal!: ErrorModalComponent;
 
   constructor(private trainingProgramService: TrainingProgramService, private formBuilder: FormBuilder , private datePipe: DatePipe) {
     this.detailsForm = this.formBuilder.group({
@@ -70,6 +72,9 @@ export class DetailsTrainingProgramComponent implements OnInit {
             }
           }
         }
+      },
+      error: err => {
+        this.errorModal.openModal(err);
       }
     })
   }
