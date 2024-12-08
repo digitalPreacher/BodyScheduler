@@ -113,16 +113,7 @@ namespace BodyShedule_v_2_0.Server.Controllers
             {
                 var result = await _accountService.ForgotUserPasswordAsync(forgotPasswordInfo.Email);
 
-                if (result)
-                {
-                    return Ok();
-
-                }
-                else
-                {
-                    return BadRequest();
-                }
-                
+                return Ok();
             }
             catch(Exception ex)
             {
