@@ -12,10 +12,10 @@ namespace BodyShedule_v_2_0.Server.Repository
     {
         private readonly ApplicationDbContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;   
 
         public AccountRepository(ApplicationDbContext db,
-            UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+            UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ILogger<AccountRepository> logger)
         {
             _db = db;
             _userManager = userManager;
@@ -74,36 +74,24 @@ namespace BodyShedule_v_2_0.Server.Repository
 
         public async Task<bool> ForgotUserPasswordAsync(string email)
         {
-            try
+            var user = await _userManager.FindByEmailAsync(email);
+            
+            if(user == null)
             {
-
-                var user = await _userManager.FindByEmailAsync(email);
-                if(user != null)
-                {
-                    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                    var domainName = Environment.GetEnvironmentVariable("DOMAIN_NAME");
-                    var link = AbsoluteUrlGenerateHelper.GenerateAbsoluteUrl("reset-password", "account", token, domainName, email);
-
-                    EmailSender emailSender = new EmailSender();
-                    var result = emailSender.SendEmailPasswordReset(email, link);
-                    if (result)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-
-                }
-                else
-                {
-                    return false;
-                }
+                throw new ArgumentNullException("Пользователь не найден");
             }
-            catch(Exception ex)
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var domainName = Environment.GetEnvironmentVariable("DOMAIN_NAME");
+            var link = AbsoluteUrlGenerateHelper.GenerateAbsoluteUrl("reset-password", "account", token, domainName, email);
+
+            var result = EmailSender.SendEmailPasswordReset(email, link);
+            if (result)
             {
-                Debug.WriteLine(ex.Message);
+                return true;
+            }
+            else
+            {
                 return false;
             }
         }
@@ -120,10 +108,6 @@ namespace BodyShedule_v_2_0.Server.Repository
                 }
                 else
                 {
-                    foreach(var error in result.Errors)
-                    {
-                        Debug.WriteLine(error.Description);
-                    }
                     return false;
                 }
             }

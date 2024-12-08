@@ -62,7 +62,7 @@ export class AuthorizationService {
           return result;
         },
         catchError(error => {
-          return throwError(error.error.message || ["Произошла неизвестная ошибка"])
+          return throwError(error.error.message || [error.error] || ["Произошла неизвестная ошибка"])
         })
       );
   }
@@ -74,7 +74,8 @@ export class AuthorizationService {
           return result;
         },
         catchError(error => {
-          return throwError(error.error.message || ["Произошла неизвестная ошибка"])
+         
+          return throwError(error.error.message || [error.error] ||  ["Произошла неизвестная ошибка"]);
         })
       );
   }
@@ -86,7 +87,7 @@ export class AuthorizationService {
           return result;
         },
         catchError(error => {
-          return throwError(error.error.message || ["Произошла неизвестная ошибка"])
+          return throwError(error.error.message || [error.error] || ["Произошла неизвестная ошибка"])
         })
       );
   }
