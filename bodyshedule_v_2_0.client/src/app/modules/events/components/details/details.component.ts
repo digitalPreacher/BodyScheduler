@@ -1,25 +1,31 @@
-import { Component, Input, TemplateRef, ViewChild, inject } from '@angular/core';
+import { Component, Input, TemplateRef, ViewChild, inject, OnDestroy } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { EventService } from '../../shared/event.service';
 import { ChangeEventStatus } from '../../shared/change-event-status.model';
 import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component';
+import { LoadingService } from '../../../shared/service/loading.service';
 
 @Component({
   selector: 'app-details',
   templateUrl: './details.component.html',
   providers: [DatePipe]
 })
-export class DetailsComponent {
+export class DetailsComponent implements OnDestroy {
+  isLoadingDataSubscribtion: any;
   modalService = inject(NgbModal);
   detailsForm: FormGroup;
+  isLoading!: boolean;
+
   model: ChangeEventStatus = new ChangeEventStatus();
 
   @Input() eventId!: number;
   @ViewChild('errorModal') errorModal!: ErrorModalComponent;
 
-  constructor(private eventService: EventService, private formBuilder: FormBuilder, private datePipe: DatePipe) {
+  constructor(private eventService: EventService, private formBuilder: FormBuilder, private datePipe: DatePipe, private loadingService: LoadingService) {
+    this.isLoadingDataSubscribtion = this.loadingService.loading$.subscribe(loading => this.isLoading = loading);
+
     this.detailsForm = this.formBuilder.group({
       id: [''],
       title: [''],
@@ -32,8 +38,10 @@ export class DetailsComponent {
 
   //getting data of event and pushing it to form
   getEvent() {
+    this.loadingService.show();
     this.eventService.getEvent(this.eventId).subscribe({
       next: result => {
+        this.loadingService.hide();
         const eventData = result[0];
         const currStartTime = this.datePipe.transform(eventData.startTime, 'yyyy-MM-ddTHH:mm');
         this.detailsForm.patchValue({
@@ -61,6 +69,7 @@ export class DetailsComponent {
         })
       },
       error: err => {
+        this.loadingService.hide();
         this.errorModal.openModal(err);
       }
     });
@@ -95,6 +104,10 @@ export class DetailsComponent {
     };
     this.getEvent();
     this.modalService.open(content, options);
+  }
+
+  ngOnDestroy() {
+    this.isLoadingDataSubscribtion.unsubscribe();
   }
 
 }

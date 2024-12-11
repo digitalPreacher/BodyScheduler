@@ -1,14 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthorizationService } from '../../shared/authorization.service'
 import { ChangeUserPasswordData } from '../../shared/change-user-password-data.model';
+import { LoadingService } from '../../../shared/service/loading.service';
 
 @Component({
   selector: 'app-change-user-password',
   templateUrl: './change-user-password.component.html',
   styleUrl: './change-user-password.component.css',
 })
-export class ChangeUserPasswordComponent {
+export class ChangeUserPasswordComponent implements OnDestroy {
   model: ChangeUserPasswordData = new ChangeUserPasswordData();
   changeUserPasswordForm: FormGroup;
   confirmedPassword = '';
@@ -16,11 +17,16 @@ export class ChangeUserPasswordComponent {
   submittedClick: boolean = false;
   errorMessages: string[] = [];
   getErrorMessage = false;
+  isLoading!: boolean;
+  isLoadingDataSubscribtion: any;
+  userDataSubscribtion: any;
 
   passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
-  constructor(private authService: AuthorizationService, private formBuilder: FormBuilder)
+  constructor(private authService: AuthorizationService, private formBuilder: FormBuilder, private loadingService: LoadingService)
   {
-    this.authService.userData$.asObservable().subscribe(data => {
+    this.isLoadingDataSubscribtion = this.loadingService.loading$.subscribe(loading => this.isLoading = loading);
+
+    this.userDataSubscribtion = this.authService.userData$.asObservable().subscribe(data => {
       this.model.userLogin = data.login;
     })
 
@@ -35,9 +41,11 @@ export class ChangeUserPasswordComponent {
 
   changeUserPassword() {
     if (this.changeUserPasswordForm.valid) {
+      this.loadingService.show();
       if (this.changeUserPasswordForm.get('newPassword')?.value == this.confirmedPassword) {
         this.authService.changeUserPassword(this.changeUserPasswordForm.value).subscribe({
           next: result => {
+            this.loadingService.hide();
             this.model = new ChangeUserPasswordData();
             this.changeUserPasswordForm.reset();
             this.confirmedPasswordResult = false;
@@ -45,6 +53,7 @@ export class ChangeUserPasswordComponent {
             this.confirmedPassword = '';
           },
           error: error => {
+            this.loadingService.hide();
             this.getErrorMessage = true;
             this.confirmedPasswordResult = false;
             this.submittedClick = false;
@@ -57,5 +66,10 @@ export class ChangeUserPasswordComponent {
         this.submittedClick = false;
       }
     }
+  }
+
+  ngOnDestroy() {
+    this.isLoadingDataSubscribtion.unsubscribe();
+    this.userDataSubscribtion.unsubscribe();
   }
 }

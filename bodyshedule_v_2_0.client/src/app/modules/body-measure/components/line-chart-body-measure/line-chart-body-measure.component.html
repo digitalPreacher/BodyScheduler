@@ -1,6 +1,5 @@
 <div class="border rounded  -3 p-4 bg-dark text-light mt-3">
-  <ngx-charts-line-chart
-                         (window:resize)="onResize($event)"
+  <ngx-charts-line-chart (window:resize)="onResize($event)"
                          [view]="view"
                          [legend]="legend"
                          [animations]="animations"
@@ -14,7 +13,7 @@
                          [results]="multi"
                          [legendTitle]="legendTitle"
                          style="fill: white;">
-                          
+
   </ngx-charts-line-chart>
 </div>
 

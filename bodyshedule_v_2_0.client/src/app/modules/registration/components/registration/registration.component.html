@@ -1,5 +1,7 @@
 <div class="container">
   <div class="row ">
+    <app-loader *ngIf="isLoading">
+    </app-loader>
     <div class="col-10 col-lg-3 position-absolute top-50 start-50 translate-middle">
       <form class="border border rounded p-3 bg-dark text-light" [formGroup]="registrationForm" (ngSubmit)="registration()">
         <h3 class="mb-2">Регистрация</h3>
@@ -16,7 +18,7 @@
                  required
                  formControlName="login"
                  name="loginField"
-                 placeholder="Введите логин"/>
+                 placeholder="Введите логин" />
           <div *ngIf="registrationForm.get('login')?.hasError('required') &&
                submittedClick"
                class="alert alert-danger mt-2">
@@ -51,7 +53,7 @@
                  required
                  formControlName="password"
                  name="passwordField"
-                 placeholder="Введите пароль"/>
+                 placeholder="Введите пароль" />
           <div *ngIf="registrationForm.invalid && submittedClick">
             <div *ngIf="registrationForm.get('password')?.hasError('required')"
                  class="alert alert-danger mt-1">
@@ -73,12 +75,12 @@
                  [(ngModel)]="confirmedPassword"
                  [ngModelOptions]="{standalone: true}"
                  name="confirmedPasswordField"
-                 placeholder="Подтвердите пароль"/>
+                 placeholder="Подтвердите пароль" />
           <div *ngIf="!confirmedPasswordResult && submittedClick" class="alert alert-danger mt-1">
             Пароли не совпадают
           </div>
         </div>
-          <button type="submit" class="w-100 btn btn-outline-secondary mt-3 text-light" (click)="submittedClick=true">Зарегистрироваться</button>
+        <button type="submit" class="w-100 btn btn-outline-secondary mt-3 text-light" (click)="submittedClick=true">Зарегистрироваться</button>
       </form>
     </div>
   </div>

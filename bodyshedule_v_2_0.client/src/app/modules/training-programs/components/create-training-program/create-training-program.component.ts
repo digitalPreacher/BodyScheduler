@@ -1,4 +1,4 @@
-import { Component, Output, inject, TemplateRef, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, Output, inject, TemplateRef, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray, Form } from '@angular/forms';
 import { ModalDismissReasons, NgbDatepickerModule, NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { DatePipe } from '@angular/common';
@@ -6,6 +6,7 @@ import { AuthorizationService } from '../../../authorization/shared/authorizatio
 import { TrainingProgramService } from '../../shared/training-program.service';
 import { EventService } from '../../../events/shared/event.service';
 import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component';
+import { LoadingService } from '../../../shared/service/loading.service';
 
 
 @Component({
@@ -14,9 +15,11 @@ import { ErrorModalComponent } from '../../../shared/components/error-modal/erro
   styles: ``,
   providers: [DatePipe]
 })
-export class CreateTrainingProgramComponent {
+export class CreateTrainingProgramComponent implements OnDestroy {
   modalService = inject(NgbModal);
   userDataSubscribtion: any;
+  isLoading: any;
+  isLoadingDataSubscribtion: any;
   userId: string = '';
   createForm: FormGroup;
   listValue: string[] = [];
@@ -27,11 +30,14 @@ export class CreateTrainingProgramComponent {
   @ViewChild('errorModal') errorModal!: ErrorModalComponent;
 
   constructor(private programService: TrainingProgramService, private formBuilder: FormBuilder,
-    private authService: AuthorizationService, private datePipe: DatePipe, private eventService: EventService)
+    private authService: AuthorizationService, private datePipe: DatePipe, private eventService: EventService,
+    private loadingService: LoadingService)
   {
     this.userDataSubscribtion = this.authService.userData$.asObservable().subscribe(data => {
       this.userId = data.userId;
     });
+
+    this.isLoadingDataSubscribtion = this.loadingService.loading$.subscribe(loading => this.isLoading = loading);
 
     this.createForm = this.formBuilder.group({
       userId: [this.userId, Validators.required],
@@ -159,6 +165,7 @@ export class CreateTrainingProgramComponent {
   //sending data to backend
   create() {
     if (this.createForm.valid) {
+      this.loadingService.show();
       for (let i = 0; i < this.weeks.length; i++) {
         const events = this.getEventsFormArray(i);
         events.controls.forEach((e) => {
@@ -169,12 +176,14 @@ export class CreateTrainingProgramComponent {
       }
       this.programService.addTrainingProgram(this.createForm.value).subscribe({
         next: result => {
+          this.loadingService.hide();
           this.modalService.dismissAll();
           this.eventService.eventChangeData$.next(true);
           this.programService.programChangeData$.next(true);
           this.resetForm();
         },
         error: err => {
+          this.loadingService.hide();
           this.errorModal.openModal(err);
         }
       })
@@ -205,4 +214,8 @@ export class CreateTrainingProgramComponent {
     this.modalService.open(content, options);
   }
 
+  ngOnDestroy() {
+    this.isLoadingDataSubscribtion.unsubscribe();
+    this.userDataSubscribtion.unsubscribe();
+  }
 }

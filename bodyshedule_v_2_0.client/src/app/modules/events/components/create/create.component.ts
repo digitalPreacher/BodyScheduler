@@ -1,4 +1,4 @@
-import { Component, Output, inject, TemplateRef, OnInit, ViewChild } from '@angular/core';
+import { Component, Output, inject, TemplateRef, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Event } from '../../shared/event.model';
 import { EventService } from '../../shared/event.service';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
@@ -12,6 +12,7 @@ import { DatePipe } from '@angular/common';
 import { ex } from '@fullcalendar/core/internal-common';
 import { startWith } from 'rxjs';
 import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component';
+import { LoadingService } from '../../../shared/service/loading.service';
 
 @Component({
   selector: 'app-create',
@@ -19,11 +20,14 @@ import { ErrorModalComponent } from '../../../shared/components/error-modal/erro
   styleUrl: './create.component.css',
   providers: [DatePipe]
 })
-export class CreateComponent implements OnInit {
+export class CreateComponent implements OnInit, OnDestroy {
+  isLoadingDataSubscribtion: any;
   userDataSubscribtion: any;
+  titleDataSubscribtion: any;
   createForm: FormGroup;
   modalService = inject(NgbModal);
   userId: string = '';
+  isLoading!: boolean;
 
   listValue: string[] = [];
   filterListValue: any[] = [];
@@ -33,10 +37,13 @@ export class CreateComponent implements OnInit {
   @ViewChild('errorModal') errorModal!: ErrorModalComponent;
 
   constructor(private eventService: EventService, private formBuilder: FormBuilder,
-    private authService: AuthorizationService, private datePipe: DatePipe) {
+    private authService: AuthorizationService, private datePipe: DatePipe, private loadingService: LoadingService) {
     this.userDataSubscribtion = this.authService.userData$.asObservable().subscribe(data => {
       this.userId = data.userId;
     });
+
+    this.isLoadingDataSubscribtion = this.loadingService.loading$.subscribe(loading => this.isLoading = loading);
+
     this.createForm = this.formBuilder.group({
       userId: [this.userId, Validators.required],
       title: ['', Validators.required],
@@ -47,7 +54,7 @@ export class CreateComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.eventService.eventChangeData$.subscribe(data => {
+    this.titleDataSubscribtion = this.eventService.eventChangeData$.subscribe(data => {
       if (data) {
         this.createForm = this.formBuilder.group({
           userId: [this.userId, Validators.required],
@@ -73,17 +80,20 @@ export class CreateComponent implements OnInit {
   //send data to backend 
   create() {
     if (this.createForm.valid) {
+      this.loadingService.show();
       const currStartTime = this.datePipe.transform(this.createForm.get('startTime')?.value, 'yyyy-MM-ddTHH:mm:ss.ssS', 'UTC') + 'Z';
       this.createForm.patchValue({
         startTime: currStartTime,
       });
       this.eventService.addEvent(this.createForm.value).subscribe({
         next: result => {
+          this.loadingService.hide();
           this.modalService.dismissAll();
           this.eventService.eventChangeData$.next(true);
           this.resetForm();
         },
         error: err => {
+          this.loadingService.hide();
           this.errorModal.openModal(err);
         }
       });
@@ -144,5 +154,11 @@ export class CreateComponent implements OnInit {
       ariaLabelledBy: 'modal-basic-title'
     };
     this.modalService.open(content, options);
+  }
+
+  ngOnDestroy() {
+    this.userDataSubscribtion.unsubscribe();
+    this.isLoadingDataSubscribtion.unsubscribe();
+    this.titleDataSubscribtion.unsubscribe();
   }
 }

@@ -1,5 +1,5 @@
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
@@ -34,6 +34,7 @@ import { CreateBodyMeasureComponent } from './modules/body-measure/components/cr
 import { DetailsBodyMeasureComponent } from './modules/body-measure/components/details-body-measure/details-body-measure.component';
 import { LineChartBodyMeasureComponent } from './modules/body-measure/components/line-chart-body-measure/line-chart-body-measure.component';
 import { ErrorModalComponent } from './modules/shared/components/error-modal/error-modal.component';
+import { LoaderComponent } from './modules/shared/components/loader/loader.component';
 
 
 
@@ -60,7 +61,8 @@ import { ErrorModalComponent } from './modules/shared/components/error-modal/err
     CreateBodyMeasureComponent,
     DetailsBodyMeasureComponent,
     LineChartBodyMeasureComponent,
-    ErrorModalComponent
+    ErrorModalComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,
@@ -69,6 +71,6 @@ import { ErrorModalComponent } from './modules/shared/components/error-modal/err
     NgxChartsModule, BrowserAnimationsModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true }],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
