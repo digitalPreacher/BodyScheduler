@@ -1,4 +1,4 @@
-import { Component, Input, Output, TemplateRef, inject , OnInit, ViewChild} from '@angular/core';
+import { Component, Input, Output, TemplateRef, inject , OnInit, ViewChild, OnDestroy} from '@angular/core';
 import { EventService } from '../../shared/event.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthorizationService } from '../../../authorization/shared/authorization.service';
@@ -6,6 +6,7 @@ import { DatePipe } from '@angular/common';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { Event } from '../../shared/event.model';
 import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component';
+import { LoadingService } from '../../../shared/service/loading.service';
 
 @Component({
   selector: 'app-edit',
@@ -13,14 +14,17 @@ import { ErrorModalComponent } from '../../../shared/components/error-modal/erro
   styles: ``,
   providers: [DatePipe]
 })
-export class EditComponent implements OnInit {
+export class EditComponent implements OnInit, OnDestroy {
+  isLoadingDataSubscribtion: any;
   userDataSubscribtion: any;
+  titleDataSubscribtion: any;
   modalService = inject(NgbModal);
   userId: any;
   title: string = '';
   createForm: FormGroup;
   listValue: string[] = [];
   filterListValue: any[] = [];
+  isLoading!: boolean;
  
 
   submittedClick = false;
@@ -29,10 +33,13 @@ export class EditComponent implements OnInit {
   @ViewChild('errorModal') errorModal!: ErrorModalComponent;
 
   constructor(private eventService: EventService, private formBuilder: FormBuilder,
-    private authService: AuthorizationService, private datePipe: DatePipe) {
+    private authService: AuthorizationService, private datePipe: DatePipe, private loadingService: LoadingService) {
     this.userDataSubscribtion = this.authService.userData$.asObservable().subscribe(data => {
       this.userId = data.userId;
     });
+
+    this.isLoadingDataSubscribtion = this.loadingService.loading$.subscribe(loading => this.isLoading = loading);
+
     this.createForm = this.formBuilder.group({
       userId: [this.userId, Validators.required],
       id: [''],
@@ -45,7 +52,7 @@ export class EditComponent implements OnInit {
   }
 
   ngOnInit() { 
-    this.eventService.getExerciseTitles().subscribe(data => {
+    this.titleDataSubscribtion = this.eventService.getExerciseTitles().subscribe(data => {
       this.listValue = data;
     });
   }
@@ -53,17 +60,20 @@ export class EditComponent implements OnInit {
   //send data to backend
   saveEvent() {
     if (this.createForm.valid) {
+      this.loadingService.show();
       const currStartTime = this.datePipe.transform(this.createForm.get('startTime')?.value, 'yyyy-MM-ddTHH:mm:ss.ssS', 'UTC') + 'Z';
       this.createForm.patchValue({
         startTime: currStartTime,
       });
       this.eventService.editEvent(this.createForm.value).subscribe({
         next: result => {
+          this.loadingService.hide();
           this.submittedClick = false;
           this.modalService.dismissAll();
           this.eventService.eventChangeData$.next(true);
         },
         error: err => {
+          this.loadingService.hide();
           this.errorModal.openModal(err);
         }
       });
@@ -78,8 +88,10 @@ export class EditComponent implements OnInit {
 
   //getting data of event and pushing it to form
   getEvent() {
+    this.loadingService.show();
     this.eventService.getEvent(this.eventId).subscribe({
       next: result => {
+        this.loadingService.hide();
         const eventData = result[0];
         const currStartTime = this.datePipe.transform(eventData.startTime, 'yyyy-MM-ddTHH:mm');
         this.createForm.patchValue({
@@ -104,6 +116,7 @@ export class EditComponent implements OnInit {
         });
       },
       error: err => {
+        this.loadingService.hide();
         this.errorModal.openModal(err);
       }
     });
@@ -148,4 +161,9 @@ export class EditComponent implements OnInit {
     this.modalService.open(content, options);
   }
 
+  ngOnDestroy() {
+    this.userDataSubscribtion.unsubscribe();
+    this.isLoadingDataSubscribtion.unsubscribe();
+    this.titleDataSubscribtion.unsubscribe();
+  }
 }

@@ -7,6 +7,7 @@ import { EventService } from '../../../events/shared/event.service';
 import { AuthorizationService } from '../../../authorization/shared/authorization.service';
 import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component';
 import { Title } from '@angular/platform-browser';
+import { LoadingService } from '../../../shared/service/loading.service';
 
 @Component({
   selector: 'app-edit-training-program',
@@ -15,9 +16,11 @@ import { Title } from '@angular/platform-browser';
   providers: [DatePipe]
 })
 export class EditTrainingProgramComponent implements OnInit {
+  isLoading: any;
+  isLoadingDataSubscribtion: any;
+  userDataSubscribtion: any;
   modalService = inject(NgbModal);
   editForm: FormGroup;
-  userDataSubscribtion: any;
   userId = '';
   listValue: string[] = [];
   filterListValue: any[] = [];
@@ -25,10 +28,15 @@ export class EditTrainingProgramComponent implements OnInit {
   @Input() programId!: number;
   @ViewChild('errorModal') errorModal!: ErrorModalComponent;
 
-  constructor(private trainingProgramService: TrainingProgramService, private formBuilder: FormBuilder, private datePipe: DatePipe, private eventService: EventService, private authService: AuthorizationService) {
+  constructor(private trainingProgramService: TrainingProgramService, private formBuilder: FormBuilder,
+    private datePipe: DatePipe, private eventService: EventService, private authService: AuthorizationService,
+    private loadingService: LoadingService) {
+
     this.userDataSubscribtion = this.authService.userData$.asObservable().subscribe(data => {
       this.userId = data.userId;
     });
+
+    this.isLoadingDataSubscribtion = this.loadingService.loading$.subscribe(loading => this.isLoading = loading);
 
     this.editForm = this.formBuilder.group({
       userId: [this.userId, Validators.required],
@@ -54,8 +62,10 @@ export class EditTrainingProgramComponent implements OnInit {
 
   //getting data of training program
   getTrainingProgram() {
+    this.loadingService.show();
     this.trainingProgramService.getTrainingProgram(this.programId).subscribe({
       next: result => {
+        this.loadingService.hide();
         const eventData = result[0];
         this.editForm.patchValue({
           id: eventData.id,
@@ -99,6 +109,7 @@ export class EditTrainingProgramComponent implements OnInit {
         });
       },
       error: err => {
+        this.loadingService.hide()
         this.errorModal.openModal(err);
       }
     })
@@ -201,6 +212,7 @@ export class EditTrainingProgramComponent implements OnInit {
   //sending data to backend
   edit() {
     if (this.editForm.valid) {
+      this.loadingService.show();
       for (let i = 0; i < this.weeks.length; i++) {
         const events = this.getEventsFormArray(i);
         events.controls.forEach((e) => {
@@ -210,11 +222,13 @@ export class EditTrainingProgramComponent implements OnInit {
       }
       this.trainingProgramService.editTrainingProgram(this.editForm.value).subscribe({
         next: result => {
+          this.loadingService.hide();
           this.modalService.dismissAll();
           this.eventService.eventChangeData$.next(true);
           this.trainingProgramService.programChangeData$.next(true);
         },
         error: err => {
+          this.loadingService.hide();
           this.errorModal.openModal(err);
         }
       })

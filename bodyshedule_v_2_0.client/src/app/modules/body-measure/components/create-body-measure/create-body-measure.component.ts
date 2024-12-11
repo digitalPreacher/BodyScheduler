@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 
 import { BodyMeasureService } from '../../shared/body-measure.service'
 import { AuthorizationService } from '../../../authorization/shared/authorization.service';
 import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component';
+import { LoadingService } from '../../../shared/service/loading.service';
 
 
 @Component({
@@ -11,19 +12,26 @@ import { ErrorModalComponent } from '../../../shared/components/error-modal/erro
   templateUrl: './create-body-measure.component.html',
   styles: ``
 })
-export class CreateBodyMeasureComponent implements OnInit {
+export class CreateBodyMeasureComponent implements OnInit, OnDestroy {
+  isLoadingDataSubscribtion: any;
   userDataSubscribtion: any;
   userId: string = '';
+  createForm: FormGroup;
+  isLoading!: boolean;
+
   uniqueLastBodyMeasureArray: any[] = [];
 
-  createForm: FormGroup;
 
   @ViewChild('errorModal') errorModal!: ErrorModalComponent;
 
-  constructor(private bodyMeasureService: BodyMeasureService, private formBuilder: FormBuilder, private authService: AuthorizationService) {
+  constructor(private bodyMeasureService: BodyMeasureService, private formBuilder: FormBuilder, private authService: AuthorizationService,
+    private loadingService: LoadingService) {
     this.userDataSubscribtion = this.authService.userData$.asObservable().subscribe(data => {
       this.userId = data.userId;
     });
+
+    this.isLoadingDataSubscribtion = this.loadingService.loading$.subscribe(loading => this.isLoading = loading);
+
     this.createForm = this.formBuilder.group({
       userId: [this.userId, Validators.required],
       bodyMeasureSet: this.formBuilder.array([this.formBuilder.group({
@@ -83,11 +91,14 @@ export class CreateBodyMeasureComponent implements OnInit {
 
   //adding new entry of body measure
   addBodyMeasure() {
+    this.loadingService.show();
     this.bodyMeasureService.addBodyMeasure(this.createForm.value).subscribe({
       next: result => {
+        this.loadingService.hide();
         this.bodyMeasureService.changeData$.next(true);
       },
       error: err => {
+        this.loadingService.hide();
         this.errorModal.openModal(err);
       }
     })
@@ -100,8 +111,10 @@ export class CreateBodyMeasureComponent implements OnInit {
 
   //getting last added entry with unique muscleName
   getUniqueBodyMeasure() {
+    this.loadingService.show();
     this.bodyMeasureService.getUniqueBodyMeasure().subscribe({
       next: result => {
+        this.loadingService.hide();
         result.forEach((getBodyMeasure: { muscleName: string, musclesSize: number }) => {
           this.bodyMeasureArray.controls.forEach((currentbodyMeasure) => {
             if (getBodyMeasure.muscleName === currentbodyMeasure.get('muscleName')?.value) {
@@ -111,9 +124,14 @@ export class CreateBodyMeasureComponent implements OnInit {
         });
       },
       error: err => {
+        this.loadingService.hide();
         this.errorModal.openModal(err);
       }
     })
   }
 
+  ngOnDestroy() {
+    this.isLoadingDataSubscribtion.unsubscribe();
+    this.userDataSubscribtion.unsubscribe()
+  }
 }

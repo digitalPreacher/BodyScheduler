@@ -1,9 +1,10 @@
-import { Component, Input, TemplateRef, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, TemplateRef, inject, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { TrainingProgramService } from '../../shared/training-program.service';
 import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component';
+import { LoadingService } from '../../../shared/service/loading.service';
 
 @Component({
   selector: 'app-details-training-program',
@@ -11,15 +12,20 @@ import { ErrorModalComponent } from '../../../shared/components/error-modal/erro
   styles: ``,
   providers: [DatePipe]
 })
-export class DetailsTrainingProgramComponent implements OnInit {
-
+export class DetailsTrainingProgramComponent implements OnInit, OnDestroy {
+  isLoading!: any;
+  isLoadingDataSubscribtion: any;
   modalService = inject(NgbModal);
   detailsForm: FormGroup;
 
   @Input() programId!: number;
   @ViewChild('errorModal') errorModal!: ErrorModalComponent;
 
-  constructor(private trainingProgramService: TrainingProgramService, private formBuilder: FormBuilder , private datePipe: DatePipe) {
+  constructor(private trainingProgramService: TrainingProgramService, private formBuilder: FormBuilder,
+    private datePipe: DatePipe, private loadingService: LoadingService) {
+
+    this.isLoadingDataSubscribtion = this.loadingService.loading$.subscribe(loading => this.isLoading = loading);
+
     this.detailsForm = this.formBuilder.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
@@ -28,13 +34,16 @@ export class DetailsTrainingProgramComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getTrainingProgram();
+    
   }
 
   //getting data of training program
   getTrainingProgram() {
+    this.loadingService.show();
+    console.log('test')
     this.trainingProgramService.getTrainingProgram(this.programId).subscribe({
       next: result => {
+        this.loadingService.hide();
         const eventData = result[0];
         this.detailsForm.patchValue({
           title: eventData.title,
@@ -74,6 +83,7 @@ export class DetailsTrainingProgramComponent implements OnInit {
         }
       },
       error: err => {
+        this.loadingService.hide();
         this.errorModal.openModal(err);
       }
     })
@@ -111,6 +121,7 @@ export class DetailsTrainingProgramComponent implements OnInit {
       size: 'md',
       ariaLabelledBy: 'modal-basic-title'
     };
+    this.getTrainingProgram();
     this.modalService.open(content, options);
   }
 
@@ -121,5 +132,9 @@ export class DetailsTrainingProgramComponent implements OnInit {
       ariaLabelledBy: 'modal-basic-title'
     };
     this.modalService.open(content, options);
+  }
+
+  ngOnDestroy() {
+    this.isLoadingDataSubscribtion.unsubscribe();
   }
 }

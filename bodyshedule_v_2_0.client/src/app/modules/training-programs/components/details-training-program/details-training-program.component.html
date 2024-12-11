@@ -1,6 +1,8 @@
 <button class="btn btn-outline-info shadow" (click)="openMain(content)"><i class="bi bi-eye"></i></button>
 
 <ng-template #content let-modal>
+  <app-loader *ngIf="isLoading">
+  </app-loader>
   <div class="bg-dark text-light">
     <div class="modal-header">
       <h3 class="modal-title" id="modal-details-title" style="text-align:center">Просмотр программы</h3>
@@ -15,16 +17,16 @@
                  id="title-details-training-form-field"
                  formControlName="title"
                  name="title-field"
-                 readonly/>
+                 readonly />
         </div>
         <div class="form-group mt-2">
           <label>Описание</label>
           <textarea type="text"
-                 class="form-control"
-                 id="description-details-training-form-field"
-                 formControlName="description"
-                 name="description-field"
-                 readonly></textarea>
+                    class="form-control"
+                    id="description-details-training-form-field"
+                    formControlName="description"
+                    name="description-field"
+                    readonly></textarea>
         </div>
         <div class="form-group mt-2" formArrayName="weeks">
           <div *ngIf="weeks.length > 0">
@@ -64,18 +66,18 @@
                                      id="title-details-training-form-field"
                                      formControlName="title"
                                      name="title-field"
-                                     readonly/>
+                                     readonly />
                             </div>
                             <div class="d-inline-flex col-12 mt-2">
                               <div class="form-group col-8 me-2">
                                 <label for="description-details-training-form-field">Описание</label>
                                 <textarea type="text"
-                                       class="form-control"
-                                       id="description-details-training-form-field"
-                                       required
-                                       formControlName="description"
-                                       name="description-field"
-                                       readonly></textarea>
+                                          class="form-control"
+                                          id="description-details-training-form-field"
+                                          required
+                                          formControlName="description"
+                                          name="description-field"
+                                          readonly></textarea>
                               </div>
                               <div class="form-group col-3">
                                 <label>Начало</label>
