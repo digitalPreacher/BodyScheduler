@@ -16,7 +16,8 @@
                  class="form-control"
                  id="title-edit-training-form-field"
                  formControlName="title"
-                 name="title-field" />
+                 name="title-field"
+                 maxlength="100"/>
         </div>
         <div class="form-group mt-2">
           <label>Описание</label>
@@ -24,7 +25,9 @@
                     class="form-control"
                     id="description-edit-training-form-field"
                     formControlName="description"
-                    name="description-field"></textarea>
+                    name="description-field"
+                    maxlength="1000"
+                    ></textarea>
         </div>
         <div class="form-group mt-2" formArrayName="weeks">
           <div *ngIf="weeks.length > 0">
@@ -64,7 +67,8 @@
                                      class="form-control"
                                      id="title-edit-training-form-field"
                                      formControlName="title"
-                                     name="title-field" />
+                                     name="title-field"
+                                     maxlength="100"/>
                             </div>
                             <div class="d-inline-flex col-12">
                               <div class="form-group col-8 me-2">
@@ -72,14 +76,15 @@
                                 <textarea type="text"
                                           class="form-control"
                                           id="description-edit-training-form-field"
-                                          required
                                           formControlName="description"
-                                          name="description-field"></textarea>
+                                          name="description-field"
+                                          maxlength="1000"></textarea>
                               </div>
                               <div class="form-group col-3">
                                 <label>Начало</label>
                                 <input type="datetime-local"
                                        class="form-control"
+                                       required
                                        id="start-time-edit-training-form-field"
                                        formControlName="startTime"
                                        name="start-time-field" />

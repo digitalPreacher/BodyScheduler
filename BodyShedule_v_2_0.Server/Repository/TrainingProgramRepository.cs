@@ -4,7 +4,6 @@ using BodyShedule_v_2_0.Server.DataTransferObjects.TrainingProgramDTOs;
 using BodyShedule_v_2_0.Server.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
 
 namespace BodyShedule_v_2_0.Server.Repository
 {

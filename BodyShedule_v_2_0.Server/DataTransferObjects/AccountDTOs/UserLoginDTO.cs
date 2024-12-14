@@ -1,7 +1,4 @@
-﻿
-using System.ComponentModel.DataAnnotations;
-
-namespace BodyShedule_v_2_0.Server.DataTransferObjects.AccountDTOs
+﻿namespace BodyShedule_v_2_0.Server.DataTransferObjects.AccountDTOs
 {
     public class UserLoginDTO
     {

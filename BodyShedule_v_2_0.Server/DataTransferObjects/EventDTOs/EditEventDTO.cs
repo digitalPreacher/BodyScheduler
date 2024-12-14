@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace BodyShedule_v_2_0.Server.DataTransferObjects.EventDTOs
+﻿namespace BodyShedule_v_2_0.Server.DataTransferObjects.EventDTOs
 {
     public class EditEventDTO
     {

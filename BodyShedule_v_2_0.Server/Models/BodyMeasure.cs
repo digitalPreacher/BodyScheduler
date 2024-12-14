@@ -7,7 +7,7 @@ namespace BodyShedule_v_2_0.Server.Models
     {
         [Key]
         public int Id { get; set; }
-
+        [MaxLength(100)]
         public required string MuscleName { get; set; }
 
         public float MuscleSize { get; set; }

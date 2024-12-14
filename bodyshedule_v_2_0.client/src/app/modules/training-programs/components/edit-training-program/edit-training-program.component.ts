@@ -42,7 +42,7 @@ export class EditTrainingProgramComponent implements OnInit {
       userId: [this.userId, Validators.required],
       id: [0, Validators.required],
       title: ['', Validators.required],
-      description: ['', Validators.required],
+      description: [''],
       weeks: this.formBuilder.array([])
     });
   }
@@ -151,7 +151,7 @@ export class EditTrainingProgramComponent implements OnInit {
     return this.formBuilder.group({
       id: [0,Validators.required ],
       title: ['', Validators.required],
-      description: ['', Validators.required],
+      description: [''],
       startTime: ['', Validators.required],
       status: ['inProgress', Validators.required],
       exercises: this.formBuilder.array([])
