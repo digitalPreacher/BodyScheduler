@@ -9,7 +9,7 @@ import { LoadingService } from '../../../shared/service/loading.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styles: ``
+  styleUrl: './login.component.css'
 })
 export class LoginComponent implements OnDestroy {
   model: User = new User();
