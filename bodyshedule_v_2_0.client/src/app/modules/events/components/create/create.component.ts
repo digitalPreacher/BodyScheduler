@@ -47,7 +47,7 @@ export class CreateComponent implements OnInit, OnDestroy {
     this.createForm = this.formBuilder.group({
       userId: [this.userId, Validators.required],
       title: ['', Validators.required],
-      description: ['', Validators.required],
+      description: [''],
       startTime: ['', Validators.required],
       exercises: this.formBuilder.array([this.createdItem()])
     });
@@ -59,7 +59,7 @@ export class CreateComponent implements OnInit, OnDestroy {
         this.createForm = this.formBuilder.group({
           userId: [this.userId, Validators.required],
           title: ['', Validators.required],
-          description: ['', Validators.required],
+          description: [''],
           startTime: ['', Validators.required],
           exercises: this.formBuilder.array([this.createdItem()])
         });
@@ -134,7 +134,7 @@ export class CreateComponent implements OnInit, OnDestroy {
     return this.formBuilder.group({
       userId: [this.userId, Validators.required],
       title: ['', Validators.required],
-      description: ['', Validators.required],
+      description: [''],
       startTime: ['', Validators.required],
       exercises: this.formBuilder.array([this.createdItem()])
     })

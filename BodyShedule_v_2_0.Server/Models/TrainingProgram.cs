@@ -6,12 +6,15 @@ namespace BodyShedule_v_2_0.Server.Models
     {
         [Key]
         public int Id { get; set; }
-        [Required]
-        public string Title { get; set; }
-        [Required]
-        public string Description { get; set; }
-        [Required]
-        public required ICollection<WeeksTraining> Weeks { get; set; }
+
+        [Required(ErrorMessage = "Поле Title обязательно для заполнения")]
+        [MaxLength(100)]
+        public required string Title { get; set; }
+
+        [MaxLength(1000)]
+        public string? Description { get; set; }
+
+        public ICollection<WeeksTraining> Weeks { get; set; }
         public virtual ApplicationUser User { get; set; }
 
     }

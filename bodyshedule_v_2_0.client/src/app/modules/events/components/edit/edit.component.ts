@@ -44,7 +44,7 @@ export class EditComponent implements OnInit, OnDestroy {
       userId: [this.userId, Validators.required],
       id: [''],
       title: ['', Validators.required],
-      description: ['', Validators.required],
+      description: [''],
       startTime: ['', Validators.required],
       status: ['', Validators.required],
       exercises: this.formBuilder.array([])

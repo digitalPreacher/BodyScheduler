@@ -7,11 +7,13 @@ namespace BodyShedule_v_2_0.Server.Models
     {
         [Key]
         public int Id { get; set; }
+
+        [Required(ErrorMessage = "Поле WeekNumber обязательно для заполнения")]
         public required int WeekNumber { get; set; }
+
         [ForeignKey("Program")]
         public int ProgramId { get; set; }
         public virtual TrainingProgram Program { get; set; }
-
         public virtual List<Event> Events { get; set; }
         public virtual ApplicationUser User { get; set; }
 

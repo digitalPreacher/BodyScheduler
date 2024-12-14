@@ -42,7 +42,7 @@ export class CreateTrainingProgramComponent implements OnDestroy {
     this.createForm = this.formBuilder.group({
       userId: [this.userId, Validators.required],
       title: ['', Validators.required],
-      description: ['', Validators.required],
+      description: [''],
       weeks: this.formBuilder.array([])
     })
 
@@ -94,7 +94,7 @@ export class CreateTrainingProgramComponent implements OnDestroy {
     return this.formBuilder.group({
       userId: [this.userId, Validators.required],
       title: ['', Validators.required],
-      description: ['', Validators.required],
+      description: [''],
       startTime: ['', Validators.required],
       exercises: this.formBuilder.array([])
     })
@@ -157,7 +157,7 @@ export class CreateTrainingProgramComponent implements OnDestroy {
     return this.formBuilder.group({
       userId: [this.userId, Validators.required],
       title: ['', Validators.required],
-      description: ['', Validators.required],
+      description: [''],
       weeks: this.formBuilder.array([])
     });
   }

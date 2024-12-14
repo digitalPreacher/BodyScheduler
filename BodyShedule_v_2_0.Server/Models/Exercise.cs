@@ -7,14 +7,17 @@ namespace BodyShedule_v_2_0.Server.Models
     {
         [Key]
         public int Id { get; set; }
-        public string Title { get; set; }
+
+        [Required(ErrorMessage = "Поле Title обязательно для заполнения")]
+        [MaxLength(100)]
+        public required string Title { get; set; }
         public int QuantityApproaches { get; set; }
         public int QuantityRepetions { get; set; }
         public float Weight { get; set; }
         public int EventId { get; internal set; }
         public DateTime CreateAt { get; set; } = DateTime.Now.ToUniversalTime();
-        public virtual Event Event { get; set; }
-        public virtual ApplicationUser User { get; set; }
+        public virtual Event? Event { get; set; }
+        public virtual ApplicationUser? User { get; set; }
 
     }
 }

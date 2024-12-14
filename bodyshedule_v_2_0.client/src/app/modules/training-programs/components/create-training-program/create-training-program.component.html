@@ -29,14 +29,9 @@
           <textarea type="text"
                     class="form-control"
                     id="description-create-training-form-field"
-                    required
                     formControlName="description"
                     name="description-field"
                     placeholder="Выполняется по системе 2+1+2+2...."></textarea>
-          <div *ngIf="createForm.get('description')?.hasError('required') && submittedClick"
-               class="alert alert-danger mt-2">
-            Поле обязательно для заполнения
-          </div>
         </div>
         <div class="form-group mt-2" formArrayName="weeks">
           <div *ngIf="weeks.length > 0">
@@ -78,6 +73,7 @@
                                      required
                                      formControlName="title"
                                      name="title-field"
+                                     maxlength="100"
                                      placeholder="День ног" />
                             </div>
                             <div class="d-inline-flex col-12 mt-2">
@@ -86,9 +82,9 @@
                                 <textarea type="text"
                                           class="form-control"
                                           id="description-create-training-form-field"
-                                          required
                                           formControlName="description"
                                           name="description-field"
+                                          maxlength="1000"
                                           placeholder="Обязательно увеличить вес..."></textarea>
                               </div>
                               <div class="form-group col-3">
