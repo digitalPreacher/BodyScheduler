@@ -2,9 +2,7 @@
 using BodyShedule_v_2_0.Server.Helpers;
 using BodyShedule_v_2_0.Server.Service;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 
 namespace BodyShedule_v_2_0.Server.Controllers
 {
@@ -79,6 +77,7 @@ namespace BodyShedule_v_2_0.Server.Controllers
             }
         }
 
+        //change current user password
         [Authorize]
         [HttpPost]
         [Route("ChangePassword")]
@@ -104,6 +103,7 @@ namespace BodyShedule_v_2_0.Server.Controllers
             }
         }
 
+        //forgot user password
         [AllowAnonymous]
         [HttpPost]
         [Route("ForgotPassword")]
@@ -122,6 +122,7 @@ namespace BodyShedule_v_2_0.Server.Controllers
             }
         }
 
+        //reset user password if forgot it
         [AllowAnonymous]
         [HttpPost]
         [Route("ResetPassword")]
@@ -146,5 +147,4 @@ namespace BodyShedule_v_2_0.Server.Controllers
             }
         }
     }
-
 }

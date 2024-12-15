@@ -1,0 +1,24 @@
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AlertService {
+
+  delayBeforeClosedAlert = 3000
+  private _isSuccessAlert = new BehaviorSubject<boolean>(false);
+  public readonly isSuccessAlert$ = this._isSuccessAlert.asObservable();
+
+  constructor() { }
+
+  showSelfClosedSuccessAlert() {
+    this._isSuccessAlert.next(true);
+    this.selfClosedSuccessAlert();
+  }
+
+  selfClosedSuccessAlert() {
+    setTimeout(() => this._isSuccessAlert.next(false), this.delayBeforeClosedAlert);
+  }
+
+}

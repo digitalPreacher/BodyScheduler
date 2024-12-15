@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, AfterViewInit, ElementRef } from '@angular/core'; 
+import { Component, AfterViewInit, ElementRef } from '@angular/core'; 
 
 import { AuthorizationService } from '../app/modules/authorization/shared/authorization.service'
 
@@ -17,6 +17,7 @@ export class AppComponent implements AfterViewInit{
   }
 
   ngAfterViewInit() {
+
     this.elementRef.nativeElement.ownerDocument
       .body.style.backgroundColor = '#121212';
   }

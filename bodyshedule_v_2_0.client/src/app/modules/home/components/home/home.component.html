@@ -2,16 +2,20 @@
   <app-create></app-create>
 </div>
 
+<app-loader *ngIf="isLoading">
+</app-loader>
 <full-calendar [options]="calendarOptions" class="border rounded-4 p-4 bg-dark" id="fullcalendar">
   <ng-template #eventContent let-arg>
     <div (click)="open(content, arg.event.id)">
       <b>{{arg.timeText}}</b>
-      <i>{{arg.event.title}}</i>
+      <i class="limit-text">{{arg.event.title}}</i>
     </div>
   </ng-template>
 </full-calendar>
 
 <ng-template #content let-modal>
+  <app-loader *ngIf="isLoading">
+  </app-loader>
   <div class="bg-dark text-light">
     <div class="modal-header">
       <h3 class="modal-title" id="modal-details-title" style="text-align:center">Просмотр</h3>

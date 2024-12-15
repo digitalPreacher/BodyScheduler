@@ -1,10 +1,12 @@
 <button class="btn btn-outline-secondary shadow-lg text-light" (click)="openMain(content); resetForm()">Добавить программу</button>
 
 <ng-template #content let-modal>
+  <app-loader *ngIf="isLoading">
+  </app-loader>
   <div class="bg-dark text-light">
     <div class="modal-header">
       <h3 class="modal-title" id="modal-create-title" style="text-align:center">Добавление программы</h3>
-      <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="modal.dismiss()" ></button>
+      <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="modal.dismiss()"></button>
     </div>
     <div class="modal-body">
       <form class="p-3 text-center" [formGroup]="createForm">
@@ -16,7 +18,7 @@
                  required
                  formControlName="title"
                  name="title-field"
-                 placeholder="Четырехдневный сплит"/>
+                 placeholder="Четырехдневный сплит" />
           <div *ngIf="createForm.get('title')?.hasError('required') && submittedClick"
                class="alert alert-danger mt-2">
             Поле обязательно для заполнения
@@ -25,16 +27,11 @@
         <div class="form-group mt-2">
           <label>Описание</label>
           <textarea type="text"
-                 class="form-control"
-                 id="description-create-training-form-field"
-                 required
-                 formControlName="description"
-                 name="description-field"
-                 placeholder="Выполняется по системе 2+1+2+2...."></textarea>
-          <div *ngIf="createForm.get('description')?.hasError('required') && submittedClick"
-               class="alert alert-danger mt-2">
-            Поле обязательно для заполнения
-          </div>
+                    class="form-control"
+                    id="description-create-training-form-field"
+                    formControlName="description"
+                    name="description-field"
+                    placeholder="Выполняется по системе 2+1+2+2...."></textarea>
         </div>
         <div class="form-group mt-2" formArrayName="weeks">
           <div *ngIf="weeks.length > 0">
@@ -76,18 +73,19 @@
                                      required
                                      formControlName="title"
                                      name="title-field"
-                                     placeholder="День ног"/>
+                                     maxlength="100"
+                                     placeholder="День ног" />
                             </div>
                             <div class="d-inline-flex col-12 mt-2">
                               <div class="form-group col-8 me-2">
                                 <label for="description-create-training-form-field">Описание</label>
                                 <textarea type="text"
-                                       class="form-control"
-                                       id="description-create-training-form-field"
-                                       required
-                                       formControlName="description"
-                                       name="description-field"
-                                       placeholder="Обязательно увеличить вес..."></textarea>
+                                          class="form-control"
+                                          id="description-create-training-form-field"
+                                          formControlName="description"
+                                          name="description-field"
+                                          maxlength="1000"
+                                          placeholder="Обязательно увеличить вес..."></textarea>
                               </div>
                               <div class="form-group col-3">
                                 <label for="start-time-create-training-form-field">Начало</label>

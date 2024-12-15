@@ -1,12 +1,17 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { finalize } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
+import { LoadingService } from '../../shared/service/loading.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpInterceptorService {
-   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{
+
+  constructor(private loadingService: LoadingService) { }
+
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{
     const token = localStorage.getItem("authToken");
     if (token) {
       request = request.clone({

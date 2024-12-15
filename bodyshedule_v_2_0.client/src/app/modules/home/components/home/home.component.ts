@@ -13,6 +13,7 @@ import { pipe } from 'rxjs';
 import { Event } from '../../../events/shared/event.model';
 import { ChangeEventStatus } from '../../../events/shared/change-event-status.model';
 import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component';
+import { LoadingService } from '../../../shared/service/loading.service';
 
 
 @Component({
@@ -21,7 +22,10 @@ import { ErrorModalComponent } from '../../../shared/components/error-modal/erro
   styleUrl: './home.component.css',
   providers: [DatePipe]
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
+  eventChangeDataSubscribtion: any;
+  isLoadingDataSubscribtion: any;
+  isLoading!: boolean;
   modalService = inject(NgbModal);
   events: any;
   eventStatus: string = 'inProgress';
@@ -48,7 +52,11 @@ export class HomeComponent implements OnInit {
   };
 
   constructor(private authService: AuthorizationService, private inactivityService: UserInactivityService,
-    private eventService: EventService, private formBuilder: FormBuilder, private datePipe: DatePipe) {
+    private eventService: EventService, private formBuilder: FormBuilder, private datePipe: DatePipe,
+    private loadingService: LoadingService) {
+
+    this.isLoadingDataSubscribtion = this.loadingService.loading$.subscribe(loading => this.isLoading = loading);
+
     this.detailsForm = this.formBuilder.group({
       id: [''],
       title: [''],
@@ -61,7 +69,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.loadData();
-    this.eventService.eventChangeData$.subscribe(data => {
+    this.eventChangeDataSubscribtion = this.eventService.eventChangeData$.subscribe(data => {
       if (data) {
         this.loadData();
       }
@@ -70,14 +78,17 @@ export class HomeComponent implements OnInit {
 
   //receiving data of events and display it in fullcalendar
   loadData() {
+    this.loadingService.show();
     this.eventService.getEvents(this.eventStatus).subscribe({
       next: events => {
+        this.loadingService.hide();
         this.events = events;
         this.calendarOptions = {
           events: this.events
         };
       },
       error: err => {
+        this.loadingService.hide();
         this.errorModal.openModal(err);
       }
     });
@@ -85,8 +96,10 @@ export class HomeComponent implements OnInit {
 
   //getting data of event and pushing it to form
   getEvent(eventId: number) {
+    this.loadingService.show();
     this.eventService.getEvent(eventId).subscribe({
       next: result => {
+        this.loadingService.hide();
         const eventData = result[0];
         this.model.id = eventData.id!;
         const currStartTime = this.datePipe.transform(eventData.startTime, 'yyyy-MM-ddTHH:mm');
@@ -113,6 +126,7 @@ export class HomeComponent implements OnInit {
 
       },
       error: err => {
+        this.loadingService.hide();
         this.errorModal.openModal(err);
       }
     });
@@ -121,6 +135,23 @@ export class HomeComponent implements OnInit {
   //getting FormArray exercises
   get getExercise() {
     return this.detailsForm.get('exercises') as FormArray;
+  }
+
+  //change status of an event
+  changeEventStatus(status: string) {
+    this.loadingService.show();
+    this.model.status = status;
+    this.eventService.changeEventStatus(this.model).subscribe({
+      next: result => {
+        this.loadingService.hide();
+        this.modalService.dismissAll();
+        this.eventService.eventChangeData$.next(true);
+      },
+      error: err => {
+        this.loadingService.hide();
+        this.errorModal.openModal(err);
+      }
+    });
   }
 
   //open modal of event
@@ -133,23 +164,13 @@ export class HomeComponent implements OnInit {
     this.modalService.open(content, options);
   }
 
-  //change status of an event
-  changeEventStatus(status: string) {
-    this.model.status = status;
-    console.log(this.model.status);
-    this.eventService.changeEventStatus(this.model).subscribe({
-      next: result => {
-        this.modalService.dismissAll();
-        this.eventService.eventChangeData$.next(true);
-      },
-      error: err => {
-        this.errorModal.openModal(err);
-      }
-    });
-  }
-
   //logout account
   logout() {
     this.authService.logout();
+  }
+
+  ngOnDestroy() {
+    this.isLoadingDataSubscribtion.unsubscribe();
+    this.eventChangeDataSubscribtion.unsubscribe();
   }
 }

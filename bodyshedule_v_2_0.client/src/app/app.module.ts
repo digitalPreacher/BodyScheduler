@@ -1,9 +1,10 @@
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
@@ -34,6 +35,8 @@ import { CreateBodyMeasureComponent } from './modules/body-measure/components/cr
 import { DetailsBodyMeasureComponent } from './modules/body-measure/components/details-body-measure/details-body-measure.component';
 import { LineChartBodyMeasureComponent } from './modules/body-measure/components/line-chart-body-measure/line-chart-body-measure.component';
 import { ErrorModalComponent } from './modules/shared/components/error-modal/error-modal.component';
+import { LoaderComponent } from './modules/shared/components/loader/loader.component';
+import { SuccessAlertComponent } from './modules/shared/components/success-alert/success-alert.component';
 
 
 
@@ -60,15 +63,17 @@ import { ErrorModalComponent } from './modules/shared/components/error-modal/err
     CreateBodyMeasureComponent,
     DetailsBodyMeasureComponent,
     LineChartBodyMeasureComponent,
-    ErrorModalComponent
+    ErrorModalComponent,
+    LoaderComponent,
+    SuccessAlertComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,
     AppRoutingModule, FormsModule, NgbModule,
     ReactiveFormsModule, FullCalendarModule, MdbTabsModule,
-    NgxChartsModule, BrowserAnimationsModule
+    NgxChartsModule, BrowserAnimationsModule, NgbAlertModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true }],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

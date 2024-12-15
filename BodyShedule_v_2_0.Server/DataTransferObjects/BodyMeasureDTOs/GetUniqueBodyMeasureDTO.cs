@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace BodyShedule_v_2_0.Server.DataTransferObjects.BodyMeasureDTOs
+﻿namespace BodyShedule_v_2_0.Server.DataTransferObjects.BodyMeasureDTOs
 {
     public class GetUniqueBodyMeasureDTO
     {

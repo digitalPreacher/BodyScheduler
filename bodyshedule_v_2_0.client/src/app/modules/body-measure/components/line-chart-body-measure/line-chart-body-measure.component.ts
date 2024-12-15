@@ -9,8 +9,13 @@ import { ErrorModalComponent } from '../../../shared/components/error-modal/erro
   styles: ``
 })
 export class LineChartBodyMeasureComponent implements OnInit  {
+  bodyMeasureDataChangeSubscribtion: any;
+  isLoadingDataSubscribtion: any;
+  isLoading!: boolean;
+
+
   multi: any[] = []
-  view: [number, number] = [1300, 500];
+  view: [number, number] = [window.innerWidth/1.20, 500];
 
   // options ngx line chart
   legend: boolean = true;
@@ -39,7 +44,7 @@ export class LineChartBodyMeasureComponent implements OnInit  {
   }
 
   ngOnInit() {
-    this.bodyMeasureService.changeData$.subscribe(data => {
+    this.bodyMeasureDataChangeSubscribtion = this.bodyMeasureService.changeData$.subscribe(data => {
       if (data) {
         this.bodyMeasureService.getBodyMeasuresDataToLineChart().subscribe({
           next: data => {
@@ -55,7 +60,11 @@ export class LineChartBodyMeasureComponent implements OnInit  {
 
   //resize ngx line chart by change size window
   onResize(event: any) {
-    this.view = [event.target.innerWidth / 1.35, 500];
+    this.view = [event.target.innerWidth / 1.20, 500];
+  }
+
+  ngOnDestroy() {
+    this.bodyMeasureDataChangeSubscribtion.unsubscribe();
   }
 
 }

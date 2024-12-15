@@ -17,6 +17,7 @@ namespace BodyShedule_v_2_0.Server.Repository
             _userManager = userManager;
         }
 
+        //add new body measure entry
         public async Task<bool> AddBodyMeasureAsync(AddBodyMeasureDTO bodyMeasureInfo)
         {
             var user = await _userManager.FindByIdAsync(bodyMeasureInfo.UserId);
@@ -42,6 +43,7 @@ namespace BodyShedule_v_2_0.Server.Repository
 
         }
 
+        //get unique body measure entries   
         public async Task<List<GetUniqueBodyMeasureDTO>> GetUniqueBodyMeasureAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -61,6 +63,7 @@ namespace BodyShedule_v_2_0.Server.Repository
             return bodyMeasures;
         }
 
+        //get body measure entries for line chart
         public async Task<List<GetBodyMeasuresToLineChartDTO>> GetBodyMeasuresToLineChartAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);

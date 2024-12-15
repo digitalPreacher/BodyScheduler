@@ -47,6 +47,7 @@ namespace BodyShedule_v_2_0.Server.Repository
             return await _signInManager.PasswordSignInAsync(userCredentials.Login, userCredentials.Password, false, false);
         }
 
+        //get user roles
         public async Task<IList<string>> GetUserRolesAsync(UserLoginDTO userCredentials)
         {
             var user = await _userManager.FindByNameAsync(userCredentials.Login);
@@ -56,6 +57,7 @@ namespace BodyShedule_v_2_0.Server.Repository
             return roles;
         }
 
+        //get user id 
         public async Task<int> GetUserIdAsync(string userLogin)
         {
             var user = await _userManager.FindByNameAsync(userLogin) ?? throw new InvalidOperationException($"User {userLogin} not found");  
@@ -63,6 +65,7 @@ namespace BodyShedule_v_2_0.Server.Repository
             return user.Id;
         }
 
+        //change user password
         public async Task<IdentityResult> ChangeUserPasswordAsync(ChangeUserPasswordDTO changePasswordInfo)
         {
             var user = await _userManager.FindByNameAsync(changePasswordInfo.UserLogin) ?? throw new InvalidOperationException($"User {changePasswordInfo.UserLogin} not found");
@@ -72,6 +75,7 @@ namespace BodyShedule_v_2_0.Server.Repository
             return result;
         }
 
+        //forgot user password
         public async Task<bool> ForgotUserPasswordAsync(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
@@ -96,6 +100,8 @@ namespace BodyShedule_v_2_0.Server.Repository
             }
         }
 
+
+        //reset user password if forgot it
         public async Task<bool> ResetUserPasswordAsync(ResetUserPasswordDTO resetPasswordInfo)
         {
             var user = await _userManager.FindByEmailAsync(resetPasswordInfo.Email);

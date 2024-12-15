@@ -19,6 +19,7 @@ namespace BodyShedule_v_2_0.Server.Controllers
             _logger = logger;
         }
 
+        //add new body measure
         [HttpPost]
         [Route("AddBodyMeasure")]
         public async Task<IActionResult> AddBodyMeasureAsync([FromBody]AddBodyMeasureDTO bodyMeasureInfo)
@@ -42,6 +43,7 @@ namespace BodyShedule_v_2_0.Server.Controllers
             }
         }
 
+        //get unique body measure 
         [HttpGet]
         [Route("GetUniqueBodyMeasure/{userId}")]
         public async Task<IActionResult> GetUniqueBodyMeasureAsync(string userId)
@@ -66,6 +68,7 @@ namespace BodyShedule_v_2_0.Server.Controllers
             }
         }
 
+        //get body measures to line chart 
         [HttpGet]
         [Route("GetBodyMeasuresToLineChart/{userId}")]
         public async Task<IActionResult> GetBodyMeasuresToLineChartAsync(string userId)

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http'
-import { catchError, map, pipe, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, map, pipe, throwError } from 'rxjs';
 
 import { RegistrationData } from '../shared/registration-data.model'
 
@@ -10,7 +10,6 @@ import { RegistrationData } from '../shared/registration-data.model'
 })
 export class RegistrationService {
   baseUrl = 'https://localhost:7191';
-
   constructor(private httpClient: HttpClient) { }
 
   registration(model: RegistrationData) {

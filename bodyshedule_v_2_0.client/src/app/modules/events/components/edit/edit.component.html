@@ -1,4 +1,6 @@
 <ng-template #content let-modal>
+  <app-loader *ngIf="isLoading">
+  </app-loader>
   <div class="bg-dark text-light">
     <div class="modal-header">
       <h3 class="modal-title" id="modal-edit-title" style="text-align:center">Редактирование</h3>
@@ -25,13 +27,8 @@
             <textarea type="text"
                    class="form-control"
                    id="description"
-                   required
                    formControlName="description"
                    name="descriptionField"></textarea>
-            <div *ngIf="createForm.get('description')?.hasError('required') && submittedClick"
-                 class="alert alert-danger mt-2">
-              Поле обязательно для заполнения
-            </div>
           </div>
           <div class="form-group col-3">
             <label for="startTime">Начало</label>

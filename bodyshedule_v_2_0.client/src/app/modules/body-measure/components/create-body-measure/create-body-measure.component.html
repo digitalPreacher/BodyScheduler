@@ -1,3 +1,5 @@
+<app-loader *ngIf="isLoading">
+</app-loader>
 <form class="border rounded-3 p-3 bg-dark text-light" [formGroup]="createForm" (ngSubmit)="addBodyMeasure()">
   <div class="form-group" formArrayName="bodyMeasureSet">
     <div *ngFor="let bodyMeasure of bodyMeasureArray.controls; let i = index" class="d-inline-flex">
@@ -10,9 +12,9 @@
                   formControlName="musclesSize"
                   name="musclesSize-field"
                   step="0.1"
-                  min="0"/>
+                  min="0" />
         </div>
-       </div>
+      </div>
     </div>
   </div>
   <button type="submit" class="btn btn-outline-success mt-4 text-light">Сохранить</button>
