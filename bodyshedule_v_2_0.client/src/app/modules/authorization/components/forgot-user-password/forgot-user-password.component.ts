@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoadingService } from '../../../shared/service/loading.service';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+import { AlertService } from '../../../shared/service/alert.service';
 
 @Component({
   selector: 'app-forgot-user-password',
@@ -24,7 +25,7 @@ export class ForgotUserPasswordComponent implements OnDestroy  {
   emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   constructor(private authService: AuthorizationService, private router: Router, private formBuilder: FormBuilder,
-    private loadingService: LoadingService) {
+    private loadingService: LoadingService, private alertService: AlertService) {
     this.isLoadingDataSubscribtion = this.loadingService.loading$.subscribe(loading => this.isLoading = loading);
     this.forgotPasswordForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.pattern(this.emailPattern)]],
@@ -40,7 +41,7 @@ export class ForgotUserPasswordComponent implements OnDestroy  {
           this.router.navigate(['/login']);
           this.forgotPasswordForm.reset();
           this.submittedClick = false;
-
+          this.alertService.showSelfClosedSuccessAlert();
         },
         error: error => {
           this.loadingService.hide();

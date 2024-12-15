@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ResetPasswordData } from '../../shared/reset-password-data.model';
 import { AuthorizationService } from '../../shared/authorization.service';
 import { HttpUrlEncodingCodec } from '@angular/common/http';
+import { AlertService } from '../../../shared/service/alert.service';
 
 @Component({
   selector: 'app-reset-user-password',
@@ -24,7 +25,9 @@ export class ResetUserPasswordComponent implements OnInit {
 
   passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
 
-  constructor(private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder, private authService: AuthorizationService) {
+  constructor(private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder, private authService: AuthorizationService,
+    private alertService: AlertService)
+  {
     this.resetPasswordForm = this.formBuilder.group({
       token: [this.resetPasswordData.token],
       email: [this.resetPasswordData.email],
@@ -66,6 +69,7 @@ export class ResetUserPasswordComponent implements OnInit {
             this.router.navigate(['/login']);
             this.submittedClick = false;
             this.resetPasswordForm.reset();
+            this.alertService.showSelfClosedSuccessAlert();
           },
           error: error => {
             this.getErrorMessage = true;

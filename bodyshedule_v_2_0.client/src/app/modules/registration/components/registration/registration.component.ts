@@ -6,6 +6,8 @@ import { RegistrationData } from '../../shared/registration-data.model';
 import { RegistrationService } from '../../shared/registration.service';
 import { LoadingService } from '../../../shared/service/loading.service';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { AlertService } from '../../../shared/service/alert.service';
 
 @Component({
   selector: 'app-registration',
@@ -31,7 +33,7 @@ export class RegistrationComponent implements OnDestroy {
   passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
 
   constructor(private registrationService: RegistrationService, private router: Router,
-    private formBuilder: FormBuilder, private loadingService: LoadingService)
+    private formBuilder: FormBuilder, private loadingService: LoadingService, private alertService: AlertService)
   {
     this.isLoadingDataSubscribtion = this.loadingService.loading$.subscribe(loading => this.isLoading = loading);
 
@@ -45,13 +47,15 @@ export class RegistrationComponent implements OnDestroy {
 
   registration() {
     if (this.registrationForm.valid) {
-      this.loadingService.show();
       if (this.registrationForm.get('password')?.value == this.confirmedPassword) {
+        this.loadingService.show();
         this.confirmedPasswordResult = true;
         this.registrationService.registration(this.registrationForm.value).subscribe({
           next: result => {
             this.loadingService.hide();
             this.router.navigate(['/login']);
+            this.modalService.dismissAll();
+            this.alertService.showSelfClosedSuccessAlert();
           },
           error: error => {
             this.loadingService.hide();
@@ -62,7 +66,6 @@ export class RegistrationComponent implements OnDestroy {
       }
       else {
         this.confirmedPasswordResult = false;
-        this.submittedClick = false;
       }
     }
   }
