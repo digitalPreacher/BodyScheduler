@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthorizationService } from '../../shared/authorization.service'
 import { ChangeUserPasswordData } from '../../shared/change-user-password-data.model';
 import { LoadingService } from '../../../shared/service/loading.service';
+import { AlertService } from '../../../shared/service/alert.service';
 
 @Component({
   selector: 'app-change-user-password',
@@ -22,7 +23,8 @@ export class ChangeUserPasswordComponent implements OnDestroy {
   userDataSubscribtion: any;
 
   passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
-  constructor(private authService: AuthorizationService, private formBuilder: FormBuilder, private loadingService: LoadingService)
+  constructor(private authService: AuthorizationService, private formBuilder: FormBuilder, private loadingService: LoadingService,
+  private alertService: AlertService)
   {
     this.isLoadingDataSubscribtion = this.loadingService.loading$.subscribe(loading => this.isLoading = loading);
 
@@ -51,13 +53,14 @@ export class ChangeUserPasswordComponent implements OnDestroy {
             this.confirmedPasswordResult = false;
             this.submittedClick = false;
             this.confirmedPassword = '';
+            this.alertService.showSelfClosedSuccessAlert();
           },
           error: error => {
             this.loadingService.hide();
             this.getErrorMessage = true;
             this.confirmedPasswordResult = false;
             this.submittedClick = false;
-            this.errorMessages = error;
+            this.errorMessages.push(error);
           }
         })
       }

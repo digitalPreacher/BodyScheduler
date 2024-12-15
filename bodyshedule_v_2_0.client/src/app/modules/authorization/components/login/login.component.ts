@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from '../../shared/user.model';
 import { AuthorizationService } from '../../shared/authorization.service'
 import { LoadingService } from '../../../shared/service/loading.service';
+import { RegistrationService } from '../../../registration/shared/registration.service';
 
 @Component({
   selector: 'app-login',
@@ -25,7 +26,7 @@ export class LoginComponent implements OnDestroy {
   @Output() errorMessage = '';
 
   constructor(private authService: AuthorizationService, private router: Router,
-    private formBuilder: FormBuilder, private loadingService: LoadingService) {
+    private formBuilder: FormBuilder, private loadingService: LoadingService, private registrationServise: RegistrationService) {
     this.isLoadingDataSubscribtion = this.loadingService.loading$.subscribe(loading => this.isLoading = loading);
     this.loginForm = this.formBuilder.group({
       login: [this.model.login, Validators.required],
