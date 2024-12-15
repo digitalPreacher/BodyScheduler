@@ -6,7 +6,7 @@ import { LoadingService } from '../../../shared/service/loading.service';
 @Component({
   selector: 'app-list-training-program',
   templateUrl: './list-training-program.component.html',
-  styles: ``
+  styleUrl: 'list-training-program.component.css'
 })
 export class ListTrainingProgramComponent implements OnInit {
   programChangeDataSubscribtion: any;

@@ -8,7 +8,7 @@
   <ng-template #eventContent let-arg>
     <div (click)="open(content, arg.event.id)">
       <b>{{arg.timeText}}</b>
-      <i>{{arg.event.title}}</i>
+      <i class="limit-text">{{arg.event.title}}</i>
     </div>
   </ng-template>
 </full-calendar>
