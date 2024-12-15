@@ -177,7 +177,10 @@
           </div>
         </div>
         <div class="modal-footer mt-3">
-          <button type="submit" class="w-100 btn btn-outline-success mt-3 text-light" (click)="edit()">Сохранить</button>
+          <div class="d-inline-flex mt-3 col-12 text-light">
+            <button type="submit" class="w-100 btn btn-outline-success me-2" (click)="edit()">Сохранить</button>
+            <button type="button" class="w-100 btn btn-outline-danger" (click)="modal.dismiss()">Отменить</button>
+          </div>
         </div>
       </form>
     </div>
