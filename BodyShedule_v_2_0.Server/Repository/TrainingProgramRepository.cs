@@ -18,6 +18,7 @@ namespace BodyShedule_v_2_0.Server.Repository
             _userManager = userManager;
         }
 
+        //add new training program
         public async Task<bool> AddTrainingProgramAsync(AddTrainingProgramDTO trainingProgramInfo)
         {
             var user = await _userManager.FindByIdAsync(trainingProgramInfo.UserId);
@@ -82,6 +83,7 @@ namespace BodyShedule_v_2_0.Server.Repository
             return false;
         }
 
+        //get all user training programs
         public async Task<List<GetTrainingProgramsDTO>> GetTrainingProgramsAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -97,6 +99,7 @@ namespace BodyShedule_v_2_0.Server.Repository
             return trainingProgramsList;
         }
 
+        //get user training program
         public async Task<List<GetTrainingProgramDTO>> GetTrainingProgramAsync(int trainingProgramId)
         {
             var trainingProgramsList = await _db.TrainingProgramSet.Where(x => x.Id == trainingProgramId)
@@ -164,6 +167,7 @@ namespace BodyShedule_v_2_0.Server.Repository
             return trainingPrograms;
         }
 
+        //delete training program
         public async Task<bool> DeleteTrainingProgramAsync(int trainingProgramId)
         {
             var trainingProgram = await _db.TrainingProgramSet
@@ -185,6 +189,7 @@ namespace BodyShedule_v_2_0.Server.Repository
             return false;
         }
 
+        //edit training program
         public async Task<bool> EditTrainingProgramAsync(EditTrainingProgramDTO trainingProgramInfo)
         {
             var user = await _userManager.FindByIdAsync(trainingProgramInfo.UserId);

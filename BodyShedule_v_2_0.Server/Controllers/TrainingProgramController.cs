@@ -19,6 +19,7 @@ namespace BodyShedule_v_2_0.Server.Controllers
             _logger = logger;
         }
 
+        //add new training program
         [HttpPost]
         [Route("AddTrainingProgram")]
         public async Task<IActionResult> AddTrainingProgramAsync([FromBody]AddTrainingProgramDTO trainingProgramInfo)
@@ -33,6 +34,7 @@ namespace BodyShedule_v_2_0.Server.Controllers
             return BadRequest();
         }
 
+        //get all user training program
         [HttpGet]
         [Route("GetTrainingPrograms/{userId}")]
         public async Task<IActionResult> GetTrainingProgramsAsync(string userId)
@@ -55,6 +57,7 @@ namespace BodyShedule_v_2_0.Server.Controllers
             }
         }
 
+        //get user training program
         [HttpGet]
         [Route("GetTrainingProgram/{trainingProgramId}")]
         public async Task<IActionResult> GetTrainingProgramAsync(int trainingProgramId)
@@ -71,6 +74,7 @@ namespace BodyShedule_v_2_0.Server.Controllers
             }
         }
 
+        //delete training program
         [HttpDelete]
         [Route("DeleteTrainingProgram/{trainingProgramId}")]
         public async Task<IActionResult> DeleteTrainingProgramAsync(int trainingProgramId)
@@ -94,9 +98,9 @@ namespace BodyShedule_v_2_0.Server.Controllers
             }
         }
 
+        //edit training program
         [HttpPut]
         [Route("EditTrainingProgram")]
-
         public async Task<IActionResult> EditTrainingProgramAsync([FromBody]EditTrainingProgramDTO trainingProgramInfo)
         {
             var result = await _service.EditTrainingProgramAsync(trainingProgramInfo);

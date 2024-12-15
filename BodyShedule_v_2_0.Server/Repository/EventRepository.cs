@@ -18,6 +18,7 @@ namespace BodyShedule_v_2_0.Server.Repository
             _userManager = userManager;
         }
 
+        //add new event 
         public async Task<bool> AddEventAsync(AddEventDTO eventInfo)
         {
             var user = await _userManager.FindByIdAsync(eventInfo.UserId);
@@ -51,6 +52,8 @@ namespace BodyShedule_v_2_0.Server.Repository
             return false;
         }
 
+
+        //get all user events
         public async Task<List<GetEventsDTO>> GetEventsAsync(string userId, string status)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -67,6 +70,7 @@ namespace BodyShedule_v_2_0.Server.Repository
             return events;
         }
 
+        //edit user event
         public async Task<bool> EditEventAsync(EditEventDTO eventInfo)
         {
             var user = await _userManager.FindByIdAsync(eventInfo.UserId);
@@ -138,6 +142,7 @@ namespace BodyShedule_v_2_0.Server.Repository
             return false;
         }
 
+        //get user event
         public async Task<List<GetEventDTO>> GetEventAsync(int id)
         {
             var getEvent = _db.Events.Where(x => x.Id == id).Select(x => new GetEventDTO
@@ -162,6 +167,7 @@ namespace BodyShedule_v_2_0.Server.Repository
             return getEvent.ToList();
         }
 
+        //delete user event
         public async Task<bool> DeleteEventAsync(int id)
         {
             var getEvent = await _db.Events.FirstOrDefaultAsync(x => x.Id == id);
@@ -179,6 +185,7 @@ namespace BodyShedule_v_2_0.Server.Repository
             }
         }
 
+        //change event status
         public async Task<bool> ChangeEventStatusAsync(ChangeEventStatusDTO eventStatusInfo)
         {
             var getEvent = await _db.Events.FirstOrDefaultAsync(x => x.Id == eventStatusInfo.Id);

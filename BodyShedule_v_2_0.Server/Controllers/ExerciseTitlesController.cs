@@ -19,6 +19,7 @@ namespace BodyShedule_v_2_0.Server.Controllers
             _logger = logger;
         }
 
+        //get all titles for exercise fields to event and training program forms
         [HttpGet]
         [Route("GetExerciseTitles")]
         public async Task<IActionResult> GetExerciseTitlesAsync()
