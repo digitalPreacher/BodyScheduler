@@ -15,7 +15,7 @@ export class LineChartBodyMeasureComponent implements OnInit  {
 
 
   multi: any[] = []
-  view: [number, number] = [1300, 500];
+  view: [number, number] = [window.innerWidth/1.20, 500];
 
   // options ngx line chart
   legend: boolean = true;
@@ -60,7 +60,7 @@ export class LineChartBodyMeasureComponent implements OnInit  {
 
   //resize ngx line chart by change size window
   onResize(event: any) {
-    this.view = [event.target.innerWidth / 1.35, 500];
+    this.view = [event.target.innerWidth / 1.20, 500];
   }
 
   ngOnDestroy() {

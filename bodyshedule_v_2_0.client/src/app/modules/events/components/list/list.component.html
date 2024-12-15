@@ -24,15 +24,15 @@
                 Начало
               </th>
               <th></th>
-              <th></th>
+              <th>Действие</th>
               <th></th>
             </tr>
           </thead>
           <tbody *ngFor="let event of inProgressEvents | slice: (progressEventsPage - 1) * pageSize : progressEventsPage * pageSize; let i=index">
             <tr>
               <td> {{ (progressEventsPage - 1) * pageSize + i + 1 }}</td>
-              <td> {{ event.title }} </td>
-              <td> {{ event.description }} </td>
+              <td class="limit-text"> {{ event.title }} </td>
+              <td class="limit-text"> {{ event.description }} </td>
               <td> {{ event.start | date : "M/d/yy"}} </td>
               <td><app-edit [eventId]="event.id"></app-edit></td>
               <td><app-details [eventId]="event.id"></app-details></td>
@@ -63,15 +63,15 @@
                 Начало
               </th>
               <th></th>
-              <th></th>
+              <th>Действие</th>
               <th></th>
             </tr>
           </thead>
           <tbody *ngFor="let event of completedEvents | slice: (completedEventsPage - 1) * pageSize : completedEventsPage * pageSize; let j=index">
             <tr>
               <td> {{ (completedEventsPage - 1) * pageSize + j + 1 }}</td>
-              <td> {{ event.title }} </td>
-              <td> {{ event.description }} </td>
+              <td class="limit-text"> {{ event.title }} </td>
+              <td class="limit-text"> {{ event.description }} </td>
               <td> {{ event.start | date : "M/d/yy"}} </td>
               <td><app-edit [eventId]="event.id"></app-edit></td>
               <td><app-details [eventId]="event.id"></app-details></td>

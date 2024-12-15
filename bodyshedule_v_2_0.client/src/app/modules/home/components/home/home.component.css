@@ -4,15 +4,18 @@ b { /* used for event dates/times */
 }
 
 i {
-  display: inline-flex;
+  display: block;
+  white-space: nowrap; /* Prevent wrapping of text */
   overflow: hidden; /* Hide content that overflows */
-  max-width: 6em; /* Set the maximum width for the cell content */
+  text-overflow: ellipsis; /* Add ellipsis (...) at the end */
+  max-width: 180px; /* Set the maximum width for the cell content */
 }
 
 #fullcalendar, .create-event-button {
-
   border-color: transparent !important;
 }
+
+
 
 
 
