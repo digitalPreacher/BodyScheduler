@@ -37,6 +37,7 @@ import { LineChartBodyMeasureComponent } from './modules/body-measure/components
 import { ErrorModalComponent } from './modules/shared/components/error-modal/error-modal.component';
 import { LoaderComponent } from './modules/shared/components/loader/loader.component';
 import { SuccessAlertComponent } from './modules/shared/components/success-alert/success-alert.component';
+import { CopyComponent } from './modules/events/components/copy/copy.component';
 
 
 
@@ -65,7 +66,8 @@ import { SuccessAlertComponent } from './modules/shared/components/success-alert
     LineChartBodyMeasureComponent,
     ErrorModalComponent,
     LoaderComponent,
-    SuccessAlertComponent
+    SuccessAlertComponent,
+    CopyComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,

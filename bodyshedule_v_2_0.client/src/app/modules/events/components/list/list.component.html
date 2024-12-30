@@ -24,7 +24,8 @@
                 Начало
               </th>
               <th></th>
-              <th>Действие</th>
+              <th></th>
+              <th></th>
               <th></th>
             </tr>
           </thead>
@@ -35,6 +36,7 @@
               <td class="limit-text"> {{ event.description }} </td>
               <td> {{ event.start | date : "M/d/yy"}} </td>
               <td><app-edit [eventId]="event.id"></app-edit></td>
+              <td><app-copy [eventId]="event.id"></app-copy></td>
               <td><app-details [eventId]="event.id"></app-details></td>
               <td><app-delete [eventId]="event.id"></app-delete></td>
             </tr>
@@ -63,7 +65,8 @@
                 Начало
               </th>
               <th></th>
-              <th>Действие</th>
+              <th></th>
+              <th></th>
               <th></th>
             </tr>
           </thead>
@@ -74,6 +77,7 @@
               <td class="limit-text"> {{ event.description }} </td>
               <td> {{ event.start | date : "M/d/yy"}} </td>
               <td><app-edit [eventId]="event.id"></app-edit></td>
+              <td><app-copy [eventId]="event.id"></app-copy></td>
               <td><app-details [eventId]="event.id"></app-details></td>
               <td><app-delete [eventId]="event.id"></app-delete></td>
             </tr>
