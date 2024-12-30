@@ -5,6 +5,8 @@ import { BehaviorSubject, catchError, map, Subject, throwError } from 'rxjs';
 import { UserData } from './user-data.model';
 import { Router } from '@angular/router';
 import { ChangeUserPasswordData } from '../shared/change-user-password-data.model';
+import { UserSignInData } from './interfaces/user-sign-in-data.interface';
+import { ResetPasswordData } from './reset-password-data.model';
 
 
 @Injectable({
@@ -17,7 +19,7 @@ export class AuthorizationService {
   constructor(private http: HttpClient, private router: Router) { }
 
   login(userDetails: User) {
-    return this.http.post<any>(this.baseUrl + "/Account/UserSignIn", userDetails)
+    return this.http.post<UserSignInData>(this.baseUrl + "/Account/UserSignIn", userDetails)
       .pipe(
         map(response => {
           localStorage.setItem('authToken', response.token);
@@ -67,7 +69,7 @@ export class AuthorizationService {
       );
   }
 
-  forgotUserPassword(email: any) {
+  forgotUserPassword(email: string) {
     return this.http.post<any>(this.baseUrl + "/Account/ForgotPassword", email)
       .pipe(
         result => {
@@ -80,7 +82,7 @@ export class AuthorizationService {
       );
   }
 
-  resetUserPassword(resetPasswordData: any) {
+  resetUserPassword(resetPasswordData: ResetPasswordData) {
     return this.http.post<any>(this.baseUrl + "/Account/ResetPassword", resetPasswordData)
       .pipe(
         result => {

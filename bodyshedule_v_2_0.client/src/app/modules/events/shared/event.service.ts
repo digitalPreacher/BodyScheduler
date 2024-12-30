@@ -5,6 +5,8 @@ import { Observable, Subject, catchError, throwError } from 'rxjs';
 import { AuthorizationService } from '../../authorization/shared/authorization.service';
 import { options } from '@fullcalendar/core/preact';
 import { ChangeEventStatus } from './change-event-status.model';
+import { EventList } from './interfaces/event-list.interface';
+import { Event } from './interfaces/event.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -26,8 +28,8 @@ export class EventService {
   }
 
   //get all user events by id
-  getEvents(status: string): Observable<any[]> {
-    return this.httpClient.get<any[]>(this.baseUrl + `/Event/GetEvents/${this.userId}/${status}`)
+  getEvents(status: string): Observable<EventList[]> {
+    return this.httpClient.get<EventList[]>(this.baseUrl + `/Event/GetEvents/${this.userId}/${status}`)
       .pipe(
         result => {
           return result;
@@ -39,8 +41,8 @@ export class EventService {
   }
 
   //getting event by id
-  getEvent(id: number): Observable<any> {
-    return this.httpClient.get<any>(this.baseUrl + `/Event/GetEvent/${id}`)
+  getEvent(id: number): Observable<Event[]> {
+    return this.httpClient.get<Event[]>(this.baseUrl + `/Event/GetEvent/${id}`)
       .pipe(
         result => {
           return result;
@@ -52,8 +54,8 @@ export class EventService {
   }
 
   //editing data of event
-  editEvent(model: any) {
-    return this.httpClient.put<any>(this.baseUrl + "/Event/EditEvent", model).
+  editEvent(model: Event) {
+    return this.httpClient.put(this.baseUrl + "/Event/EditEvent", model).
       pipe(
         result => {
           return result;
@@ -65,8 +67,8 @@ export class EventService {
   }
 
   //adding new event
-  addEvent(model: any) {
-    return this.httpClient.post<any>(this.baseUrl + "/Event/AddEvent", model)
+  addEvent(model: Event) {
+    return this.httpClient.post(this.baseUrl + "/Event/AddEvent", model)
       .pipe(
         result => {
           return result;
