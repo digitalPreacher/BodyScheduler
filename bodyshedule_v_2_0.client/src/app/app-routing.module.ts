@@ -19,6 +19,7 @@ import { ForgotUserPasswordComponent } from './modules/authorization/components/
 import { CreateBodyMeasureComponent } from './modules/body-measure/components/create-body-measure/create-body-measure.component';
 import { DetailsBodyMeasureComponent } from './modules/body-measure/components/details-body-measure/details-body-measure.component';
 import { LineChartBodyMeasureComponent } from './modules/body-measure/components/line-chart-body-measure/line-chart-body-measure.component';
+import { CopyComponent } from './modules/events/components/copy/copy.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthorizationUserGuard] },
@@ -29,6 +30,7 @@ const routes: Routes = [
   { path: 'edit', component: EditComponent, canActivate: [AuthorizationUserGuard] },
   { path: 'delete', component: DeleteComponent, canActivate: [AuthorizationUserGuard] },
   { path: 'details', component: DetailsComponent, canActivate: [AuthorizationUserGuard] },
+  { path: 'copy', component: CopyComponent, canActivate: [AuthorizationUserGuard] },  
   { path: 'programs/create', component: CreateTrainingProgramComponent, canActivate: [AuthorizationUserGuard] },
   { path: 'programs/list', component: ListTrainingProgramComponent, canActivate: [AuthorizationUserGuard] },
   { path: 'programs/details', component: DetailsTrainingProgramComponent, canActivate: [AuthorizationUserGuard] },
