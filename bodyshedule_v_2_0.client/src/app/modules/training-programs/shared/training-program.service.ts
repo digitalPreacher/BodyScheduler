@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject, catchError, throwError } from 'rxjs';
 import { AuthorizationService } from '../../authorization/shared/authorization.service';
+import { TrainingProgram } from './interfaces/training-program.interface';
+import { TrainingProgramList } from './interfaces/training-program-list.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +22,8 @@ export class TrainingProgramService {
 }
 
   //adding new training program
-  addTrainingProgram(programData: any) {
-    return this.httpClient.post<any>(this.baseUrl + "/TrainingProgram/AddTrainingProgram", programData)
+  addTrainingProgram(programData: TrainingProgram) {
+    return this.httpClient.post(this.baseUrl + "/TrainingProgram/AddTrainingProgram", programData)
       .pipe(
         result => {
           return result;
@@ -33,8 +35,8 @@ export class TrainingProgramService {
   }
 
   //getting all training programs by user id 
-  getTrainingPrograms(): Observable<any[]> {
-    return this.httpClient.get<any[]>(this.baseUrl + `/TrainingProgram/GetTrainingPrograms/${this.userId}`)
+  getTrainingPrograms(): Observable<TrainingProgramList[]> {
+    return this.httpClient.get<TrainingProgramList[]>(this.baseUrl + `/TrainingProgram/GetTrainingPrograms/${this.userId}`)
       .pipe(
         result => {
           return result; 
@@ -46,8 +48,8 @@ export class TrainingProgramService {
   }
 
   //get data of training program by id 
-  getTrainingProgram(programId: number): Observable<any> {
-    return this.httpClient.get<any>(this.baseUrl + `/TrainingProgram/GetTrainingProgram/${programId}`).pipe(
+  getTrainingProgram(programId: number): Observable<TrainingProgram[]> {
+    return this.httpClient.get<TrainingProgram[]>(this.baseUrl + `/TrainingProgram/GetTrainingProgram/${programId}`).pipe(
       result => {
         return result;
       },
