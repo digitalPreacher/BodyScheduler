@@ -6,6 +6,7 @@ import { User } from '../../shared/user.model';
 import { AuthorizationService } from '../../shared/authorization.service'
 import { LoadingService } from '../../../shared/service/loading.service';
 import { RegistrationService } from '../../../registration/shared/registration.service';
+import { CookieService } from '../../../shared/service/cookie.service';
 
 @Component({
   selector: 'app-login',
@@ -26,14 +27,17 @@ export class LoginComponent implements OnDestroy {
   @Output() errorMessage = '';
 
   constructor(private authService: AuthorizationService, private router: Router,
-    private formBuilder: FormBuilder, private loadingService: LoadingService, private registrationServise: RegistrationService) {
+    private formBuilder: FormBuilder, private loadingService: LoadingService, private registrationServise: RegistrationService,
+      private cookieService: CookieService) {
     this.isLoadingDataSubscribtion = this.loadingService.loading$.subscribe(loading => this.isLoading = loading);
+
     this.loginForm = this.formBuilder.group({
       login: [this.model.login, Validators.required],
       password: [this.model.password, Validators.required]
     });
   }
 
+  //login to app
   login() {
     if (this.loginForm.valid) {
       this.loadingService.show();
