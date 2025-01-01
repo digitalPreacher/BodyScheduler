@@ -172,14 +172,23 @@ namespace BodyShedule_v_2_0.Server.Repository
         {
             var trainingProgram = await _db.TrainingProgramSet
                 .Include(x => x.Weeks)
-                .ThenInclude(x => x.Events)
-                .ThenInclude(x => x.Exercises)
-                .AsSplitQuery()
                 .FirstOrDefaultAsync(x => x.Id == trainingProgramId);
-
 
             if(trainingProgram != null)
             {
+                //remove events
+                if(trainingProgram.Weeks.Count > 0)
+                {
+                    foreach(var week in trainingProgram.Weeks)
+                    {
+                        var getEvent = _db.Events.Where(x => x.WeeksTrainingId == week.Id).Include(x => x.Exercises).ToList();
+                        if(getEvent.Count > 0)
+                        {
+                            _db.RemoveRange(getEvent);
+                        }
+                    }
+                }
+
                 _db.Remove(trainingProgram);
                 _db.SaveChanges();
 
