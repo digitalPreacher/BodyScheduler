@@ -104,7 +104,7 @@ namespace BodyShedule_v_2_0.Server.Controllers
             try
             {
                 var getEvent = await _service.GetEventAsync(id);
-                if(getEvent != null)
+                if(getEvent.Count != 0)
                 {
                     return Ok(getEvent);
                 }

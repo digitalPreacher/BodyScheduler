@@ -42,7 +42,7 @@ export class EditComponent implements OnInit, OnDestroy {
 
     this.createForm = this.formBuilder.group({
       userId: [this.userId, Validators.required],
-      id: [''],
+      id: ['', Validators.required],
       title: ['', Validators.required],
       description: [''],
       startTime: ['', Validators.required],
