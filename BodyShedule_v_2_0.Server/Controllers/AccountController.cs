@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BodyShedule_v_2_0.Server.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class AccountController : ControllerBase
     {
         private readonly IAccountService _accountService;

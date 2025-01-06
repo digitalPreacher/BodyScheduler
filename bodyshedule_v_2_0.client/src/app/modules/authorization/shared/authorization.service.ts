@@ -9,6 +9,7 @@ import { UserSignInData } from './interfaces/user-sign-in-data.interface';
 import { ResetPasswordData } from './reset-password-data.model';
 import { CookieService } from '../../shared/service/cookie.service';
 import { __values } from 'tslib';
+import { environment } from '../../../../environments/environment';
 
 
 @Injectable({
@@ -16,7 +17,7 @@ import { __values } from 'tslib';
 })
 export class AuthorizationService {
   decodeUserDetails: any;
-  baseUrl = 'https://localhost:7191';
+  baseUrl = environment.apiUrl;
   userData$ = new BehaviorSubject<UserData>(new UserData());
   token: string;
   constructor(private http: HttpClient, private router: Router, private cookieService: CookieService) {

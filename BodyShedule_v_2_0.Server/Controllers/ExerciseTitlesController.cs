@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BodyShedule_v_2_0.Server.Controllers
 {
     [Authorize]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class ExerciseTitlesController : ControllerBase
     {
