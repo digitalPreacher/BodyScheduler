@@ -1,0 +1,58 @@
+<div class="fixed-bottom d-flex justify-content-end">
+  <button class="btn text-light" style="width: 75px" placement="start" ngbTooltip="Сообщить об ошибке" (click)="open(content)"><i class="bi bi-exclamation-square" style='font-size:40px;'></i></button>
+</div>
+<ng-template #content let-modal>
+  <app-loader *ngIf="isLoading">
+  </app-loader>
+  <div class="bg-dark text-light">
+    <div class="modal-header">
+      <h3 class="modal-title" id="modal-error-report-title">Сообщение об ошибке</h3>
+      <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <form class="p-3 text-light text-center" [formGroup]="reportForm" (ngSubmit)="sendUserReport()">
+        <div *ngIf="getErrorMessage" class="alert alert-danger">
+          <ul>
+            <li *ngFor="let error of errorMessages">{{ error }}</li>
+          </ul>
+        </div>
+        <div class="form-group mt-2">
+          <label for="report-email">Почта</label>
+          <input type="text"
+                 class="form-control"
+                 id="report-email"
+                 required
+                 formControlName="email"
+                 name="reportEmailField"
+                 placeholder="example@mail.ru" />
+          <div *ngIf="reportForm.invalid && submittedClick">
+            <div *ngIf="reportForm.get('email')?.hasError('required')"
+                 class="alert alert-danger mt-2">
+              Поле обязательно для заполнения
+            </div>
+            <div *ngIf="reportForm.get('email')?.hasError('pattern')"
+                 class="alert alert-danger mt-2">
+              Введите почту в формате example&#64;mail.ru
+            </div>
+          </div>
+        </div>
+        <div class="form-group mt-2">
+          <label for="report-description">Описание</label>
+          <textarea type="text"
+                 class="form-control"
+                 id="report-description"
+                 formControlName="description"
+                 required
+                 name="reportDescriptionField"
+                 placeholder="Возникла ошибка при попытке..."></textarea>
+        </div>
+        <div class="modal-footer mt-3">
+          <div class="d-inline-flex mt-3 col-12 text-light">
+            <button type="submit" class="w-100 btn btn-outline-success text-light me-2" (click)="submittedClick=true">Отправить</button>
+            <button type="button" class="w-100 btn btn-outline-danger" (click)="modal.dismiss()">Отменить</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
