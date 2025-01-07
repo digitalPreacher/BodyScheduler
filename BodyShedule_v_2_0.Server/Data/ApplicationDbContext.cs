@@ -68,6 +68,12 @@ namespace BodyShedule_v_2_0.Server.Data
             .Property(x => x.CreateAt)
             .HasColumnType("timestamp without time zone")
             .HasDefaultValueSql("now()");
+
+
+            builder.Entity<UserErrorReport>()
+            .Property(x => x.CreateAt)
+            .HasColumnType("timestamp without time zone")
+            .HasDefaultValueSql("now()");
         }
 
         public DbSet<Event> Events { get; set; }
@@ -75,8 +81,8 @@ namespace BodyShedule_v_2_0.Server.Data
         public DbSet<TrainingProgram> TrainingProgramSet { get; set; }
         public DbSet<WeeksTraining> WeeksTrainingSet { get; set; }  
         public DbSet<ExerciseTitle> ExerciseTitleSet { get; set; }
-
         public DbSet<BodyMeasure> BodyMeasureSet { get; set; }
+        public DbSet<UserErrorReport> UserErrorReportSet { get; set; }
 
     }
 }
