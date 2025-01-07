@@ -42,6 +42,7 @@ export class RegistrationComponent implements OnDestroy {
       password: ['', [Validators.required, Validators.minLength(6),
         Validators.maxLength(100), Validators.pattern(this.passwordRegex)]],
       email: ['', [Validators.required, Validators.pattern(this.emailPattern)]],
+      acceptedAgreement: ['', Validators.required]
     });
   }
 
@@ -77,6 +78,7 @@ export class RegistrationComponent implements OnDestroy {
       password: ['', [Validators.required, Validators.minLength(6),
       Validators.maxLength(100), Validators.pattern(this.passwordRegex)]],
       email: ['', [Validators.required, Validators.pattern(this.emailPattern)]],
+      acceptedAgreement: ['', Validators.required]
     })
   }
 

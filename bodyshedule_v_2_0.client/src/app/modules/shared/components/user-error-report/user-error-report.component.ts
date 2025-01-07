@@ -51,9 +51,10 @@ export class UserErrorReportComponent {
   //open modal form
   open(content: TemplateRef<any>) {
     const options: NgbModalOptions = {
-      size: 'lg',
+      size: 'md',
       ariaLabelledBy: 'modal-basic-title'
     };
+    this.reportForm.reset();
     this.modalService.open(content, options);
   }
 

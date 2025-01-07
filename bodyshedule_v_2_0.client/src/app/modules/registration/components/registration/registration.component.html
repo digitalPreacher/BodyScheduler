@@ -17,34 +17,34 @@
         <div class="form-group">
           <label for="login">Логин</label>
           <input type="text"
-                  class="form-control"
-                  id="login"
-                  required
-                  formControlName="login"
-                  name="loginField"
-                  placeholder="Введите логин" />
+                 class="form-control"
+                 id="login"
+                 required
+                 formControlName="login"
+                 name="loginField"
+                 placeholder="Введите логин" />
           <div *ngIf="registrationForm.get('login')?.hasError('required') &&
                   submittedClick"
-                class="alert alert-danger mt-2">
+               class="alert alert-danger mt-2">
             Поле обязательно для заполнения
           </div>
         </div>
         <div class="form-group mt-2">
           <label>Почта</label>
           <input type="text"
-                  class="form-control"
-                  id="email"
-                  required
-                  formControlName="email"
-                  name="emailField"
-                  placeholder="example@mail.ru" />
+                 class="form-control"
+                 id="email"
+                 required
+                 formControlName="email"
+                 name="emailField"
+                 placeholder="example@mail.ru" />
           <div *ngIf="registrationForm.invalid && submittedClick">
             <div *ngIf="registrationForm.get('email')?.hasError('required')"
-                  class="alert alert-danger mt-2">
+                 class="alert alert-danger mt-2">
               Поле обязательно для заполнения
             </div>
             <div *ngIf="registrationForm.get('email')?.hasError('pattern')"
-                  class="alert alert-danger mt-2">
+                 class="alert alert-danger mt-2">
               Введите почту в формате example&#64;mail.ru
             </div>
           </div>
@@ -52,19 +52,19 @@
         <div class="form-group mt-2">
           <label>Пароль</label>
           <input type="password"
-                  class="form-control"
-                  id="password"
-                  required
-                  formControlName="password"
-                  name="passwordField"
-                  placeholder="Введите пароль" />
+                 class="form-control"
+                 id="password"
+                 required
+                 formControlName="password"
+                 name="passwordField"
+                 placeholder="Введите пароль" />
           <div *ngIf="registrationForm.invalid && submittedClick">
             <div *ngIf="registrationForm.get('password')?.hasError('required')"
-                  class="alert alert-danger mt-1">
+                 class="alert alert-danger mt-1">
               Поле обязательно для заполнения
             </div>
             <div *ngIf="(registrationForm.get('password')?.hasError('pattern') || registrationForm.get('password')?.hasError('minlength'))"
-                  class="alert alert-danger mt-1">
+                 class="alert alert-danger mt-1">
               Ненадежный пароль<br />
               Пароль должен состоять не менее чем из 6 символов, включая буквы в верхнем и нижнем регистре, содержать хотябы 1 цифру и спецсимвол
             </div>
@@ -73,18 +73,26 @@
         <div class="form-group mt-2">
           <label>Подтверждение пароля</label>
           <input type="password"
-                  class="form-control"
-                  id="confirmedPassword"
-                  required
-                  [(ngModel)]="confirmedPassword"
-                  [ngModelOptions]="{standalone: true}"
-                  name="confirmedPasswordField"
-                  placeholder="Подтвердите пароль" />
+                 class="form-control"
+                 id="confirmedPassword"
+                 required
+                 [(ngModel)]="confirmedPassword"
+                 [ngModelOptions]="{standalone: true}"
+                 name="confirmedPasswordField"
+                 placeholder="Подтвердите пароль" />
           <div *ngIf="!confirmedPasswordResult && submittedClick" class="alert alert-danger mt-1">
             Пароли не совпадают
           </div>
         </div>
         <div class="modal-footer mt-3">
+        <div class="mx-auto">
+          <input type="checkbox"
+                  id="accepted-agreement"
+                  formControlName="acceptedAgreement"
+                  required
+                  name="accepted-agreement" />
+          <label for="accepted-agreement" class="ms-1">Даю согласие на обработку персональных данных</label>
+        </div>
           <div class="d-inline-flex mt-3 col-12 text-light">
             <button type="submit" class="w-100 btn btn-outline-success text-light me-2" (click)="submittedClick=true">Зарегистрироваться</button>
             <button type="button" class="w-100 btn btn-outline-danger" (click)="modal.dismiss()">Отменить</button>

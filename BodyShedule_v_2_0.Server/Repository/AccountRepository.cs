@@ -29,7 +29,8 @@ namespace BodyShedule_v_2_0.Server.Repository
             {
                 UserName = userRegistrationData.Login,
                 Email = userRegistrationData.Email, 
-                CreateAt = DateTime.Now.ToUniversalTime(),
+                AcceptedAgreement = userRegistrationData.AcceptedAgreement,
+                CreateAt = DateTime.Now.ToUniversalTime()
             };
             
             var result = await _userManager.CreateAsync(user, userRegistrationData.Password);

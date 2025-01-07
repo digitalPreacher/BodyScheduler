@@ -39,12 +39,16 @@
         <div class="form-group mt-2">
           <label for="report-description">Описание</label>
           <textarea type="text"
-                 class="form-control"
-                 id="report-description"
-                 formControlName="description"
-                 required
-                 name="reportDescriptionField"
-                 placeholder="Возникла ошибка при попытке..."></textarea>
+                    class="form-control"
+                    id="report-description"
+                    formControlName="description"
+                    required
+                    name="reportDescriptionField"
+                    placeholder="Возникла ошибка при попытке..."></textarea>
+          <div *ngIf="reportForm.get('description')?.hasError('required') && submittedClick"
+               class="alert alert-danger mt-2">
+            Поле обязательно для заполнения
+          </div>
         </div>
         <div class="modal-footer mt-3">
           <div class="d-inline-flex mt-3 col-12 text-light">
