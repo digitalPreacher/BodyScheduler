@@ -8,6 +8,7 @@ namespace BodyShedule_v_2_0.Server.Models
         [Key]
         public override int Id { get; set; }
         public bool IsSubscribed { get; set; }
+        public bool AcceptedAgreement { get; set; }
         public DateTime CreateAt { get; set; } = DateTime.Now;
     }
 }

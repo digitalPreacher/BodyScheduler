@@ -17,7 +17,6 @@ export class LoadingService {
 
   //hide loader
   hide() {
-    console.log("execute hide")
     this._loading.next(false);
   }
 }
