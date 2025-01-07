@@ -7,7 +7,7 @@ namespace BodyShedule_v_2_0.Server.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class EventController : ControllerBase
     {
         private readonly IEventService _service;
