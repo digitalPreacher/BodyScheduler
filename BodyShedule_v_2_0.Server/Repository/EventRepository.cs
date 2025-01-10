@@ -65,6 +65,7 @@ namespace BodyShedule_v_2_0.Server.Repository
                 Start = x.StartTime,
                 Status = x.Status
             })
+            .OrderByDescending(x => x.Id)
             .ToListAsync();
 
             return events;
@@ -114,8 +115,7 @@ namespace BodyShedule_v_2_0.Server.Repository
                             Weight = exercise.Weight,
                             Event = editEvent,
                             User = user,
-                            EventId = exercise.Id,
-                            CreateAt = DateTime.Now.ToUniversalTime(),
+                            EventId = exercise.Id
                         };
 
                         _db.Entry(newExercise).State = EntityState.Added;
