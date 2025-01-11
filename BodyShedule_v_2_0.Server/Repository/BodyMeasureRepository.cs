@@ -3,6 +3,7 @@ using BodyShedule_v_2_0.Server.DataTransferObjects.BodyMeasureDTOs;
 using BodyShedule_v_2_0.Server.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace BodyShedule_v_2_0.Server.Repository
 {
@@ -21,19 +22,23 @@ namespace BodyShedule_v_2_0.Server.Repository
         public async Task<bool> AddBodyMeasureAsync(AddBodyMeasureDTO bodyMeasureInfo)
         {
             var user = await _userManager.FindByIdAsync(bodyMeasureInfo.UserId);
-            if(user != null)
+            if (user != null)
             {
-                var BodyMeasureList = bodyMeasureInfo.BodyMeasureSet.Select(x => new BodyMeasure
+                //var currentBodyMeasureSet = _db.BodyMeasureSet.Where(x => x.User.Id == user.Id).Select(x => new { x.MuscleName, x.MuscleSize , x.DateToLineChart}).ToList();
+
+                var bodyMeasureList = bodyMeasureInfo.BodyMeasureSet.Select(x => new BodyMeasure
                 {
                     MuscleName = x.MuscleName,
                     MuscleSize = x.MusclesSize,
                     CreateAt = DateTime.Now,
+                    DateToLineChart = DateTime.Now.ToString("yyyy/MM/dd"),
                     User = user
                 })
                 .Where(x => x.MuscleName != string.Empty && x.MuscleSize > 0)
                 .ToList();
 
-                _db.AddRange(BodyMeasureList);
+
+                _db.AddRange(bodyMeasureList);
                 _db.SaveChanges();
 
                 return true;
@@ -70,19 +75,26 @@ namespace BodyShedule_v_2_0.Server.Repository
 
             var bodyMeasuresToLineChartData = _db.BodyMeasureSet.
                 Where(x => x.User.Id == user.Id)
+                .GroupBy(x => x.MuscleName)
                 .Select(x => new GetBodyMeasuresToLineChartDTO
                 {
-                    Name = x.MuscleName,
-                    Series = _db.BodyMeasureSet.Where(k => k.MuscleName == x.MuscleName).Select(j => new MusclesSizeToLineChartDTO
+                    Name = x.Key,
+                    Series = _db.BodyMeasureSet.Where(k => k.MuscleName == x.Key && k.User.Id == user.Id)
+                    .Select(g => new MusclesSizeToLineChartDTO
                     {
-                        Value = j.MuscleSize,
-                        Name = j.CreateAt.ToString("yyyy/MM/dd")
+                        Value = g.MuscleSize,
+                        Name = g.DateToLineChart,
+                        CreateAt = g.CreateAt
                     })
-                    .ToArray()
+                    .GroupBy(x => x.Name)
+                    .Select(x => x.OrderByDescending(x => x.CreateAt).First())
+                    .ToList()
+
                 })
                 .ToList();
 
             return bodyMeasuresToLineChartData;
         }
     }
+
 }
