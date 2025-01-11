@@ -14,6 +14,8 @@ namespace BodyShedule_v_2_0.Server.Models
 
         public DateTime CreateAt { get; set; }
 
+        public string DateToLineChart { get; set; }
+
         public required virtual ApplicationUser User { get; set; }
 
     }
