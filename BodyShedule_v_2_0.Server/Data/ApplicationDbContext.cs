@@ -66,7 +66,7 @@ namespace BodyShedule_v_2_0.Server.Data
 
             builder.Entity<BodyMeasure>()
             .Property(x => x.CreateAt)
-            .HasColumnType("timestamp without time zone")
+            .HasColumnType("timestamp with time zone")
             .HasDefaultValueSql("now()");
 
 

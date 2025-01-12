@@ -30,8 +30,8 @@ namespace BodyShedule_v_2_0.Server.Repository
                 {
                     MuscleName = x.MuscleName,
                     MuscleSize = x.MusclesSize,
-                    CreateAt = DateTime.Now,
-                    DateToLineChart = DateTime.Now.ToString("yyyy/MM/dd"),
+                    CreateAt = DateTimeOffset.UtcNow,
+                    DateToLineChart = DateTimeOffset.UtcNow.ToString("yyyy/MM/dd"),
                     User = user
                 })
                 .Where(x => x.MuscleName != string.Empty && x.MuscleSize > 0)

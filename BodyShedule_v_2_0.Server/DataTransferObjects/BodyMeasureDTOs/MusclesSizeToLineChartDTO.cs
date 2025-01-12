@@ -5,6 +5,6 @@
         public float Value { get; set; }
         public string Name { get; set; }
 
-        public DateTime CreateAt { get; set; }
+        public DateTimeOffset CreateAt { get; set; }
     }
 }

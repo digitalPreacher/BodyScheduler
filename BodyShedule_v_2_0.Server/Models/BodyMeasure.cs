@@ -12,7 +12,7 @@ namespace BodyShedule_v_2_0.Server.Models
 
         public float MuscleSize { get; set; }
 
-        public DateTime CreateAt { get; set; }
+        public DateTimeOffset CreateAt { get; set; }
 
         public string DateToLineChart { get; set; }
 
