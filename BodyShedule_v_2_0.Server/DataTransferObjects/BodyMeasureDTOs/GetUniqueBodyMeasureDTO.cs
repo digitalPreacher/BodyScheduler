@@ -4,6 +4,6 @@
     {
         public string MuscleName { get; set; }
         public float MusclesSize { get; set; }
-        public DateTime CreateAt { get; set; }
+        public DateTimeOffset CreateAt { get; set; }
     }
 }
