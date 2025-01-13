@@ -12,10 +12,13 @@ export class LineChartBodyMeasureComponent implements OnInit  {
   bodyMeasureDataChangeSubscribtion: any;
   isLoadingDataSubscribtion: any;
   isLoading!: boolean;
+  maxChartHeight: number = 500;
+  maxChartWidth: number = 1300;
+  maxWindowSize: number = 1600;
 
 
   multi: any[] = []
-  view: [number, number] = [window.innerWidth/1.20, 500];
+  view: [number, number] = [window.innerWidth < this.maxWindowSize ? window.innerWidth / 1.20 : this.maxChartWidth, this.maxChartHeight];
 
   // options ngx line chart
   legend: boolean = true;
@@ -60,7 +63,7 @@ export class LineChartBodyMeasureComponent implements OnInit  {
 
   //resize ngx line chart by change size window
   onResize(event: any) {
-    this.view = [event.target.innerWidth / 1.20, 500];
+    this.view = [event.target.innerWidth < this.maxWindowSize ? event.target.innerWidth / 1.20 : this.maxChartWidth, this.maxChartHeight];
   }
 
   ngOnDestroy() {
