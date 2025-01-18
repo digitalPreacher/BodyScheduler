@@ -8,6 +8,7 @@ import { ChangeEventStatus } from './change-event-status.model';
 import { EventList } from './interfaces/event-list.interface';
 import { Event } from './interfaces/event.interface';
 import { environment } from '../../../../environments/environment';
+import { UserData } from '../../authorization/shared/user-data.model';
 
 @Injectable({
   providedIn: 'root'
@@ -16,19 +17,19 @@ export class EventService {
   userDataSubscribtion: any;
   eventChangeData$: Subject<boolean> = new Subject<boolean>();
   subscribed: any;
-  userId = '';
+  userData = new UserData();
   occurredErrorMessage = 'Произошла неизвестная ошибка, повторите попытку чуть позже или сообщите в техподдержку';
 
   constructor(private httpClient: HttpClient, private authService: AuthorizationService)
   {
     this.userDataSubscribtion = this.authService.userData$.asObservable().subscribe(data => {
-      this.userId = data.userId;
+      this.userData = data;
     })
   }
 
   //get all user events by id
   getEvents(status: string): Observable<EventList[]> {
-    return this.httpClient.get<EventList[]>(environment.apiUrl + `/Event/GetEvents/${this.userId}/${status}`)
+    return this.httpClient.get<EventList[]>(environment.apiUrl + `/Event/GetEvents/${this.userData.userId}/${status}`)
       .pipe(
         result => {
           return result;

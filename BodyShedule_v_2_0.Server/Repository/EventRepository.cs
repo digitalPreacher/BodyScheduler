@@ -57,24 +57,49 @@ namespace BodyShedule_v_2_0.Server.Repository
         public async Task<List<GetEventsDTO>> GetEventsAsync(string userId, string status)
         {
             var user = await _userManager.FindByIdAsync(userId);
-            var events = await _db.Events.Where(x => x.User == user && x.Status == status).Select(x => new GetEventsDTO
-            {
-                Id = x.Id.ToString(),
-                Title = x.Title,
-                Description = x.Description,
-                Start = x.StartTime,
-                Status = x.Status
-            })
-            .OrderByDescending(x => x.Id)
-            .ToListAsync();
+            var userRoleId = await _db.UserRoles.Where(x => x.UserId == user.Id).Select(x => x.RoleId).FirstOrDefaultAsync();
+            var userRoleName = await _db.Roles.Where(x => x.Id == userRoleId).Select(x => x.Name).FirstOrDefaultAsync();
 
-            return events;
+            if(userRoleName == "User")
+            {
+                var events = await _db.Events.Where(x => x.User == user && x.Status == status).Select(x => new GetEventsDTO
+                {
+                    Id = x.Id.ToString(),
+                    Title = x.Title,
+                    Description = x.Description,
+                    Start = x.StartTime,
+                    Status = x.Status
+                })
+                .OrderByDescending(x => x.Id)
+                .ToListAsync();
+                
+                return events;
+            }
+
+            if (userRoleName == "Admin")
+            {
+                var events = await _db.Events.Where(x => x.Status == status).Select(x => new GetEventsDTO
+                {
+                    Id = x.Id.ToString(),
+                    Title = x.Title,
+                    Description = x.Description,
+                    Start = x.StartTime,
+                    Status = x.Status
+                })
+                .OrderByDescending(x => x.Id)
+                .ToListAsync();
+
+                return events;
+            }
+
+            return new List<GetEventsDTO>();
         }
 
         //edit user event
         public async Task<bool> EditEventAsync(EditEventDTO eventInfo)
         {
             var user = await _userManager.FindByIdAsync(eventInfo.UserId);
+
             if (user != null)
             {
                 Event editEvent = new Event

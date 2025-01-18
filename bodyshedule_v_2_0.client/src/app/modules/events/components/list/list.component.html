@@ -35,7 +35,7 @@
               <td class="limit-text"> {{ event.title }} </td>
               <td class="limit-text"> {{ event.description }} </td>
               <td> {{ event.start | date : "M/d/yy"}} </td>
-              <td><app-edit [eventId]="event.id"></app-edit></td>
+              <td *ngIf="userRole != 'Admin'"><app-edit [eventId]="event.id"></app-edit></td>
               <td><app-copy [eventId]="event.id"></app-copy></td>
               <td><app-details [eventId]="event.id"></app-details></td>
               <td><app-delete [eventId]="event.id"></app-delete></td>

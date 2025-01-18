@@ -23,12 +23,21 @@ export class ListComponent implements OnInit, OnDestroy {
   pageSize = 5;
   inProgressEventStatus: string = 'inProgress';
   completedEventStatus: string = 'completed';
+
   isLoading: boolean = true;
+
+  userDataSubscribtion: any;
+  userRole = '';
 
   @ViewChild('errorModal') errorModal!: ErrorModalComponent;
 
   constructor(private authService: AuthorizationService, private eventService: EventService, private loadingService: LoadingService) {
     this.isLoadingDataSubscribtion = this.loadingService.loading$.subscribe(loading => this.isLoading = loading);
+
+    this.userDataSubscribtion = this.authService.userData$.asObservable().subscribe(data => {
+      this.userRole = data.role;
+    });
+
   }
 
   ngOnInit() { 
