@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { TrainingProgramService } from '../../shared/training-program.service';
 import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component';
 import { LoadingService } from '../../../shared/service/loading.service';
+import { AuthorizationService } from '../../../authorization/shared/authorization.service';
 
 @Component({
   selector: 'app-list-training-program',
@@ -18,10 +19,18 @@ export class ListTrainingProgramComponent implements OnInit {
   page = 1;
   pageSize = 10;
 
+  userDataSubscribtion: any;
+  userRole = '';
+
   @ViewChild('errorModal') errorModal!: ErrorModalComponent;
 
-  constructor(private trainingProgramsService: TrainingProgramService, private loadingService: LoadingService) {
+  constructor(private authService: AuthorizationService, private trainingProgramsService: TrainingProgramService, private loadingService: LoadingService) {
     this.isLoadingDataSubscribtion = this.loadingService.loading$.subscribe(loading => this.isLoading = loading);
+
+    this.userDataSubscribtion = this.authService.userData$.asObservable().subscribe(data => {
+      this.userRole = data.role;
+    });
+
   }
 
   ngOnInit() {
@@ -52,6 +61,7 @@ export class ListTrainingProgramComponent implements OnInit {
   ngOnDestroy() {
     this.programChangeDataSubscribtion.unsubscribe();
     this.isLoadingDataSubscribtion.unsubscribe();
+    this.userDataSubscribtion.unsubscribe();
   }
 
 }
