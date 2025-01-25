@@ -39,6 +39,7 @@ import { LoaderComponent } from './modules/shared/components/loader/loader.compo
 import { SuccessAlertComponent } from './modules/shared/components/success-alert/success-alert.component';
 import { CopyComponent } from './modules/events/components/copy/copy.component';
 import { UserErrorReportComponent } from './modules/shared/components/user-error-report/user-error-report.component';
+import { UsersListComponent } from './modules/user-administration/components/users-list/users-list.component';
 
 
 
@@ -69,7 +70,8 @@ import { UserErrorReportComponent } from './modules/shared/components/user-error
     LoaderComponent,
     SuccessAlertComponent,
     CopyComponent,
-    UserErrorReportComponent
+    UserErrorReportComponent,
+    UsersListComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule,

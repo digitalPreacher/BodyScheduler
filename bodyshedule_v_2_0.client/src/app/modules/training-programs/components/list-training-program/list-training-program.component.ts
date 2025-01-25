@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TrainingProgramService } from '../../shared/training-program.service';
 import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component';
 import { LoadingService } from '../../../shared/service/loading.service';
@@ -9,7 +9,7 @@ import { AuthorizationService } from '../../../authorization/shared/authorizatio
   templateUrl: './list-training-program.component.html',
   styleUrl: 'list-training-program.component.css'
 })
-export class ListTrainingProgramComponent implements OnInit {
+export class ListTrainingProgramComponent implements OnInit, OnDestroy {
   programChangeDataSubscribtion: any;
   isLoading!: boolean;
   isLoadingDataSubscribtion: any;
