@@ -6,7 +6,7 @@
   <div class="bg-dark text-light">
     <div class="modal-header">
       <h3 class="modal-title" id="modal-create-title" style="text-align:center">Добавление тренировки</h3>
-      <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+      <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="modal.dismiss()"></button>
     </div>
     <div class="modal-body">
       <form class="p-3 text-center" [formGroup]="createForm" (ngSubmit)="create()">
@@ -127,8 +127,12 @@
         </div>
         <div class="modal-footer mt-3">
           <div class="d-inline-flex mt-3 col-12 text-light">
-            <button type="submit" class="w-100 btn btn-outline-success me-2" (click)="submittedClick=true">Добавить</button>
-            <button class="w-100 btn btn-outline-danger" (click)="modal.dismiss()">Отменить</button>
+            <div class="col-6 me-2">
+              <button type="submit" class="w-100 btn btn-outline-success me-2" (click)="submittedClick=true">Добавить</button>
+            </div>
+            <div class="col-6">
+              <button type="button" class="w-100 btn btn-outline-danger" (click)="modal.dismiss()">Отменить</button>
+            </div>
           </div>
         </div>
       </form>
