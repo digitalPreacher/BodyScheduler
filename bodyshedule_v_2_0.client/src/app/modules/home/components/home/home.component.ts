@@ -26,13 +26,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   eventChangeDataSubscribtion: any;
   isLoadingDataSubscribtion: any;
   isLoading!: boolean;
-  modalService = inject(NgbModal);
   events: any;
   eventStatus: string = 'inProgress';
   model: ChangeEventStatus = new ChangeEventStatus();
 
   detailsForm: FormGroup;
 
+  modalService = inject(NgbModal);
   @ViewChild('errorModal') errorModal!: ErrorModalComponent;
 
   calendarOptions: CalendarOptions = {

@@ -87,16 +87,36 @@ namespace BodyShedule_v_2_0.Server.Repository
         public async Task<List<GetTrainingProgramsDTO>> GetTrainingProgramsAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
+            var userRoleId = await _db.UserRoles.Where(x => x.UserId == user.Id).Select(x => x.RoleId).FirstOrDefaultAsync();
+            var userRoleName = await _db.Roles.Where(x => x.Id == userRoleId).Select(x => x.Name).FirstOrDefaultAsync();
 
-            var trainingProgramsList = await _db.TrainingProgramSet.Where(x => x.User.Id == user.Id).Select(x => new GetTrainingProgramsDTO
+            if(userRoleName == "User")
             {
-                Id = x.Id,
-                Title = x.Title,
-                Description = x.Description,  
-            })
-            .ToListAsync();
+                var trainingProgramsList = await _db.TrainingProgramSet.Where(x => x.User.Id == user.Id).Select(x => new GetTrainingProgramsDTO
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    Description = x.Description,  
+                })
+                .ToListAsync();
 
-            return trainingProgramsList;
+                return trainingProgramsList;
+            }
+
+            if (userRoleName == "Admin")
+            {
+                var trainingProgramsList = await _db.TrainingProgramSet.Select(x => new GetTrainingProgramsDTO
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    Description = x.Description,
+                })
+                .ToListAsync();
+
+                return trainingProgramsList;
+            }
+
+            return new List<GetTrainingProgramsDTO>();
         }
 
         //get user training program

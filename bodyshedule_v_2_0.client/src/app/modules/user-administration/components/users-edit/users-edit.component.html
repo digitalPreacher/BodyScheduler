@@ -1,0 +1,64 @@
+<ng-template #content let-modal>
+  <app-loader *ngIf="isLoading">
+  </app-loader>
+  <div class="bg-dark text-light">
+    <div class="modal-header">
+      <h3 class="modal-title" id="modal-users-edit-title" style="text-align:center">Редактирование</h3>
+      <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <form class="p-3 text-center" [formGroup]="editUserForm" (ngSubmit)="saveUserDataChanges()">
+        <div class="form-group">
+          <label for="users-edit-userName">Имя пользователя</label>
+          <input type="text"
+                 class="form-control"
+                 id="users-edit-userName"
+                 required
+                 formControlName="userName"
+                 name="editUserNameField" />
+          <div *ngIf="editUserForm.get('userName')?.hasError('required') && submittedClick"
+               class="alert alert-danger mt-2">
+            Поле обязательно для заполнения
+          </div>
+        </div>
+        <div class="form-group me-2">
+          <label for="users-edit-email">Почта</label>
+          <input type="text"
+                  class="form-control"
+                  id="users-edit-email"
+                  formControlName="email"
+                  name="editUserEmailField">
+          <div *ngIf="editUserForm.get('email')?.hasError('required') && submittedClick"
+                class="alert alert-danger mt-2">
+            Поле обязательно для заполнения
+          </div>
+        </div>
+        <div class="form-group col-12 me-2">
+          <label for="users-edit-password">Пароль</label>
+          <div class="d-inline-flex col-12" >
+            <input type="text"
+                    class="form-control"
+                    id="users-edit-password"
+                    formControlName="password"
+                    name="editUserPasswordField" />
+            <button class="btn btn-outline-light mx-2" type="button" id="btn-generate" (click)="generateRandomPassword()"><i class="bi bi-arrow-repeat"></i></button>
+          </div>
+        </div>
+        <div class="modal-footer mt-3">
+          <div class="d-inline-flex col-12">
+            <div class="col-6 me-2">
+              <button type="submit" class="w-100 btn btn-outline-success mt-3 text-light" (click)="submittedClick=true">Сохранить</button>
+            </div>
+            <div class="col-6">
+              <button type="button" class="w-100 btn btn-outline-danger mt-3 text-light" (click)="modal.dismiss()">Отменить</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
+
+<app-error-modal #errorModal></app-error-modal>
+
+<button class="btn btn-outline-primary shadow" (click)="open(content)"><i class="bi bi-pencil-square"></i></button>

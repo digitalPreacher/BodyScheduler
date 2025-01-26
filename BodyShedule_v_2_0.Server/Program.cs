@@ -86,6 +86,8 @@ builder.Services.AddScoped<IBodyMeasureRepository, BodyMeasureRepository>();
 builder.Services.AddScoped<IBodyMeasureService, BodyMeasureService>();
 builder.Services.AddScoped<IUserErrorReportRepository, UserErrorReportRepository>();
 builder.Services.AddScoped<IUserErrorReportService, UserErrorReportService>();
+builder.Services.AddScoped<IAdminUserRepository, AdminUserRepository>();
+builder.Services.AddScoped<IAdminUserService, AdminUserService>();
 
 var app = builder.Build();
 
