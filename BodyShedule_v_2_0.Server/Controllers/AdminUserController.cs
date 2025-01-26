@@ -7,7 +7,7 @@ namespace BodyShedule_v_2_0.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    //[Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
+    [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
     public class AdminUserController : ControllerBase
     {
         private readonly IAdminUserService _service;
