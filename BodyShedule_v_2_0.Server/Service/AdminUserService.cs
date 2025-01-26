@@ -16,5 +16,15 @@ namespace BodyShedule_v_2_0.Server.Service
         {
             return await _repository.GetApplicationUsersAsync();
         }
+
+        public async Task<GetApplicationUsersDTO> GetApplicationUserAsync(int id)
+        {
+            return await _repository.GetApplicationUserAsync(id);
+        }
+
+        public async Task<bool> UpdateUserDataAsync(UpdateUserDataDTO updateUserInfo)
+        {
+            return await _repository.UpdateUserDataAsync(updateUserInfo);   
+        }
     }
 }

@@ -22,6 +22,7 @@
           <td> {{ (usersPage - 1) * pageSize + i + 1 }}</td>
           <td class="limit-text"> {{ user.userName }} </td>
           <td class="limit-text"> {{ user.email }} </td>
+          <td><app-users-edit [userId]="user.id"></app-users-edit></td>
           <!--<td *ngIf="userRole != 'Admin'"><app-edit [eventId]="event.id"></app-edit></td>
           <td><app-copy [eventId]="event.id"></app-copy></td>
           <td><app-details [eventId]="event.id"></app-details></td>

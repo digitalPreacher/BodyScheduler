@@ -1,4 +1,5 @@
-﻿using BodyShedule_v_2_0.Server.Service;
+﻿using BodyShedule_v_2_0.Server.DataTransferObjects.AdminUserDTOs;
+using BodyShedule_v_2_0.Server.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,7 +7,7 @@ namespace BodyShedule_v_2_0.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
+    //[Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
     public class AdminUserController : ControllerBase
     {
         private readonly IAdminUserService _service;
@@ -37,5 +38,49 @@ namespace BodyShedule_v_2_0.Server.Controllers
             }
         }
 
+        //get application user data by user id 
+        [HttpGet]
+        [Route("GetApplicationUser/{id}")]
+        public async Task<IActionResult> GetApplicationUserAsync(int id)
+        {
+            try
+            {
+                var user = await _service.GetApplicationUserAsync(id);
+
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation(ex.Message);
+
+                return StatusCode(500, new { Message = "Произошла неизвестная ошибка, повторите попытку чуть позже" });
+            }
+
+        }
+
+        //Update user data
+        [HttpPut]
+        [Route("UpdateUserData")]
+        public async Task<IActionResult> UpdateUserDataAsync(UpdateUserDataDTO updateUserInfo)
+        {
+            try
+            {
+                var result = await _service.UpdateUserDataAsync(updateUserInfo);
+                if (result)
+                {
+                    return Ok(new { Message = "Запись успешно изменена" });
+                }
+                else
+                {
+                    return BadRequest(new { Message = "Произошла ошибка, повторите запрос" });
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation(ex.Message);
+
+                return StatusCode(500, new { Message = "Произошла неизвестная ошибка, повторите попытку чуть позже" });
+            }
+        }
     }
 }

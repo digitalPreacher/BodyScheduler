@@ -40,6 +40,7 @@ import { SuccessAlertComponent } from './modules/shared/components/success-alert
 import { CopyComponent } from './modules/events/components/copy/copy.component';
 import { UserErrorReportComponent } from './modules/shared/components/user-error-report/user-error-report.component';
 import { UsersListComponent } from './modules/user-administration/components/users-list/users-list.component';
+import { UsersEditComponent } from './modules/user-administration/components/users-edit/users-edit.component';
 
 
 
@@ -72,6 +73,7 @@ import { UsersListComponent } from './modules/user-administration/components/use
     CopyComponent,
     UserErrorReportComponent,
     UsersListComponent,
+    UsersEditComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule,
