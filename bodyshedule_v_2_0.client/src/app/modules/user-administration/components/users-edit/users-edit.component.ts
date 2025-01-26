@@ -71,6 +71,28 @@ export class UsersEditComponent {
     }
   }
 
+  //generate random password to password field
+  generateRandomPassword() {
+    const generatePassword = this.generateRandomString(10);
+
+    this.editUserForm.patchValue({
+      password: generatePassword
+    });
+  }
+
+  //generate random string
+  generateRandomString(length: number): string {
+    let generateString = "";
+
+    const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789?/|\}{][&#$%^";
+
+    for (var i = 0; i < length; i++) {
+      generateString += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+
+    return generateString;
+  }
+
   //open modal form
   open(content: TemplateRef<any>) {
     const options: NgbModalOptions = {
@@ -82,6 +104,4 @@ export class UsersEditComponent {
 
     this.modalService.open(content, options);
   }
-
-
 }
