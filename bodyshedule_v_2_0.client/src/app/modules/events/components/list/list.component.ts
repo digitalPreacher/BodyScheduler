@@ -16,8 +16,12 @@ export class ListComponent implements OnInit, OnDestroy {
   changeDataSubscribtion: any;
   inProgressEvents: any[] = [];
   completedEvents: any[] = [];
+  filteringinProgressEvents: any[] = [];
+  filteringCompleteEvents: any[] = [];
   collectionProgressEventsSize!: number;
   collectionCompletedEventsSize!: number;
+  collectionFilterProgressEventsSize!: number;
+  collectionFilterCompletedEventsSize!: number;
   progressEventsPage = 1;
   completedEventsPage = 1;
   pageSize = 5;
@@ -28,6 +32,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
   userDataSubscribtion: any;
   userRole = '';
+  isFilter: boolean = false;
 
   @ViewChild('errorModal') errorModal!: ErrorModalComponent;
 
@@ -49,6 +54,26 @@ export class ListComponent implements OnInit, OnDestroy {
     })
   }
 
+  //filtering data by input to search field
+  filteringData(keyUp: string) {
+    this.isFilter = true;
+
+    //filtering data to events in progress status
+    this.filteringinProgressEvents = this.inProgressEvents.filter((value: {title: string, description: string}) =>
+      value.title.toLowerCase().includes(keyUp.toLowerCase()) || value.description.toLowerCase().includes(keyUp.toLowerCase()));
+
+    this.collectionFilterProgressEventsSize = this.filteringinProgressEvents.length;
+
+    //filtering data to events in complete status
+    this.filteringCompleteEvents = this.completedEvents.filter((value: { title: string, description: string }) =>
+      value.title.toLowerCase().includes(keyUp.toLowerCase()) || value.description.toLowerCase().includes(keyUp.toLowerCase()));
+
+    this.collectionFilterCompletedEventsSize = this.filteringCompleteEvents.length;
+
+    if (keyUp === '') {
+      this.isFilter = false;
+    }
+  }
 
   //getting data of events
   loadData() {
