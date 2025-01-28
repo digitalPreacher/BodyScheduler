@@ -24,7 +24,7 @@ export class ListComponent implements OnInit, OnDestroy {
   collectionFilterCompletedEventsSize!: number;
   progressEventsPage = 1;
   completedEventsPage = 1;
-  pageSize = 5;
+  pageSize = 10;
   inProgressEventStatus: string = 'inProgress';
   completedEventStatus: string = 'completed';
 

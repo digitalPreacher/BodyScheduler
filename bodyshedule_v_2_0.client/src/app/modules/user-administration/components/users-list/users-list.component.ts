@@ -13,8 +13,11 @@ export class UsersListComponent implements OnInit {
   changeDataSubscribtion: any;
   isLoadingDataSubscribtion: any;
   userList!: UserAdministrationData[];
+  filteringUserList: any[] = [];
+  isFilter: boolean = false;
+  collectionFilterUserSize!: number;
   usersPage = 1;
-  pageSize = 5;
+  pageSize = 10;
   collectionUsersSize!: number;
   isLoading: boolean = false;
 
@@ -31,6 +34,21 @@ export class UsersListComponent implements OnInit {
         this.loadData();
       }
     })
+  }
+
+  //filtering data by input to search field
+  filteringData(keyUp: string) {
+    this.isFilter = true;
+
+    //filtering training programs data
+    this.filteringUserList = this.userList.filter((value: { userName: string, email: string }) =>
+      value.userName.toLowerCase().includes(keyUp.toLowerCase()) || value.email.toLowerCase().includes(keyUp.toLowerCase()));
+
+    this.collectionFilterUserSize = this.filteringUserList.length;
+
+    if (keyUp === '') {
+      this.isFilter = false;
+    }
   }
 
   //get list of users for administration
