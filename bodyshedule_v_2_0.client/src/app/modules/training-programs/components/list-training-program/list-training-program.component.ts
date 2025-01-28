@@ -13,8 +13,10 @@ export class ListTrainingProgramComponent implements OnInit, OnDestroy {
   programChangeDataSubscribtion: any;
   isLoading!: boolean;
   isLoadingDataSubscribtion: any;
-
+  isFilter: boolean = false;
   trainingPrograms: any[] = [];
+  filteringTrainingPrograms: any[] = [];
+  collectionFilterEventsSize!: number;
   collectionSize!: number;
   page = 1;
   pageSize = 10;
@@ -40,6 +42,21 @@ export class ListTrainingProgramComponent implements OnInit, OnDestroy {
         this.loadData();
       }
     });
+  }
+
+  //filtering data by input to search field
+  filteringData(keyUp: string) {
+    this.isFilter = true;
+
+    //filtering training programs data
+    this.filteringTrainingPrograms = this.trainingPrograms.filter((value: { title: string, description: string }) =>
+      value.title.toLowerCase().includes(keyUp.toLowerCase()) || value.description.toLowerCase().includes(keyUp.toLowerCase()));
+
+    this.collectionFilterEventsSize = this.filteringTrainingPrograms.length;
+
+    if (keyUp === '') {
+      this.isFilter = false;
+    }
   }
 
   //getting data of training program
