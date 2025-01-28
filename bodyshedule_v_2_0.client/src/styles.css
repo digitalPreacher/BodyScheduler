@@ -23,3 +23,19 @@
 }
 
 
+
+.exercise-drop-down {
+  position: relative;
+  background-color: white;
+}
+
+.exercise-dropdown-icon {
+  transform: translateX(50%);
+  right: 80px;
+}
+
+.exercise-dropdown-title {
+  transform: translateY(25%);
+  right: 80px;
+}
+

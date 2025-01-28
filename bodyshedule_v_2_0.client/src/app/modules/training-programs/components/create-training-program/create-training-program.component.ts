@@ -7,6 +7,7 @@ import { TrainingProgramService } from '../../shared/training-program.service';
 import { EventService } from '../../../events/shared/event.service';
 import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component';
 import { LoadingService } from '../../../shared/service/loading.service';
+import { ExerciseTitleSearch } from '../../../shared/classes/exercise-title-search';
 
 
 @Component({
@@ -15,15 +16,13 @@ import { LoadingService } from '../../../shared/service/loading.service';
   styles: ``,
   providers: [DatePipe]
 })
-export class CreateTrainingProgramComponent implements OnDestroy {
+export class CreateTrainingProgramComponent extends ExerciseTitleSearch implements OnDestroy {
   modalService = inject(NgbModal);
   userDataSubscribtion: any;
   isLoading: any;
   isLoadingDataSubscribtion: any;
   userId: string = '';
   createForm: FormGroup;
-  listValue: string[] = [];
-  filterListValue: any[] = [];
 
   submittedClick = false;
 
@@ -33,6 +32,8 @@ export class CreateTrainingProgramComponent implements OnDestroy {
     private authService: AuthorizationService, private datePipe: DatePipe, private eventService: EventService,
     private loadingService: LoadingService)
   {
+    super(eventService);
+
     this.userDataSubscribtion = this.authService.userData$.asObservable().subscribe(data => {
       this.userId = data.userId;
     });
@@ -50,12 +51,6 @@ export class CreateTrainingProgramComponent implements OnDestroy {
       this.listValue = data;
     });
 
-  }
-
-  //Enter value to input field for title of exercise
-  enterKeyUp(enterValue: string) {
-    this.filterListValue = this.listValue.filter(value =>
-      value.toLowerCase().includes(enterValue.toLowerCase()));
   }
 
   //return FormGroup of weeks fiels for adding to create form

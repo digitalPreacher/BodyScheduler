@@ -7,6 +7,7 @@ import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { Event } from '../../shared/event.model';
 import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component';
 import { LoadingService } from '../../../shared/service/loading.service';
+import { ExerciseTitleSearch } from '../../../shared/classes/exercise-title-search';
 
 @Component({
   selector: 'app-edit',
@@ -14,16 +15,13 @@ import { LoadingService } from '../../../shared/service/loading.service';
   styles: ``,
   providers: [DatePipe]
 })
-export class EditComponent implements OnInit, OnDestroy {
+export class EditComponent extends ExerciseTitleSearch implements OnInit, OnDestroy {
   isLoadingDataSubscribtion: any;
   userDataSubscribtion: any;
-  titleDataSubscribtion: any;
   modalService = inject(NgbModal);
   userId: any;
   title: string = '';
   createForm: FormGroup;
-  listValue: string[] = [];
-  filterListValue: any[] = [];
   isLoading!: boolean;
  
 
@@ -33,7 +31,9 @@ export class EditComponent implements OnInit, OnDestroy {
   @ViewChild('errorModal') errorModal!: ErrorModalComponent;
 
   constructor(private eventService: EventService, private formBuilder: FormBuilder,
-    private authService: AuthorizationService, private datePipe: DatePipe, private loadingService: LoadingService) {
+    private authService: AuthorizationService, private datePipe: DatePipe, private loadingService: LoadingService)
+  {
+    super(eventService);
     this.userDataSubscribtion = this.authService.userData$.asObservable().subscribe(data => {
       this.userId = data.userId;
     });
@@ -51,11 +51,6 @@ export class EditComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() { 
-    this.titleDataSubscribtion = this.eventService.getExerciseTitles().subscribe(data => {
-      this.listValue = data;
-    });
-  }
 
   //send data to backend
   saveEvent() {
@@ -78,12 +73,6 @@ export class EditComponent implements OnInit, OnDestroy {
         }
       });
     }
-  }
-
-  //Enter value to input field for title of exercise
-  enterKeyUp(enterValue: string) {
-    this.filterListValue = this.listValue.filter(value =>
-      value.toLowerCase().includes(enterValue.toLowerCase()));
   }
 
   //getting data of event and pushing it to form
@@ -164,6 +153,6 @@ export class EditComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.userDataSubscribtion.unsubscribe();
     this.isLoadingDataSubscribtion.unsubscribe();
-    this.titleDataSubscribtion.unsubscribe();
+    this.exerciseTitleDataSubscribe.unsubscribe();
   }
 }

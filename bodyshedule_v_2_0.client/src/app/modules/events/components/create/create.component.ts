@@ -13,6 +13,7 @@ import { ex } from '@fullcalendar/core/internal-common';
 import { startWith } from 'rxjs';
 import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component';
 import { LoadingService } from '../../../shared/service/loading.service';
+import { ExerciseTitleSearch } from '../../../shared/classes/exercise-title-search';
 
 @Component({
   selector: 'app-create',
@@ -20,24 +21,24 @@ import { LoadingService } from '../../../shared/service/loading.service';
   styleUrl: './create.component.css',
   providers: [DatePipe]
 })
-export class CreateComponent implements OnInit, OnDestroy {
+export class CreateComponent extends ExerciseTitleSearch implements OnInit, OnDestroy {
   isLoadingDataSubscribtion: any;
   userDataSubscribtion: any;
-  titleDataSubscribtion: any;
   createForm: FormGroup;
   modalService = inject(NgbModal);
   userId: string = '';
   isLoading!: boolean;
 
-  listValue: string[] = [];
-  filterListValue: any[] = [];
-
+  override listValue: string[] = [];
   submittedClick = false;
 
   @ViewChild('errorModal') errorModal!: ErrorModalComponent;
 
   constructor(private eventService: EventService, private formBuilder: FormBuilder,
-    private authService: AuthorizationService, private datePipe: DatePipe, private loadingService: LoadingService) {
+    private authService: AuthorizationService, private datePipe: DatePipe, private loadingService: LoadingService)
+  {
+    super(eventService);
+
     this.userDataSubscribtion = this.authService.userData$.asObservable().subscribe(data => {
       this.userId = data.userId;
     });
@@ -51,30 +52,6 @@ export class CreateComponent implements OnInit, OnDestroy {
       startTime: ['', Validators.required],
       exercises: this.formBuilder.array([this.createdItem()])
     });
-  }
-
-  ngOnInit() {
-    this.titleDataSubscribtion = this.eventService.eventChangeData$.subscribe(data => {
-      if (data) {
-        this.createForm = this.formBuilder.group({
-          userId: [this.userId, Validators.required],
-          title: ['', Validators.required],
-          description: [''],
-          startTime: ['', Validators.required],
-          exercises: this.formBuilder.array([this.createdItem()])
-        });
-      }
-    });
-
-    this.eventService.getExerciseTitles().subscribe(data => {
-      this.listValue = data;
-    });
-  }
-
-  //Enter value to input field for title of exercise
-  enterKeyUp(enterValue: string) {
-    this.filterListValue = this.listValue.filter(value =>
-      value.toLowerCase().includes(enterValue.toLowerCase()));
   }
 
   //send data to backend 
@@ -159,6 +136,6 @@ export class CreateComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.userDataSubscribtion.unsubscribe();
     this.isLoadingDataSubscribtion.unsubscribe();
-    this.titleDataSubscribtion.unsubscribe();
+    this.exerciseTitleDataSubscribe.unsubscribe();
   }
 }
