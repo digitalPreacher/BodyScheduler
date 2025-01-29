@@ -6,6 +6,8 @@ import { EventService } from '../../shared/event.service';
 import { ChangeEventStatus } from '../../shared/change-event-status.model';
 import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component';
 import { LoadingService } from '../../../shared/service/loading.service';
+import { EMPTY, Observable, Subject, filter, interval, map, mapTo, merge, switchMap, switchMapTo, takeWhile, withLatestFrom } from 'rxjs';
+import { countupTimer } from '../../../../utils/timer';
 
 @Component({
   selector: 'app-details',
@@ -17,6 +19,14 @@ export class DetailsComponent implements OnDestroy {
   modalService = inject(NgbModal);
   detailsForm: FormGroup;
   isLoading!: boolean;
+  countdownObs$!: Observable<string>;
+
+  displayTime: any;
+  countdownSubscription: any;
+  countTimerStartValue: number = 0;
+  interval: any;
+  timerRunning = false;
+  timePaused = false;
 
   model: ChangeEventStatus = new ChangeEventStatus();
 
@@ -96,6 +106,36 @@ export class DetailsComponent implements OnDestroy {
     });
   }
 
+  //Run timer by user start event
+  startTimer() {
+    if (!this.timerRunning) {
+      this.timePaused = false;
+      this.timerRunning = true;
+
+      this.interval = setInterval(() => {
+        this.countTimerStartValue += 1;
+        this.displayTime = countupTimer(this.countTimerStartValue);
+      }, 1000)
+    }
+  }
+
+  //paused timer
+  pauseTimer() {
+    this.timePaused = true;
+    this.timerRunning = false;
+
+    clearInterval(this.interval);
+  }
+
+  //stop timer
+  stopTimer() {
+    this.timerRunning = false;
+    this.displayTime = null;
+    this.countTimerStartValue = 0;
+
+    clearInterval(this.interval);
+  }
+
   //open modal form
   open(content: TemplateRef<any>) {
     const options: NgbModalOptions = {
@@ -109,5 +149,4 @@ export class DetailsComponent implements OnDestroy {
   ngOnDestroy() {
     this.isLoadingDataSubscribtion.unsubscribe();
   }
-
 }
