@@ -14,6 +14,7 @@ import { Event } from '../../../events/shared/event.model';
 import { ChangeEventStatus } from '../../../events/shared/change-event-status.model';
 import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component';
 import { LoadingService } from '../../../shared/service/loading.service';
+import { countupTimer } from '../../../../utils/timer';
 
 
 @Component({
@@ -29,10 +30,17 @@ export class HomeComponent implements OnInit, OnDestroy {
   events: any;
   eventStatus: string = 'inProgress';
   model: ChangeEventStatus = new ChangeEventStatus();
+  countdownSubscription: any;
+  countTimerStartValue: number = 0;
+  interval: any;
+  timerRunning = false;
+  timePaused = false;
+  displayTime: any;
 
   detailsForm: FormGroup;
 
   modalService = inject(NgbModal);
+
   @ViewChild('errorModal') errorModal!: ErrorModalComponent;
 
   calendarOptions: CalendarOptions = {
@@ -152,6 +160,36 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.errorModal.openModal(err);
       }
     });
+  }
+
+  //Run timer by user start event
+  startTimer() {
+    if (!this.timerRunning) {
+      this.timePaused = false;
+      this.timerRunning = true;
+
+      this.interval = setInterval(() => {
+        this.countTimerStartValue += 1;
+        this.displayTime = countupTimer(this.countTimerStartValue);
+      }, 1000)
+    }
+  }
+
+  //paused timer
+  pauseTimer() {
+    this.timePaused = true;
+    this.timerRunning = false;
+
+    clearInterval(this.interval);
+  }
+
+  //stop timer
+  stopTimer() {
+    this.timerRunning = false;
+    this.displayTime = null;
+    this.countTimerStartValue = 0;
+
+    clearInterval(this.interval);
   }
 
   //open modal of event
