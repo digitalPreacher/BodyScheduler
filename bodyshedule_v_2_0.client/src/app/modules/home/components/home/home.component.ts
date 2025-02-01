@@ -15,6 +15,10 @@ import { ChangeEventStatus } from '../../../events/shared/change-event-status.mo
 import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component';
 import { LoadingService } from '../../../shared/service/loading.service';
 import { countupTimer } from '../../../../utils/timer';
+import { TrainingResult } from '../../../events/shared/models/training-result.model';
+import { DetailsComponent } from '../../../events/components/details/details.component';
+import { TrainingStateData } from '../../../events/shared/models/training-state-data.model';
+import { TrainingResultModalComponent } from '../../../shared/components/training-result-modal/training-result-modal.component';
 
 
 @Component({
@@ -35,13 +39,20 @@ export class HomeComponent implements OnInit, OnDestroy {
   interval: any;
   timerRunning = false;
   timePaused = false;
-  displayTime: any;
+  protected displayTime: any;
+  userDataSubscribtion: any;
+  userId: string = '';
+  trainingResult: TrainingResult = new TrainingResult();
+  trainingStateData: TrainingStateData = new TrainingStateData();
+  eventId!: number;
+
 
   detailsForm: FormGroup;
 
   modalService = inject(NgbModal);
 
   @ViewChild('errorModal') errorModal!: ErrorModalComponent;
+  @ViewChild('trainingResultModal') trainingResultModal!: TrainingResultModalComponent;
 
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin],
@@ -61,7 +72,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(private authService: AuthorizationService, private inactivityService: UserInactivityService,
     private eventService: EventService, private formBuilder: FormBuilder, private datePipe: DatePipe,
-    private loadingService: LoadingService) {
+      private loadingService: LoadingService)
+  {
+    this.userDataSubscribtion = this.authService.userData$.asObservable().subscribe(data => {
+      this.userId = data.userId;
+    });
 
     this.isLoadingDataSubscribtion = this.loadingService.loading$.subscribe(loading => this.isLoading = loading);
 
@@ -82,6 +97,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.loadData();
       }
     })
+
   }
 
   //receiving data of events and display it in fullcalendar
@@ -154,6 +170,12 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.loadingService.hide();
         this.modalService.dismissAll();
         this.eventService.eventChangeData$.next(true);
+
+        if (this.model.status === 'completed') {
+          /*this.setTrainingResult();*/
+          this.setTrainingResult();
+          this.stopTimer();
+        }
       },
       error: err => {
         this.loadingService.hide();
@@ -164,40 +186,148 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   //Run timer by user start event
   startTimer() {
-    if (!this.timerRunning) {
-      this.timePaused = false;
-      this.timerRunning = true;
+    if (this.trainingStateData.state != 'Runned') {
+      clearInterval(this.interval)
+      this.trainingStateData.state = 'Runned'
+      this.updateTrainingState(this.eventId, this.trainingStateData);
+
 
       this.interval = setInterval(() => {
         this.countTimerStartValue += 1;
         this.displayTime = countupTimer(this.countTimerStartValue);
+
+        //saved state in localstorage
+        this.trainingStateData.seconds = this.countTimerStartValue;
+        this.updateTrainingState(this.eventId, this.trainingStateData);
+
       }, 1000)
     }
   }
 
   //paused timer
   pauseTimer() {
-    this.timePaused = true;
-    this.timerRunning = false;
+    if (this.trainingStateData.state !== 'Paused') {
+      this.trainingStateData.state = 'Paused'
+      this.trainingStateData.seconds = this.countTimerStartValue;
+      this.updateTrainingState(this.eventId, this.trainingStateData);
 
-    clearInterval(this.interval);
+      this.displayTime = countupTimer(this.countTimerStartValue);
+      clearInterval(this.interval);
+    }
+  }
+
+  //resumed timer 
+  resumeTimer() {
+    if (this.trainingStateData.state !== 'Resumed' && this.trainingStateData.state !== 'Runned') {
+      this.trainingStateData.state = 'Resumed';
+      this.updateTrainingState(this.eventId, this.trainingStateData);
+      this.countTimerStartValue = this.trainingStateData.seconds;
+
+      this.interval = setInterval(() => {
+        this.countTimerStartValue += 1;
+        this.displayTime = countupTimer(this.countTimerStartValue);
+
+        //saved state in localstorage
+        this.trainingStateData.seconds = this.countTimerStartValue;
+        this.updateTrainingState(this.eventId, this.trainingStateData);
+      }, 1000)
+    }
   }
 
   //stop timer
   stopTimer() {
-    this.timerRunning = false;
-    this.displayTime = null;
-    this.countTimerStartValue = 0;
+    this.trainingStateData.state = 'Stopped';
+    this.updateTrainingState(this.eventId, this.trainingStateData);
 
-    clearInterval(this.interval);
+    clearInterval(this.interval)
+    setTimeout(() => {
+      localStorage.removeItem(`state_training_id_${this.eventId}`);
+    }, 100);
+    
   }
 
-  //open modal of event
+  //add training result for congratulation users
+  setTrainingResult() {
+    this.trainingResult.eventId = this.eventId;
+    this.trainingResult.userId = this.userId;
+    this.trainingResult.trainingTime = this.displayTime;
+    this.trainingResult.amountWeight = 0;
+    this.getExercise.controls.forEach(control => {
+      this.trainingResult.amountWeight += (control.get('quantityApproaches')?.value * control.get('quantityRepetions')?.value * control.get('weight')?.value);
+    });
+
+    this.eventService.addTrainingResult(this.trainingResult).subscribe({
+      next: result => {
+        this.trainingResultModal.openModal(this.trainingResult);
+      },
+      error: err => {
+        this.errorModal.openModal(err);
+      }
+    });
+  }
+
+  //set value to displayTime and running timer
+  setTotalSecondsForTimer(trainingState: TrainingStateData) {
+    if (trainingState.state !== 'Stopped') {
+      clearInterval(this.interval)
+      if (trainingState.state !== 'Paused') {
+        this.countTimerStartValue = trainingState.seconds;
+
+        this.interval = setInterval(() => {
+          this.countTimerStartValue += 1;
+          this.displayTime = countupTimer(this.countTimerStartValue);
+
+          //saved state in localstorage
+          this.trainingStateData.seconds = this.countTimerStartValue;
+          this.updateTrainingState(this.eventId, this.trainingStateData);
+        }, 1000)
+      }
+
+      this.countTimerStartValue = trainingState.seconds;
+      this.displayTime = countupTimer(this.countTimerStartValue);
+    }
+    else {
+      clearInterval(this.interval)
+      this.countTimerStartValue = trainingState.seconds;
+      this.displayTime = countupTimer(this.countTimerStartValue);
+    }
+  }
+
+  //get training state from localstorage
+  getTrainingState(eventId: number) {
+    return localStorage.getItem(`state_training_id_${this.eventId}`);
+  }
+
+
+  //set training state data based on data from localstorage
+  setTrainingState(eventId: number) {
+    const localStorageStateData = JSON.parse(this.getTrainingState(eventId) || '[]');
+    if (localStorageStateData.state != undefined ) {
+      this.trainingStateData.state = localStorageStateData.state;
+      this.trainingStateData.seconds = localStorageStateData.seconds;
+      this.setTotalSecondsForTimer(this.trainingStateData);
+    }
+    else {
+      this.trainingStateData = new TrainingStateData();
+      this.updateTrainingState(eventId, this.trainingStateData);
+      this.setTotalSecondsForTimer(this.trainingStateData);
+    }
+  }
+
+  //update training state in localstorage
+  updateTrainingState(eventId: number, updateTrainingStateData: TrainingStateData) {
+    localStorage.setItem(`state_training_id_${this.eventId}`, JSON.stringify(updateTrainingStateData));
+  }
+
+  //open event modal
   open(content: TemplateRef<any>, eventId: number) {
     const options: NgbModalOptions = {
       size: 'lg',
       ariaLabelledBy: 'modal-basic-title'
     };
+
+    this.eventId = eventId;
+    this.setTrainingState(eventId);
     this.getEvent(eventId);
     this.modalService.open(content, options);
   }
@@ -208,6 +338,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    clearInterval(this.interval);
     this.isLoadingDataSubscribtion.unsubscribe();
     this.eventChangeDataSubscribtion.unsubscribe();
   }

@@ -41,6 +41,7 @@ import { CopyComponent } from './modules/events/components/copy/copy.component';
 import { UserErrorReportComponent } from './modules/shared/components/user-error-report/user-error-report.component';
 import { UsersListComponent } from './modules/user-administration/components/users-list/users-list.component';
 import { UsersEditComponent } from './modules/user-administration/components/users-edit/users-edit.component';
+import { TrainingResultModalComponent } from './modules/shared/components/training-result-modal/training-result-modal.component';
 
 
 
@@ -74,6 +75,7 @@ import { UsersEditComponent } from './modules/user-administration/components/use
     UserErrorReportComponent,
     UsersListComponent,
     UsersEditComponent,
+    TrainingResultModalComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule,

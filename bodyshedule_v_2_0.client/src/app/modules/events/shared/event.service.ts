@@ -9,6 +9,8 @@ import { EventList } from './interfaces/event-list.interface';
 import { Event } from './interfaces/event.interface';
 import { environment } from '../../../../environments/environment';
 import { UserData } from '../../authorization/shared/user-data.model';
+import { TrainingStateData } from './models/training-state-data.model';
+import { TrainingResult } from './models/training-result.model';
 
 @Injectable({
   providedIn: 'root'
@@ -43,6 +45,19 @@ export class EventService {
   //getting event by id
   getEvent(id: number): Observable<Event[]> {
     return this.httpClient.get<Event[]>(environment.apiUrl + `/Event/GetEvent/${id}`)
+      .pipe(
+        result => {
+          return result;
+        },
+        catchError(error => {
+          return throwError(error.error.message || this.occurredErrorMessage);
+        })
+      );
+  }
+
+  //getting training state by eventId
+  getTrainingState(eventId: number) {
+    return this.httpClient.get<string>(environment.apiUrl + `/TrainingState/GetTrainingState/${eventId}`)
       .pipe(
         result => {
           return result;
@@ -116,4 +131,29 @@ export class EventService {
         })
       );
   }
+
+  getTotalSecondsAfterStartTraining(id: number) {
+    return this.httpClient.get<number>(environment.apiUrl + `/TrainingState/GetTotalSeconds/${id}`)
+      .pipe(
+        result => {
+          return result;
+        },
+        catchError(error => {
+          return throwError(error.error.message || this.occurredErrorMessage);
+        })
+      );
+  }
+
+  addTrainingResult(trainingResult: TrainingResult) {
+    return this.httpClient.post(environment.apiUrl + '/TrainingResult/AddTrainingResult', trainingResult)
+      .pipe(
+        result => {
+          return result;
+        },
+        catchError(error => {
+          return throwError(error.error.message || this.occurredErrorMessage);
+        })
+      );
+  }
+
 }
