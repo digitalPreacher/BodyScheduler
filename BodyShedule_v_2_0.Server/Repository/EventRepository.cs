@@ -189,7 +189,7 @@ namespace BodyShedule_v_2_0.Server.Repository
             });
             
 
-            return getEvent.ToList();
+            return await getEvent.ToListAsync();
         }
 
         //delete user event

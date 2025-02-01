@@ -7,6 +7,7 @@
         public string Description { get; set; } = string.Empty;
         public string? Status { get; set; }
         public DateTimeOffset StartTime { get; set; }
+        public string? TrainingState { get; set; }
         public List<ExerciseDTO> Exercises { get; set; }
     }
 }

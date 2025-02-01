@@ -7,7 +7,7 @@
   <div class="bg-dark text-light">
     <div class="modal-header">
       <h3 class="modal-title" id="modal-details-title" style="text-align:center">Просмотр</h3>
-      <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+      <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="modal.dismiss()"></button>
     </div>
     <div class="modal-body">
       <form class="p-3 text-center" [formGroup]="detailsForm">
@@ -107,10 +107,10 @@
         <div class="modal-footer mt-3">
           <div class="d-inline-flex col-12">
             <div class="d-inline-flex col-7" *ngIf="detailsForm.get('status')?.value === 'inProgress'">
-              <div class="d-inline-flex col-6">
-                <button type="button" class="btn btn-outline-primary text-light mt-3" (click)="startTimer()" *ngIf="!timerRunning && !timePaused">Начать тренировку</button>
-                <button type="button" class="btn btn-outline-primary text-light mt-3" (click)="startTimer()" *ngIf="timePaused">Возобновить</button>
-                <button type="button" class="btn btn-outline-primary text-light mt-3" (click)="pauseTimer()" *ngIf="!timePaused && timerRunning">Приостановить</button>
+              <div class="d-inline-flex">
+                <button type="button" class="btn btn-outline-primary text-light mt-3" (click)="startTimer()" *ngIf="trainingStateData.state === 'Stopped'">Начать тренировку</button>
+                <button type="button" class="btn btn-outline-primary text-light mt-3" (click)="resumeTimer()" *ngIf="trainingStateData.state === 'Paused'">Возобновить</button>
+                <button type="button" class="btn btn-outline-primary text-light mt-3" (click)="pauseTimer()" *ngIf="trainingStateData.state === 'Runned' || trainingStateData.state === 'Resumed'">Приостановить</button>
                 <div class="mt-4 mx-2">
                   <b>{{displayTime}}</b>
                 </div>
@@ -132,5 +132,5 @@
   </div>
 </ng-template>
 
+<app-training-result-modal #trainingResultModal></app-training-result-modal>
 <app-error-modal #errorModal></app-error-modal>
-

@@ -1,0 +1,21 @@
+<ng-template #trainingResultContent let-modal>
+  <div class="bg-dark text-light">
+    <div class="modal-header">
+      <h3 class="modal-title" id="modal-delete-title">Ваш результат</h3>
+      <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body text-center">
+      <section>
+        <span class="h4">Время тренировки</span>
+        <p  class="h3">{{ trainingResult.trainingTime }}</p>
+      </section>
+      <section>
+        <span class="h4">Тоннаж</span>
+        <p  class="h3"> {{ trainingResult.amountWeight }}</p>
+      </section>
+      <div class="modal-footer mt-3">
+            <button type="submit" class="w-100 btn btn-outline-success mt-3 text-light" (click)="modal.dismiss()">Ок</button>
+      </div>
+    </div>
+  </div>
+</ng-template>

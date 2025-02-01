@@ -88,6 +88,8 @@ builder.Services.AddScoped<IUserErrorReportRepository, UserErrorReportRepository
 builder.Services.AddScoped<IUserErrorReportService, UserErrorReportService>();
 builder.Services.AddScoped<IAdminUserRepository, AdminUserRepository>();
 builder.Services.AddScoped<IAdminUserService, AdminUserService>();
+builder.Services.AddScoped<ITrainingResultRepository, TrainingResultRepository>();
+builder.Services.AddScoped<ITrainingResultService, TrainingResultService>();
 
 var app = builder.Build();
 
