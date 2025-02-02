@@ -19,7 +19,6 @@ export class LineChartBodyMeasureComponent implements OnInit  {
 
   multi: any[] = []
   view: [number, number] = [window.innerWidth < this.maxWindowSize ? window.innerWidth / 1.20 : this.maxChartWidth, this.maxChartHeight];
-
   // options ngx line chart
   legend: boolean = true;
   showLabels: boolean = true;

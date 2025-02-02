@@ -1,0 +1,50 @@
+<div class="sidebar bg-dark" [ngClass]="{ 'sidebar-collapsed': isSidebarCollapsed }" *ngIf="userData.isLoggedIn && !isMobilePlatform">
+  <div class="sidebar-header">
+    <div class="sidebar-toggle"
+         [ngClass]="{ 'sidebar-collapsed': isSidebarCollapsed }"
+          (click)="onSidebarToggle()">
+      <i *ngIf="!isMobilePlatform" class="h3 text-white" [class]="isSidebarCollapsed ? 'bi bi-arrow-bar-right' : 'bi bi-arrow-bar-left'"></i>
+    </div>
+  </div>
+  <div class="sidebar-menu">
+    <ul>
+      <li class="sidebar-menu-item" routerLink="/">
+        <i class="bi bi-calendar4-event me-2 h3"></i>
+        <a class="nav-link" *ngIf="!isSidebarCollapsed">Календарь</a>
+      </li>
+      <li class="sidebar-menu-item" routerLink="/list">
+        <img class="me-2" src="../../../../assets/icons/gym-dumbbell-icon.png" style="height: 28px; width: 28px" />
+        <a class="nav-link" *ngIf="!isSidebarCollapsed">Тренировки</a>
+      </li>
+      <li class="sidebar-menu-item" routerLink="/programs/list">
+        <i class="bi bi-layout-text-window me-2 h3"></i>
+        <a class="nav-link" *ngIf="!isSidebarCollapsed">Программы</a>
+      </li>
+      <li class="sidebar-menu-item" routerLink="/body-measure/details-body-measure">
+        <i class="bi bi-graph-up me-2 h3"></i>
+        <a class="nav-link" *ngIf="!isSidebarCollapsed">Показатели</a>
+      </li>
+      <li class="sidebar-menu-item" routerLink="/user-administration/users-list" *ngIf="userData.role === 'Admin'">
+        <i class="bi bi-people-fill me-2 h3"></i>
+        <a class="nav-link" *ngIf="!isSidebarCollapsed">Пользователи</a>
+      </li>
+      <li class="sidebar-menu-dropdown-item" placement="top" ngbDropdown id="drop-down">
+        <a ngbDropdownToggle id="profile-dropdown">
+          <i class="bi bi-person-circle h4"></i>
+        </a>
+        <div class="drop-down-menu" ngbDropdownMenu="profile-dropdown">
+          <div class="drop-down-items">
+            <div class="drop-down-item">
+              <a class="btn" routerLink="/account/change-user-password">Изменить пароль</a>
+            </div>
+            <div class="drop-down-item">
+              <a class="btn" (click)="logout()">Выйти</a>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+

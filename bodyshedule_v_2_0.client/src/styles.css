@@ -39,3 +39,6 @@
   right: 80px;
 }
 
+.body{
+    z-index: 1000 !important;
+}

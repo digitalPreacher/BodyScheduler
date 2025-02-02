@@ -1,6 +1,5 @@
-<div class="fixed-bottom d-flex justify-content-end">
-  <button class="btn text-light" style="width: 75px" placement="start" ngbTooltip="Сообщить об ошибке" (click)="open(content)"><i class="bi bi-exclamation-square" style='font-size:40px;'></i></button>
-</div>
+
+<button class="btn text-light position-fixed bottom-0 end-0" style="width: 75px" placement="start" ngbTooltip="Сообщить об ошибке" (click)="open(content)"><i class="bi bi-exclamation-square" style='font-size:40px;'></i></button>
 <ng-template #content let-modal>
   <app-loader *ngIf="isLoading">
   </app-loader>
