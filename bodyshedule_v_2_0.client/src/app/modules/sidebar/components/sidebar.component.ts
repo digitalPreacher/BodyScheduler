@@ -1,22 +1,25 @@
-import { Component, Output, Input } from '@angular/core';
-import { inject } from '@angular/core';
-import { AuthorizationService } from '../../../authorization/shared/authorization.service';
-import { UserData } from '../../../authorization/shared/user-data.model';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { AuthorizationService } from '../../authorization/shared/authorization.service';
+import { UserData } from '../../authorization/shared/user-data.model';
+
+interface MenuItem {
+  icon: string;
+  label: string;
+  children?: MenuItem[];
+  isOpen?: boolean;
+}
 
 @Component({
-  selector: 'app-navbar',
-  templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css'
+  selector: 'app-sidebar',
+  templateUrl: './sidebar.component.html',
+  styleUrl: './sidebar.component.css'
 })
-export class NavbarComponent {
-  login: string = '';
-  userDataSubscribtion: any;
-  userRole = '';
-  userData: UserData = new UserData();
-
-  @Output() isLoggedIn: boolean = false;
+export class SidebarComponent {
   @Input() isSidebarCollapsed = true;
+  @Output() sidebarToggle = new EventEmitter<void>();
   @Input() isMobilePlatform = window.innerWidth < 450 ? true : false;
+
+  userData: UserData = new UserData();
 
   constructor(private authService: AuthorizationService) {
     this.authService.userData$.asObservable().subscribe(data => {

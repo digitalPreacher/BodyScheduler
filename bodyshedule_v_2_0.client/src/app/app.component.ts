@@ -9,16 +9,33 @@ import { AuthorizationService } from '../app/modules/authorization/shared/author
   styleUrl: './app.component.css'
 })
 export class AppComponent implements AfterViewInit{
+  userDataSubscribtion: any;
+  isLoggedIn: any;
+  isSidebarCollapsed = true;
+  isMobilePlatform = window.innerWidth < 450 ? true : false;
 
   constructor(private authService: AuthorizationService, private elementRef: ElementRef) {
     if (localStorage.getItem('authToken')) {
       this.authService.setUserDetails();
     }
+
+    this.userDataSubscribtion = this.authService.userData$.asObservable().subscribe(data => {
+      this.isLoggedIn = data.isLoggedIn;
+    });
   }
 
   ngAfterViewInit() {
-
     this.elementRef.nativeElement.ownerDocument
       .body.style.backgroundColor = '#121212';
+  }
+
+  //check mobile platform by window size 
+  inputChangeWindowSize(size: any) {
+    if (size.target.innerWidth < 450) {
+      this.isMobilePlatform = true;
+    }
+    else {
+      this.isMobilePlatform = false;
+    }
   }
 }
