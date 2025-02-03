@@ -47,6 +47,7 @@ export class DetailsTrainingProgramComponent implements OnInit, OnDestroy {
       next: result => {
         this.loadingService.hide();
         const eventData = result[0];
+        console.log(eventData);
         this.detailsForm.patchValue({
           title: eventData.title,
           description: eventData.description

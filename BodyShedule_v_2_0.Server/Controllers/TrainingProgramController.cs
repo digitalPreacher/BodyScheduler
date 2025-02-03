@@ -1,7 +1,9 @@
 ﻿using BodyShedule_v_2_0.Server.DataTransferObjects.TrainingProgramDTOs;
+using BodyShedule_v_2_0.Server.Exceptions;
 using BodyShedule_v_2_0.Server.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BodyShedule_v_2_0.Server.Controllers
 {
@@ -24,77 +26,96 @@ namespace BodyShedule_v_2_0.Server.Controllers
         [Route("AddTrainingProgram")]
         public async Task<IActionResult> AddTrainingProgramAsync([FromBody]AddTrainingProgramDTO trainingProgramInfo)
         {
-            var result = await _service.AddTrainingProgramAsync(trainingProgramInfo);
-
-            if (result)
+            try
             {
+                await _service.AddTrainingProgramAsync(trainingProgramInfo);
                 return Ok();
             }
-
-            return BadRequest();
+            catch (DbUpdateException ex)
+            {
+                _logger.LogInformation(ex.Message);
+                return BadRequest(new { Message = "Произошла ошибка при добавлении записи в БД" });
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex.Message);
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500, new { Message = "Произошла неизвестная ошибка, повторите попытку чуть позже" });
+            }
         }
 
         //get all user training program
         [HttpGet]
         [Route("GetTrainingPrograms/{userId}")]
-        public async Task<IActionResult> GetTrainingProgramsAsync(string userId)
+        public async Task<IActionResult> GetTrainingProgramsAsync([FromRoute]string userId)
         {
             try
             {
-                if (userId != null) {
-                    var programs = await _service.GetTrainingProgramsAsync(userId);
-                    return Ok(programs);
-                }
-                else
-                {
-                    return BadRequest(new { Message = "Параметр запроса не должен быть пустым" });
-                }
+                var programs = await _service.GetTrainingProgramsAsync(userId);
+                return Ok(programs);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex.Message);
+                return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
-                _logger.LogInformation(ex.Message);
-                return BadRequest(ex.Message);
+                _logger.LogError(ex.Message);
+                return StatusCode(500, new { Message = "Произошла неизвестная ошибка, повторите попытку чуть позже" });
             }
         }
 
         //get user training program
         [HttpGet]
         [Route("GetTrainingProgram/{trainingProgramId}")]
-        public async Task<IActionResult> GetTrainingProgramAsync(int trainingProgramId)
+        public async Task<IActionResult> GetTrainingProgramAsync([FromRoute]int trainingProgramId)
         {
             try
             {
-                var programs = await _service.GetTrainingProgramAsync(trainingProgramId);
-                return Ok(programs);
+                var program = await _service.GetTrainingProgramAsync(trainingProgramId);
+                return Ok(program);
             }
-            catch(Exception ex) 
+            catch (EntityNotFoundException ex)
             {
                 _logger.LogInformation(ex.Message);
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex) 
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500, new { Message = "Произошла неизвестная ошибка, повторите попытку чуть позже" });
             }
         }
 
         //delete training program
         [HttpDelete]
         [Route("DeleteTrainingProgram/{trainingProgramId}")]
-        public async Task<IActionResult> DeleteTrainingProgramAsync(int trainingProgramId)
+        public async Task<IActionResult> DeleteTrainingProgramAsync([FromRoute]int trainingProgramId)
         {
             try
             {
                 var result = await _service.DeleteTrainingProgramAsync(trainingProgramId);
-                if (result)
-                {
-                    return Ok(new { Message = $"Запись с id: {trainingProgramId} успешно удалена" });
-                }
-                else
-                {
-                    return BadRequest(new { Message = $"Запись с id: {trainingProgramId} не найдена" });
-                }
+                return Ok(new { Message = $"Запись с id: {trainingProgramId} успешно удалена" });
             }
-            catch(Exception ex)
+            catch (DbUpdateException ex)
             {
                 _logger.LogInformation(ex.Message);
-                return BadRequest(ex.Message);
+                return BadRequest(new { Message = "Произошла ошибка при добавлении записи в БД" });
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex.Message);
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500, new { Message = "Произошла неизвестная ошибка, повторите попытку чуть позже" });
             }
         }
 
@@ -103,14 +124,25 @@ namespace BodyShedule_v_2_0.Server.Controllers
         [Route("EditTrainingProgram")]
         public async Task<IActionResult> EditTrainingProgramAsync([FromBody]EditTrainingProgramDTO trainingProgramInfo)
         {
-            var result = await _service.EditTrainingProgramAsync(trainingProgramInfo);
-            if (result)
+            try
             {
+                var result = await _service.EditTrainingProgramAsync(trainingProgramInfo);
                 return Ok();
             }
-            else
+            catch (DbUpdateException ex)
             {
-                return BadRequest();
+                _logger.LogInformation(ex.Message);
+                return BadRequest(new { Message = "Произошла ошибка при добавлении записи в БД" });
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex.Message);
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500, new { Message = "Произошла неизвестная ошибка, повторите попытку чуть позже" });
             }
         }
     }
