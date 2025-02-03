@@ -32,6 +32,7 @@ export class ForgotUserPasswordComponent implements OnDestroy  {
     })
   }
 
+  //forgot user password to login form
   forgotPassword() {
     if (this.forgotPasswordForm.valid) {
       this.loadingService.show();
@@ -41,6 +42,7 @@ export class ForgotUserPasswordComponent implements OnDestroy  {
           this.router.navigate(['/login']);
           this.forgotPasswordForm.reset();
           this.submittedClick = false;
+          this.modalService.dismissAll();
           this.alertService.showSelfClosedSuccessAlert();
         },
         error: error => {
@@ -69,6 +71,7 @@ export class ForgotUserPasswordComponent implements OnDestroy  {
     this.forgotPasswordForm = defaultForgotPasswordForm;
   }
 
+  //open forgot password modal
   open(content: TemplateRef<any>) {
     const options: NgbModalOptions = {
       ariaLabelledBy: 'modal-basic-title'

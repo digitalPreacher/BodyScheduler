@@ -10,6 +10,8 @@ import { ResetPasswordData } from './reset-password-data.model';
 import { CookieService } from '../../shared/service/cookie.service';
 import { __values } from 'tslib';
 import { environment } from '../../../../environments/environment';
+import { RegistrationData } from '../../registration/shared/registration-data.model';
+import { multipleErrorHandler } from '../../../utils/error-handlers';
 
 
 @Injectable({
@@ -72,7 +74,8 @@ export class AuthorizationService {
           return result;
         },
         catchError(error => {
-          return throwError(error.error.message || [error.error] || ["Произошла неизвестная ошибка"])
+          const errorResult = multipleErrorHandler(error);
+          return errorResult;
         })
       );
   }
@@ -100,7 +103,8 @@ export class AuthorizationService {
           return result;
         },
         catchError(error => {
-          return throwError(error.error.message || [error.error] || ["Произошла неизвестная ошибка"])
+          const errorResult = multipleErrorHandler(error);
+          return errorResult;
         })
       );
   }

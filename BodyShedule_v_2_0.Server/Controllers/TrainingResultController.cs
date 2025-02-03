@@ -33,7 +33,7 @@ namespace BodyShedule_v_2_0.Server.Controllers
             {
                 _logger.LogInformation(ex.Message);
 
-                return NotFound(new { message = ex.Message });
+                return NotFound(ex.Message);
             }
             catch (Exception ex)
             {

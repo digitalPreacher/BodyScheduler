@@ -41,7 +41,7 @@ namespace BodyShedule_v_2_0.Server.Service
             return await _repository.ForgotUserPasswordAsync(email);
         }
 
-        public async Task<bool> ResetUserPasswordAsync(ResetUserPasswordDTO resetPasswordInfo)
+        public async Task<IdentityResult> ResetUserPasswordAsync(ResetUserPasswordDTO resetPasswordInfo)
         {
             return await _repository.ResetUserPasswordAsync(resetPasswordInfo);
         }

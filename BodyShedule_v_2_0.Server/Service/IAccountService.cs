@@ -11,6 +11,6 @@ namespace BodyShedule_v_2_0.Server.Service
         public Task<int> GetUserIdAsync(string userLogin);
         public Task<IdentityResult> ChangeUserPasswordAsync(ChangeUserPasswordDTO changePasswordInfo);
         public Task<bool> ForgotUserPasswordAsync(string email);
-        public Task<bool> ResetUserPasswordAsync(ResetUserPasswordDTO resetPasswordInfo);
+        public Task<IdentityResult> ResetUserPasswordAsync(ResetUserPasswordDTO resetPasswordInfo);
     }
 }

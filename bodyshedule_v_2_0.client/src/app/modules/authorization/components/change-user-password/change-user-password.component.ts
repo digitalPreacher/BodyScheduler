@@ -17,7 +17,6 @@ export class ChangeUserPasswordComponent implements OnDestroy {
   confirmedPasswordResult: boolean = false;
   submittedClick: boolean = false;
   errorMessages: string[] = [];
-  getErrorMessage = false;
   isLoading!: boolean;
   isLoadingDataSubscribtion: any;
   userDataSubscribtion: any;
@@ -41,6 +40,7 @@ export class ChangeUserPasswordComponent implements OnDestroy {
 
   }
 
+  //change user password from profile
   changeUserPassword() {
     if (this.changeUserPasswordForm.valid) {
       this.loadingService.show();
@@ -57,10 +57,9 @@ export class ChangeUserPasswordComponent implements OnDestroy {
           },
           error: error => {
             this.loadingService.hide();
-            this.getErrorMessage = true;
             this.confirmedPasswordResult = false;
             this.submittedClick = false;
-            this.errorMessages.push(error);
+            this.errorMessages = error
           }
         })
       }

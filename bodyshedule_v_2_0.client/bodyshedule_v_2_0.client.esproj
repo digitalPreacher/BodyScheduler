@@ -9,7 +9,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\app\modules\shared\service\" />
-    <Folder Include="src\app\utils\" />
     <Folder Include="src\assets\icons\" />
   </ItemGroup>
 </Project>

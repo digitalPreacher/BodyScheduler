@@ -1,4 +1,5 @@
-﻿using System.Net.Mail;
+﻿using BodyShedule_v_2_0.Server.Exceptions;
+using System.Net.Mail;
 
 namespace BodyShedule_v_2_0.Server.Utilities
 {
@@ -12,24 +13,29 @@ namespace BodyShedule_v_2_0.Server.Utilities
             var userName = Environment.GetEnvironmentVariable("SMTP_HOST_LOGIN") ?? throw new ArgumentException("Invalid login to host");
             var password = Environment.GetEnvironmentVariable("SMTP_HOST_PASSWORD") ?? throw new ArgumentException("Invalid login to host");
             var senderEmail = Environment.GetEnvironmentVariable("SMTP_SENDER_EMAIL") ?? throw new ArgumentException("Invalid email sender");
-            
-            using MailMessage mailMessage = new MailMessage();
-            mailMessage.From = new MailAddress(senderEmail);
-            mailMessage.To.Add(new MailAddress(userEmail));
+            try
+            {
+                using MailMessage mailMessage = new MailMessage();
+                mailMessage.From = new MailAddress(senderEmail);
+                mailMessage.To.Add(new MailAddress(userEmail));
 
-            mailMessage.Subject = "Сброс пароля";
-            mailMessage.IsBodyHtml = true;
-            mailMessage.Body = link;
+                mailMessage.Subject = "Сброс пароля";
+                mailMessage.IsBodyHtml = true;
+                mailMessage.Body = link;
 
-            using SmtpClient client = new SmtpClient();
-            client.Credentials = new System.Net.NetworkCredential(userName, password);
-            client.Host = host;
-            client.EnableSsl = true;
-            client.Port = port;
-            client.UseDefaultCredentials = false;
+                using SmtpClient client = new SmtpClient();
+                client.Credentials = new System.Net.NetworkCredential(userName, password);
+                client.Host = host;
+                client.EnableSsl = true;
+                client.Port = port;
+                client.UseDefaultCredentials = false;
 
-            client.Send(mailMessage);
-
+                client.Send(mailMessage);
+            }
+            catch(Exception ex)
+            {
+                throw new EmailSendException(ex.Message);
+            }
             return true;
         
         }
@@ -44,23 +50,30 @@ namespace BodyShedule_v_2_0.Server.Utilities
             var emailSender = Environment.GetEnvironmentVariable("SMTP_FEEDBACK_SENDER_EMAIL") ?? throw new ArgumentException("Invalid sender email");
             var emailGetter = Environment.GetEnvironmentVariable("SMTP_FEEDBACK_GETTER_EMAIL") ?? throw new ArgumentException("Invalid getter email");
 
-            using MailMessage mailMessage = new MailMessage();
-            mailMessage.From = new MailAddress(emailSender);
-            mailMessage.To.Add(new MailAddress(emailGetter));
+            try
+            {
+                using MailMessage mailMessage = new MailMessage();
+                mailMessage.From = new MailAddress(emailSender);
+                mailMessage.To.Add(new MailAddress(emailGetter));
 
-            mailMessage.Subject = $"Сообщение о проблеме";
-            mailMessage.IsBodyHtml = true;
-            mailMessage.Body = $"<p>Описание: {description}<p>" +
-                $"<p>Email: {userEmail}<p>";
+                mailMessage.Subject = $"Сообщение о проблеме";
+                mailMessage.IsBodyHtml = true;
+                mailMessage.Body = $"<p>Описание: {description}<p>" +
+                    $"<p>Email: {userEmail}<p>";
 
-            using SmtpClient client = new SmtpClient();
-            client.Credentials = new System.Net.NetworkCredential(userName, password);
-            client.Host = host;
-            client.EnableSsl = true;
-            client.Port = port;
-            client.UseDefaultCredentials = false;
+                using SmtpClient client = new SmtpClient();
+                client.Credentials = new System.Net.NetworkCredential(userName, password);
+                client.Host = host;
+                client.EnableSsl = true;
+                client.Port = port;
+                client.UseDefaultCredentials = false;
 
-            client.Send(mailMessage);
+                client.Send(mailMessage);
+            }
+            catch (Exception ex)
+            {
+                throw new EmailSendException(ex.Message);
+            }
 
             return true;
         }
