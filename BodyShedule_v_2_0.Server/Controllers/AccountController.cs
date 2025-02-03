@@ -166,7 +166,7 @@ namespace BodyShedule_v_2_0.Server.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message)
+                _logger.LogError(ex.Message);
                 return StatusCode(500, new { Message = "Произошла неизвестная ошибка, повторите попытку чуть позже" });
             }
         }
