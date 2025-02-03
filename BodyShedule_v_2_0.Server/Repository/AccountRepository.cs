@@ -35,6 +35,7 @@ namespace BodyShedule_v_2_0.Server.Repository
             };
             
             var result = await _userManager.CreateAsync(user, userRegistrationData.Password);
+
             await _userManager.AddToRoleAsync(user, "User");
             
             return result;
@@ -86,7 +87,6 @@ namespace BodyShedule_v_2_0.Server.Repository
             }
 
             var result = await _userManager.ChangePasswordAsync(user, changePasswordInfo.OldPassword, changePasswordInfo.NewPassword);
-
             return result;
         }
 
@@ -94,7 +94,6 @@ namespace BodyShedule_v_2_0.Server.Repository
         public async Task<bool> ForgotUserPasswordAsync(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
-
             if (user == null)
             {
                 throw new EntityNotFoundException("Пользователь не найден");
@@ -136,7 +135,6 @@ namespace BodyShedule_v_2_0.Server.Repository
             }
 
             var result = await _userManager.ResetPasswordAsync(user, resetPasswordInfo.Token, resetPasswordInfo.Password);
-
             return result;
         }
     }

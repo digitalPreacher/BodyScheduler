@@ -42,7 +42,6 @@ namespace BodyShedule_v_2_0.Server.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-
                 return StatusCode(500, new { Message = "Произошла неизвестная ошибка, повторите попытку чуть позже" });
             }
         }
@@ -58,21 +57,18 @@ namespace BodyShedule_v_2_0.Server.Controllers
                 var result = await _accountService.SignInAsync(userCredentials); 
                 var userRoles = await _accountService.GetUserRolesAsync(userCredentials);
                 var userId = await _accountService.GetUserIdAsync(userCredentials.Login);
-
                 var tokenString = JWTHelper.GenerateToken(userCredentials, userRoles[0], userId);
-                
+
                 return Ok(new { token = tokenString });
             }
             catch(EntityNotFoundException ex)
             {
                 _logger.LogInformation(ex.Message);
-
                 return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
                 _logger.LogInformation(ex.Message);
-
                 return StatusCode(500, new { Message = "Произошла неизвестная ошибка, повторите попытку чуть позже" });
             }
         }
@@ -98,19 +94,16 @@ namespace BodyShedule_v_2_0.Server.Controllers
             catch (DbUpdateException ex)
             {
                 _logger.LogInformation(ex.Message);
-
                 return BadRequest(new { Message = "Произошла ошибка при изменении записи в БД"});
             }
             catch (EntityNotFoundException ex)
             {
                 _logger.LogInformation(ex.Message);
-
                 return BadRequest(new { Message = "Произошла ошибка при изменении записи в БД" });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-
                 return StatusCode(500, new { Message = "Произошла неизвестная ошибка, повторите попытку чуть позже" });
             }
         }
@@ -124,31 +117,26 @@ namespace BodyShedule_v_2_0.Server.Controllers
             try
             {
                 var result = await _accountService.ForgotUserPasswordAsync(forgotPasswordInfo.Email);
-                
                 return Ok();
             }
             catch (ArgumentException ex)
             {
                 _logger.LogInformation(ex.Message);
-
                 return BadRequest("Не заполнены обязательные параметры на стороне сервера для отправки email. Пожалуйста, обратитесь в техническую поддержку");
             }
             catch (EmailSendException ex)
             {
                 _logger.LogInformation(ex.Message);
-
                 return BadRequest("Возникла ошибка при отправкt сведений на Ваш email. Пожалуйста, обратитесь в техническую поддержку");
             }
             catch (EntityNotFoundException ex)
             {
                 _logger.LogInformation(ex.Message);
-
                 return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
                 _logger.LogInformation(ex.Message);
-
                 return StatusCode(500, new { Message = "Произошла неизвестная ошибка, повторите попытку чуть позже" });
             }
         }
@@ -174,13 +162,11 @@ namespace BodyShedule_v_2_0.Server.Controllers
             catch (EntityNotFoundException ex)
             {
                 _logger.LogInformation(ex.Message);
-
                 return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
-
+                _logger.LogError(ex.Message)
                 return StatusCode(500, new { Message = "Произошла неизвестная ошибка, повторите попытку чуть позже" });
             }
         }
