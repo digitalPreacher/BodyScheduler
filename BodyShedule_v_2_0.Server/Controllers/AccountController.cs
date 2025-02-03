@@ -60,9 +60,14 @@ namespace BodyShedule_v_2_0.Server.Controllers
                 var userId = await _accountService.GetUserIdAsync(userCredentials.Login);
 
                 var tokenString = JWTHelper.GenerateToken(userCredentials, userRoles[0], userId);
-
+                
                 return Ok(new { token = tokenString });
-             
+            }
+            catch(EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex.Message);
+
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {

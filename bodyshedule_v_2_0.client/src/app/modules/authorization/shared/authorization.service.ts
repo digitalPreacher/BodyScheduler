@@ -40,10 +40,7 @@ export class AuthorizationService {
           return response;
         }),
         catchError(error => {
-          if (error.status === 401) {
-            return throwError('Некорретный логин/пароль')
-          }
-          return throwError('Произошла неизвестная ошибка');
+          return throwError(error.error.message || "Произошла неизвестная ошибка");
         })
       );
   }
