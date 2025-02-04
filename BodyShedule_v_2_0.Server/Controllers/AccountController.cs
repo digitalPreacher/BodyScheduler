@@ -99,7 +99,7 @@ namespace BodyShedule_v_2_0.Server.Controllers
             catch (EntityNotFoundException ex)
             {
                 _logger.LogInformation(ex.Message);
-                return BadRequest(new { Message = "Произошла ошибка при изменении записи в БД" });
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
