@@ -5,6 +5,7 @@ using BodyShedule_v_2_0.Server.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace BodyShedule_v_2_0.Server.Controllers
 {
@@ -56,12 +57,19 @@ namespace BodyShedule_v_2_0.Server.Controllers
         {
             try
             {
-                var result = await _accountService.SignInAsync(userCredentials); 
-                var userRoles = await _accountService.GetUserRolesAsync(userCredentials);
-                var userId = await _accountService.GetUserIdAsync(userCredentials.Login);
-                var tokenString = JWTHelper.GenerateToken(userCredentials, userRoles[0], userId);
+                var result = await _accountService.SignInAsync(userCredentials);
+                if (result.Succeeded)
+                {
+                    var userRoles = await _accountService.GetUserRolesAsync(userCredentials);
+                    var userId = await _accountService.GetUserIdAsync(userCredentials.Login);
+                    var tokenString = JWTHelper.GenerateToken(userCredentials, userRoles[0], userId);
 
-                return Ok(new { token = tokenString });
+                    return Ok(new { token = tokenString });
+                }
+                else
+                {
+                    return Unauthorized();
+                }
             }
             catch(EntityNotFoundException ex)
             {
