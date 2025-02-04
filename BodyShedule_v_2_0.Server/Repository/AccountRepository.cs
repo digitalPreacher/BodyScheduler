@@ -1,11 +1,8 @@
 ﻿using BodyShedule_v_2_0.Server.Data;
 using BodyShedule_v_2_0.Server.DataTransferObjects.AccountDTOs;
 using BodyShedule_v_2_0.Server.Exceptions;
-using BodyShedule_v_2_0.Server.Helpers;
 using BodyShedule_v_2_0.Server.Models;
-using BodyShedule_v_2_0.Server.Utilities;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace BodyShedule_v_2_0.Server.Repository
 {
@@ -90,8 +87,8 @@ namespace BodyShedule_v_2_0.Server.Repository
             return result;
         }
 
-        //forgot user password
-        public async Task<bool> ForgotUserPasswordAsync(string email)
+        //return generate token for reset user password
+        public async Task<string> GenerateTokenAsync(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
@@ -100,29 +97,7 @@ namespace BodyShedule_v_2_0.Server.Repository
             }
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-
-            var domainName = Environment.GetEnvironmentVariable("DOMAIN_NAME");
-            if (string.IsNullOrEmpty(domainName))
-            {
-                throw new ArgumentException("Не заполнено доменное имя");
-            }
-
-            try
-            {
-                var link = AbsoluteUrlGenerateHelper.GenerateAbsoluteUrl("reset-password", "account", token, domainName, email);
-                var result = EmailSender.SendEmailPasswordReset(email, link);
-
-                return true;
-            }
-            catch (ArgumentException ex)
-            {
-                throw new ArgumentException(ex.Message);
-            }
-            catch (EmailSendException ex)
-            {
-                throw new EmailSendException(ex.Message);
-            }
-  
+            return token;
         }
 
         //reset user password if forgot it

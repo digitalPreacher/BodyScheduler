@@ -1,7 +1,6 @@
 ﻿using BodyShedule_v_2_0.Server.Data;
 using BodyShedule_v_2_0.Server.DataTransferObjects.UserErrorReportDTOs;
 using BodyShedule_v_2_0.Server.Models;
-using BodyShedule_v_2_0.Server.Utilities;
 
 namespace BodyShedule_v_2_0.Server.Repository
 {
@@ -14,10 +13,9 @@ namespace BodyShedule_v_2_0.Server.Repository
             _db = db;
         }
 
-        public async Task<bool> UserErrorReportAsync(UserErrorReportDTO reportInfo)
+        //Add data from user error report
+        public async Task AddUserErrorReportAsync(UserErrorReportDTO reportInfo)
         {
-            EmailSender.SendEmailUserFeedback(reportInfo.Email, reportInfo.Description);
-
             var userErrorReportData = new UserErrorReport
             {
                 Email = reportInfo.Email,
@@ -27,9 +25,6 @@ namespace BodyShedule_v_2_0.Server.Repository
 
             await _db.UserErrorReportSet.AddAsync(userErrorReportData);
             await _db.SaveChangesAsync();
-
-            return true;
         }
-
     }
 }

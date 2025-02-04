@@ -7,14 +7,10 @@ namespace BodyShedule_v_2_0.Server.Repository
     {
         public Task<IdentityResult> SignUpAsync(UserRegistationDTO userRegistrationData);
         public Task<SignInResult> SignInAsync(UserLoginDTO userCredentials);
-
         public Task<IList<string>> GetUserRolesAsync(UserLoginDTO userCredentials);
-
         public Task<int> GetUserIdAsync(string userLogin);
-
         public Task<IdentityResult> ChangeUserPasswordAsync(ChangeUserPasswordDTO changePasswordInfo);
-
-        public Task<bool> ForgotUserPasswordAsync(string email);
+        public Task<string> GenerateTokenAsync(string email);
         public Task<IdentityResult> ResetUserPasswordAsync(ResetUserPasswordDTO resetPasswordInfo);
 
     }

@@ -72,7 +72,7 @@ namespace BodyShedule_v_2_0.Server.Repository
 
             _db.Users.Attach(user);
             _db.Entry(user).State = EntityState.Modified;
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
 
             return true;    
         }

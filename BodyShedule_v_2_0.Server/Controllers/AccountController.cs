@@ -13,12 +13,14 @@ namespace BodyShedule_v_2_0.Server.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IAccountService _accountService;
+        private readonly IEmailSenderService _emailSenderService;
         private readonly ILogger<AccountController> _logger;
 
-        public AccountController(IAccountService accountService, ILogger<AccountController> logger)
+        public AccountController(IAccountService accountService, ILogger<AccountController> logger, IEmailSenderService emailSenderService)
         {
             _accountService = accountService;
             _logger = logger;
+            _emailSenderService = emailSenderService;
         }
 
         //Method for registered new users
@@ -116,7 +118,17 @@ namespace BodyShedule_v_2_0.Server.Controllers
         {
             try
             {
-                var result = await _accountService.ForgotUserPasswordAsync(forgotPasswordInfo.Email);
+                var token = await _accountService.GenerateTokenAsync(forgotPasswordInfo.Email);
+                var domainName = Environment.GetEnvironmentVariable("DOMAIN_NAME");
+                if (string.IsNullOrEmpty(domainName))
+                {
+                    throw new ArgumentException("Не заполнено доменное имя");
+                }
+
+                var link = AbsoluteUrlGenerateHelper.GenerateAbsoluteUrl("reset-password", "account", token, domainName, forgotPasswordInfo.Email);
+                
+                await _emailSenderService.SendEmailPasswordResetAsync(forgotPasswordInfo.Email, link);
+
                 return Ok();
             }
             catch (ArgumentException ex)
@@ -127,7 +139,7 @@ namespace BodyShedule_v_2_0.Server.Controllers
             catch (EmailSendException ex)
             {
                 _logger.LogInformation(ex.Message);
-                return BadRequest("Возникла ошибка при отправкt сведений на Ваш email. Пожалуйста, обратитесь в техническую поддержку");
+                return BadRequest("Возникла ошибка при отправке сведений на Ваш email. Пожалуйста, обратитесь в техническую поддержку");
             }
             catch (EntityNotFoundException ex)
             {

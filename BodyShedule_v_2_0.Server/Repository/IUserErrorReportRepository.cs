@@ -4,6 +4,6 @@ namespace BodyShedule_v_2_0.Server.Repository
 {
     public interface IUserErrorReportRepository
     {
-        public Task<bool> UserErrorReportAsync(UserErrorReportDTO reportInfo);
+        public Task AddUserErrorReportAsync(UserErrorReportDTO reportInfo);
     }
 }
