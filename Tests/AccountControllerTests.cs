@@ -12,13 +12,15 @@ public class AccountControllerTests
 {
     private readonly Mock<IAccountService> _accountServiceMock;
     private readonly AccountController _accountController;
+    private readonly Mock<IEmailSenderService> _emailSenderServiceMock;
     private readonly Mock<ILogger<AccountController>> _logger;
 
     public AccountControllerTests()
     {
         _accountServiceMock = new Mock<IAccountService>();
         _logger = new Mock<ILogger<AccountController>>();
-        _accountController = new AccountController(_accountServiceMock.Object, _logger.Object);
+        _emailSenderServiceMock = new Mock<IEmailSenderService>();
+        _accountController = new AccountController(_accountServiceMock.Object, _logger.Object, _emailSenderServiceMock.Object);
     }
 
     //Testing successfully registered of a new user and return result OK on response to client

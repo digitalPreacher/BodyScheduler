@@ -1,7 +1,4 @@
-﻿using BodyShedule_v_2_0.Server.Exceptions;
-using BodyShedule_v_2_0.Server.Utilities;
-using Microsoft.Extensions.Hosting;
-using System.Net.Mail;
+﻿using System.Net.Mail;
 
 namespace BodyShedule_v_2_0.Server.Service
 {
