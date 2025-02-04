@@ -24,16 +24,14 @@
                  formControlName="email"
                  name="reportEmailField"
                  placeholder="example@mail.ru" />
-          <div *ngIf="reportForm.invalid && submittedClick">
-            <div *ngIf="reportForm.get('email')?.hasError('required')"
+            <div *ngIf="reportForm.get('email')?.hasError('required') && submittedClick"
                  class="alert alert-danger mt-2">
               Поле обязательно для заполнения
             </div>
-            <div *ngIf="reportForm.get('email')?.hasError('pattern')"
+            <div *ngIf="reportForm.get('email')?.hasError('pattern') && submittedClick"
                  class="alert alert-danger mt-2">
               Введите почту в формате example&#64;mail.ru
             </div>
-          </div>
         </div>
         <div class="form-group mt-2">
           <label for="report-description">Описание</label>

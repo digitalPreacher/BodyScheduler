@@ -14,25 +14,21 @@ namespace BodyShedule_v_2_0.Server.Repository
             _db = db;
         }
 
-        public bool UserErrorReport(UserErrorReportDTO reportInfo)
+        public async Task<bool> UserErrorReportAsync(UserErrorReportDTO reportInfo)
         {
+            EmailSender.SendEmailUserFeedback(reportInfo.Email, reportInfo.Description);
 
-            var result = EmailSender.SendEmailUserFeedback(reportInfo.Email, reportInfo.Description);
-            if (result)
+            var userErrorReportData = new UserErrorReport
             {
-                var userErrorReportData = new UserErrorReport
-                {
-                    Email = reportInfo.Email,
-                    Description = reportInfo.Description,
-                    CreateAt = DateTime.Now,
-                };
+                Email = reportInfo.Email,
+                Description = reportInfo.Description,
+                CreateAt = DateTime.Now,
+            };
 
-                _db.UserErrorReportSet.Add(userErrorReportData);
+            await _db.UserErrorReportSet.AddAsync(userErrorReportData);
+            await _db.SaveChangesAsync();
 
-                _db.SaveChanges();
-            }
-
-            return result;
+            return true;
         }
 
     }

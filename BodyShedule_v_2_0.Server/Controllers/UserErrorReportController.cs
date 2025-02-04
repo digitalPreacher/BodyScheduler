@@ -1,10 +1,13 @@
 ﻿using BodyShedule_v_2_0.Server.DataTransferObjects.UserErrorReportDTOs;
 using BodyShedule_v_2_0.Server.Models;
 using BodyShedule_v_2_0.Server.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BodyShedule_v_2_0.Server.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class UserErrorReportController : ControllerBase
@@ -20,19 +23,17 @@ namespace BodyShedule_v_2_0.Server.Controllers
 
         [HttpPost]
         [Route("UserErrorReport")]
-        public IActionResult UserErrorReport([FromBody]UserErrorReportDTO reportInfo)
+        public async Task<IActionResult> UserErrorReport([FromBody]UserErrorReportDTO reportInfo)
         {
             try
             {
-                var result = _service.UserErrorReport(reportInfo);
-                if (result)
-                {
-                    return Ok();
-                }
-                else
-                {
-                    return BadRequest();
-                }
+                var result = await _service.UserErrorReportAsync(reportInfo);
+                return Ok();
+            }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogInformation(ex.Message);
+                return BadRequest(new { Message = "Произошла ошибка при добавлении записи в БД" });
             }
             catch (Exception ex)
             {

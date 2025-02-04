@@ -4,6 +4,6 @@ namespace BodyShedule_v_2_0.Server.Service
 {
     public interface IUserErrorReportService
     {
-        public bool UserErrorReport(UserErrorReportDTO reportInfo);
+        public Task<bool> UserErrorReportAsync(UserErrorReportDTO reportInfo);
     }
 }
