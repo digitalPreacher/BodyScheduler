@@ -5,6 +5,7 @@ import { BehaviorSubject, catchError, map, pipe, throwError } from 'rxjs';
 
 import { RegistrationData } from '../shared/registration-data.model'
 import { environment } from '../../../../environments/environment';
+import { multipleErrorHandler } from '../../../utils/error-handlers'
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,8 @@ export class RegistrationService {
     return this.httpClient.post<RegistrationData>(environment.apiUrl + "/Account/UserSignUp", model)
       .pipe(map(result => { return result }),
         catchError(error => {
-          return throwError(error.error.message || ["Произошла неизвестная ошибка"]);
+          const errorResult = multipleErrorHandler(error);
+          return errorResult;
         }));
   }
 }

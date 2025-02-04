@@ -29,7 +29,7 @@ public class AccountControllerTests
         _accountServiceMock.Setup(x => x.SignUpAsync(It.IsAny<UserRegistationDTO>())).ReturnsAsync(IdentityResult.Success);
 
         //act
-        var result = await _accountController.UserSignUp(new UserRegistationDTO());
+        var result = await _accountController.UserSignUpAsync(new UserRegistationDTO());
 
         //Assert
         Assert.IsType<OkResult>(result);
@@ -55,7 +55,7 @@ public class AccountControllerTests
             .ReturnsAsync(Microsoft.AspNetCore.Identity.SignInResult.Success);
 
         //act
-        var result = await _accountController.UserSignIn(user);
+        var result = await _accountController.UserSignInAsync(user);
 
         //Assert
         Assert.IsType<OkObjectResult>(result);

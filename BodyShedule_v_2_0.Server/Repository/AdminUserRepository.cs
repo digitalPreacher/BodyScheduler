@@ -1,5 +1,6 @@
 ﻿using BodyShedule_v_2_0.Server.Data;
 using BodyShedule_v_2_0.Server.DataTransferObjects.AdminUserDTOs;
+using BodyShedule_v_2_0.Server.Exceptions;
 using BodyShedule_v_2_0.Server.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -42,6 +43,11 @@ namespace BodyShedule_v_2_0.Server.Repository
             })
             .FirstOrDefaultAsync(x => x.Id == id);
 
+            if(user == null)
+            {
+                throw new EntityNotFoundException($"Пользователь с id:{id} не найден");
+            }
+
             return user;
         }
 
@@ -49,25 +55,26 @@ namespace BodyShedule_v_2_0.Server.Repository
         public async Task<bool> UpdateUserDataAsync(UpdateUserDataDTO updateUserInfo)
         {
             var user = await _userManager.FindByIdAsync(updateUserInfo.Id.ToString());
-            if(user != null)
+            if (user == null)
             {
-                user.UserName = updateUserInfo.UserName;
-                user.Email = updateUserInfo.Email;
-
-                if(updateUserInfo.Password != "")
-                {
-                    user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, updateUserInfo.Password);
-                }
-
-                _db.Users.Attach(user);
-                _db.Entry(user).State = EntityState.Modified;
-
-                _db.SaveChanges();
-
-                return true;    
+                throw new EntityNotFoundException($"Пользователь с id:{updateUserInfo.Id} не найден");
             }
 
-            return false;
+            user.UserName = updateUserInfo.UserName;
+            user.NormalizedUserName = updateUserInfo.UserName.ToUpper();
+            user.Email = updateUserInfo.Email;
+            user.NormalizedEmail = updateUserInfo.Email.ToUpper();
+
+            if (updateUserInfo.Password != "")
+            {
+                user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, updateUserInfo.Password);
+            }
+
+            _db.Users.Attach(user);
+            _db.Entry(user).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
+
+            return true;    
         }
     }
 }

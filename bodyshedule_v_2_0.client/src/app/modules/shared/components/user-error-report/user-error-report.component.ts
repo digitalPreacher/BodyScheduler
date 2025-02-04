@@ -30,6 +30,7 @@ export class UserErrorReportComponent {
     })
   }
 
+  //send user report 
   sendUserReport() {
     if (this.reportForm.valid) {
       this.loadingService.show();
@@ -48,14 +49,24 @@ export class UserErrorReportComponent {
     }
   }
 
+  //set default value to reportForm 
+  resetReportForm() {
+    this.reportForm = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.pattern(this.emailPattern)]],
+      description: ['', Validators.required]
+    })
+  }
+
   //open modal form
   open(content: TemplateRef<any>) {
+    this.submittedClick = false;
+
+    this.resetReportForm();
+
     const options: NgbModalOptions = {
       size: 'md',
       ariaLabelledBy: 'modal-basic-title'
     };
-    this.reportForm.reset();
     this.modalService.open(content, options);
   }
-
 }

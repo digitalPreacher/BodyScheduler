@@ -12,9 +12,9 @@ namespace BodyShedule_v_2_0.Server.Service
             _repository = repository;
         }
 
-        public bool UserErrorReport(UserErrorReportDTO reportInfo)
+        public async Task AddUserErrorReportAsync(UserErrorReportDTO reportInfo)
         {
-            return _repository.UserErrorReport(reportInfo);
+            await _repository.AddUserErrorReportAsync(reportInfo);
         }
     }
 }

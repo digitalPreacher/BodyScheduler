@@ -1,7 +1,9 @@
 ﻿using BodyShedule_v_2_0.Server.DataTransferObjects.BodyMeasureDTOs;
+using BodyShedule_v_2_0.Server.Exceptions;
 using BodyShedule_v_2_0.Server.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BodyShedule_v_2_0.Server.Controllers
 {
@@ -27,14 +29,17 @@ namespace BodyShedule_v_2_0.Server.Controllers
             try
             {
                 var result = await _bodyMeasureService.AddBodyMeasureAsync(bodyMeasureInfo);
-                if (result)
-                {
-                    return Ok();
-                }
-                else
-                {
-                    return BadRequest();
-                }
+                return Ok();
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex.Message);
+                return BadRequest(ex.Message);
+            }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogInformation(ex.Message);
+                return BadRequest(new { Message = "Произошла ошибка при изменении записи в БД" });
             }
             catch (Exception ex)
             {
@@ -51,20 +56,17 @@ namespace BodyShedule_v_2_0.Server.Controllers
             try
             {
                 var bodyMeasures = await _bodyMeasureService.GetUniqueBodyMeasureAsync(userId);
-                if (bodyMeasures != null)
-                {
-                    return Ok(bodyMeasures);
-                }
-                else
-                {
-                    return BadRequest();
-                }
+                return Ok(bodyMeasures);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex.Message);
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
                 _logger.LogInformation(ex.Message);
-                return StatusCode(500, ex.Message);
-
+                return StatusCode(500, new { Message = "Произошла неизвестная ошибка. Повторите попытку чуть позже" });
             }
         }
 
@@ -76,19 +78,17 @@ namespace BodyShedule_v_2_0.Server.Controllers
             try
             {
                 var result = await _bodyMeasureService.GetBodyMeasuresToLineChartAsync(userId);
-                if(result != null)
-                {
-                    return Ok(result);
-                }
-                else
-                {
-                    return BadRequest();
-                }
+                return Ok(result);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex.Message);
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
                 _logger.LogInformation(ex.Message);
-                return StatusCode(500, ex.Message);
+                return StatusCode(500, new { Message = "Произошла неизвестная ошибка. Повторите попытку чуть позже" });
             }
         }
     }
