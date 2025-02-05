@@ -19,12 +19,9 @@ export class LoginComponent implements OnDestroy {
 
   isLoading!: boolean;
   isLoadingDataSubscribtion: any;
-
-
-  @Output() submitted = false;
-  @Output() submittedClick = false;
-  @Output() getErrorMessage = false;
-  @Output() errorMessage = '';
+  errorMessage = '';
+  submitted = false;
+  submittedClick = false;
 
   constructor(private authService: AuthorizationService, private router: Router,
     private formBuilder: FormBuilder, private loadingService: LoadingService, private registrationServise: RegistrationService,
@@ -49,7 +46,6 @@ export class LoginComponent implements OnDestroy {
         },
         error: error => {
           this.loadingService.hide();
-          this.getErrorMessage = true;
           this.errorMessage = error;
         }
       });
