@@ -11,7 +11,7 @@ import { CookieService } from '../../shared/service/cookie.service';
 import { __values } from 'tslib';
 import { environment } from '../../../../environments/environment';
 import { RegistrationData } from '../../registration/shared/registration-data.model';
-import { multipleErrorHandler } from '../../../utils/error-handlers';
+import { multipleErrorHandler, singleErrorHandler } from '../../../utils/error-handlers';
 
 
 @Injectable({
@@ -40,7 +40,7 @@ export class AuthorizationService {
           return response;
         }),
         catchError(error => {
-          return throwError(error.error.message || "Произошла неизвестная ошибка");
+          return singleErrorHandler(error);
         })
       );
   }
@@ -71,8 +71,7 @@ export class AuthorizationService {
           return result;
         },
         catchError(error => {
-          const errorResult = multipleErrorHandler(error);
-          return errorResult;
+          return multipleErrorHandler(error);
         })
       );
   }
@@ -86,7 +85,6 @@ export class AuthorizationService {
           return result;
         },
         catchError(error => {
-         
           return throwError(error.error.message || [error.error] ||  ["Произошла неизвестная ошибка"]);
         })
       );
