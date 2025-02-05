@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BodyShedule_v_2_0.Server", "BodyShedule_v_2_0.Server\BodyShedule_v_2_0.Server.csproj", "{5A1D9947-1308-42C8-8A55-347FBB89556A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BodySchedulerWebApi", "BodyShedule_v_2_0.Server\BodySchedulerWebApi.csproj", "{5A1D9947-1308-42C8-8A55-347FBB89556A}"
 EndProject
-Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "bodyshedule_v_2_0.client", "bodyshedule_v_2_0.client\bodyshedule_v_2_0.client.esproj", "{1F70C6E1-A909-4D84-BE14-0C908A393A31}"
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "BodyShedulerClient", "bodyshedule_v_2_0.client\BodyShedulerClient.esproj", "{1F70C6E1-A909-4D84-BE14-0C908A393A31}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{2A64974B-83F6-428B-AEE2-577E8FBF2E23}"
 EndProject
