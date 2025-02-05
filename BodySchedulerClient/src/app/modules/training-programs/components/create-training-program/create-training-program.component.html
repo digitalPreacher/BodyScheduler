@@ -33,6 +33,30 @@
                     name="description-field"
                     placeholder="Выполняется по системе 2+1+2+2...."></textarea>
         </div>
+        <div class="d-inline-flex col-12">
+          <div class="form-group col-5">
+            <label for="start-time-create-training-form-field">Начало</label>
+            <input type="datetime-local"
+                   class="form-control"
+                   id="start-time-create-training-form-field"
+                   required
+                   [(ngModel)]="startEventTime"
+                   [ngModelOptions]="{standalone: true}"
+                   name="start-time-field" />
+          </div>
+          <div class="form-group col-3 ms-2">
+            <label for="interval-time-create-training-form-field">Интервал</label>
+            <select
+                   class="form-select"
+                   id="interval-time-create-training-form-field"
+                   required
+                   [(ngModel)]="eventInterval"
+                   [ngModelOptions]="{standalone: true}"
+                   name="interval-time-field">
+              <option *ngFor="let interval of eventIntervalSet" [value]="interval.hour">{{ interval.label }}</option>
+            </select>
+        </div>
+        </div>
         <div class="form-group mt-2" formArrayName="weeks">
           <div *ngIf="weeks.length > 0">
             <label for="weeks-create-training-form-field">Недели</label>
@@ -55,7 +79,7 @@
                 <ng-template #addDays let-modal>
                   <div class="bg-dark text-light">
                     <div class="modal-header">
-                      <h3 class="modal-title" id="modal-create-title" style="text-align:center">Добавление дней</h3>
+                      <h3 class="modal-title" id="modal-create-title" style="text-align:center">Добавление тренировок</h3>
                       <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="modal.dismiss()"></button>
                     </div>
                     <div class="modal-body" formArrayName="events">
@@ -63,7 +87,7 @@
                         <div [formGroupName]="j">
                           <div class="border border rounded p-3 mt-2">
                             <div class="text-center">
-                              <label>День {{ j + 1 }}</label>
+                              <label>Тренировка {{ j + 1 }}</label>
                             </div>
                             <div class="form-group">
                               <label for="title-create-training-form-field">Название</label>
@@ -76,26 +100,15 @@
                                      maxlength="100"
                                      placeholder="День ног" />
                             </div>
-                            <div class="d-inline-flex col-12 mt-2">
-                              <div class="form-group col-8 me-2">
-                                <label for="description-create-training-form-field">Описание</label>
-                                <textarea type="text"
-                                          class="form-control"
-                                          id="description-create-training-form-field"
-                                          formControlName="description"
-                                          name="description-field"
-                                          maxlength="1000"
-                                          placeholder="Обязательно увеличить вес..."></textarea>
-                              </div>
-                              <div class="form-group col-3">
-                                <label for="start-time-create-training-form-field">Начало</label>
-                                <input type="datetime-local"
-                                       class="form-control"
-                                       id="start-time-create-training-form-field"
-                                       required
-                                       formControlName="startTime"
-                                       name="start-time-field" />
-                              </div>
+                            <div class="form-group col-12 me-2">
+                              <label for="description-create-training-form-field">Описание</label>
+                              <textarea type="text"
+                                        class="form-control"
+                                        id="description-create-training-form-field"
+                                        formControlName="description"
+                                        name="description-field"
+                                        maxlength="1000"
+                                        placeholder="Обязательно увеличить вес..."></textarea>
                             </div>
                             <div class="form-group mt-2" formArrayName="exercises">
                               <div class="col-12 d-inline-flex" *ngIf="getExercisesFormArray(i, j).length > 0">
@@ -181,12 +194,12 @@
                               </div>
                             </div>
                             <div class="col-12">
-                              <button class="btn btn-outline-danger mt-2 mx-auto text-light" (click)="removeEvent(i,j)">Удалить день</button>
+                              <button class="btn btn-outline-danger mt-2 mx-auto text-light" (click)="removeEvent(i,j)">Удалить</button>
                             </div>
                           </div>
                         </div>
                       </div>
-                      <button *ngIf="getEventsControls(i).length < 7" class="btn btn-outline-secondary mt-2 text-light" (click)="addEvent(i)">Добавить день</button>
+                      <button *ngIf="getEventsControls(i).length < 7" class="btn btn-outline-secondary mt-2 text-light" (click)="addEvent(i)">Добавить тренировку</button>
                     </div>
                   </div>
                 </ng-template>
