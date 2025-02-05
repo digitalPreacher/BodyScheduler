@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Emit;
 
 namespace BodyShedule_v_2_0.Server.Data
 {
@@ -66,6 +65,16 @@ namespace BodyShedule_v_2_0.Server.Data
 
             builder.Entity<BodyMeasure>()
             .Property(x => x.CreateAt)
+            .HasColumnType("timestamp with time zone")
+            .HasDefaultValueSql("now()");
+
+            builder.Entity<TrainingResult>()
+            .Property(x => x.CreateAt)
+            .HasColumnType("timestamp with time zone")
+            .HasDefaultValueSql("now()");
+
+            builder.Entity<UserErrorReport>()
+            .Property(x => x.CreateAt)
             .HasColumnType("timestamp without time zone")
             .HasDefaultValueSql("now()");
         }
@@ -75,8 +84,8 @@ namespace BodyShedule_v_2_0.Server.Data
         public DbSet<TrainingProgram> TrainingProgramSet { get; set; }
         public DbSet<WeeksTraining> WeeksTrainingSet { get; set; }  
         public DbSet<ExerciseTitle> ExerciseTitleSet { get; set; }
-
         public DbSet<BodyMeasure> BodyMeasureSet { get; set; }
-
+        public DbSet<UserErrorReport> UserErrorReportSet { get; set; }
+        public DbSet<TrainingResult> TraininResultSet {  get; set; }
     }
 }

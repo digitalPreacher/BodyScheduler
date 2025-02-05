@@ -20,7 +20,9 @@ export class RegistrationComponent implements OnDestroy {
 
   submittedClick: boolean = false;
   getErrorMessage = false;
-  errorMessages: string[] = [];
+  errorMessage: string = '';
+  getErrorMessages = false;
+  errorMessages: any[] = [];
   confirmedPasswordResult: boolean = false;
 
   isLoading!: boolean;
@@ -42,6 +44,7 @@ export class RegistrationComponent implements OnDestroy {
       password: ['', [Validators.required, Validators.minLength(6),
         Validators.maxLength(100), Validators.pattern(this.passwordRegex)]],
       email: ['', [Validators.required, Validators.pattern(this.emailPattern)]],
+      acceptedAgreement: ['', Validators.required]
     });
   }
 
@@ -59,8 +62,9 @@ export class RegistrationComponent implements OnDestroy {
           },
           error: error => {
             this.loadingService.hide();
-            this.getErrorMessage = true;
-            this.errorMessages = error;
+            this.getErrorMessages = true;
+            this.errorMessages = error
+            
           }
         });
       }
@@ -77,6 +81,7 @@ export class RegistrationComponent implements OnDestroy {
       password: ['', [Validators.required, Validators.minLength(6),
       Validators.maxLength(100), Validators.pattern(this.passwordRegex)]],
       email: ['', [Validators.required, Validators.pattern(this.emailPattern)]],
+      acceptedAgreement: ['', Validators.required]
     })
   }
 
@@ -98,6 +103,4 @@ export class RegistrationComponent implements OnDestroy {
   ngOnDestroy() {
     this.isLoadingDataSubscribtion.unsubscribe();
   }
-
-  
 }

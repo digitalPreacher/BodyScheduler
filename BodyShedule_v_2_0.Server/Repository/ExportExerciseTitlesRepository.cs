@@ -16,7 +16,6 @@ namespace BodyShedule_v_2_0.Server.Repository
         public async Task<List<string>> GetExerciseTitlesAsync()
         {
             var exerciseTitlesList = await _db.ExerciseTitleSet.Select(x => x.Title).ToListAsync();
-
             return exerciseTitlesList;
         }
     }

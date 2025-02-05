@@ -3,7 +3,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FullCalendarModule } from '@fullcalendar/angular';
@@ -37,6 +37,12 @@ import { LineChartBodyMeasureComponent } from './modules/body-measure/components
 import { ErrorModalComponent } from './modules/shared/components/error-modal/error-modal.component';
 import { LoaderComponent } from './modules/shared/components/loader/loader.component';
 import { SuccessAlertComponent } from './modules/shared/components/success-alert/success-alert.component';
+import { CopyComponent } from './modules/events/components/copy/copy.component';
+import { UserErrorReportComponent } from './modules/shared/components/user-error-report/user-error-report.component';
+import { UsersListComponent } from './modules/user-administration/components/users-list/users-list.component';
+import { UsersEditComponent } from './modules/user-administration/components/users-edit/users-edit.component';
+import { TrainingResultModalComponent } from './modules/shared/components/training-result-modal/training-result-modal.component';
+import { SidebarComponent } from './modules/sidebar/components/sidebar.component';
 
 
 
@@ -65,13 +71,19 @@ import { SuccessAlertComponent } from './modules/shared/components/success-alert
     LineChartBodyMeasureComponent,
     ErrorModalComponent,
     LoaderComponent,
-    SuccessAlertComponent
+    SuccessAlertComponent,
+    CopyComponent,
+    UserErrorReportComponent,
+    UsersListComponent,
+    UsersEditComponent,
+    TrainingResultModalComponent,
+    SidebarComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,
     AppRoutingModule, FormsModule, NgbModule,
     ReactiveFormsModule, FullCalendarModule, MdbTabsModule,
-    NgxChartsModule, BrowserAnimationsModule, NgbAlertModule
+    NgxChartsModule, BrowserAnimationsModule, NgbAlertModule, NgbTooltipModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true }],
   bootstrap: [AppComponent]

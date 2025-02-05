@@ -1,10 +1,8 @@
 ﻿using BodyShedule_v_2_0.Server.Data;
 using BodyShedule_v_2_0.Server.DataTransferObjects.AccountDTOs;
-using BodyShedule_v_2_0.Server.Helpers;
+using BodyShedule_v_2_0.Server.Exceptions;
 using BodyShedule_v_2_0.Server.Models;
-using BodyShedule_v_2_0.Server.Utilities;
 using Microsoft.AspNetCore.Identity;
-using System.Diagnostics;
 
 namespace BodyShedule_v_2_0.Server.Repository
 {
@@ -29,15 +27,14 @@ namespace BodyShedule_v_2_0.Server.Repository
             {
                 UserName = userRegistrationData.Login,
                 Email = userRegistrationData.Email, 
-                CreateAt = DateTime.Now.ToUniversalTime(),
+                AcceptedAgreement = userRegistrationData.AcceptedAgreement,
+                CreateAt = DateTime.Now.ToUniversalTime()
             };
             
             var result = await _userManager.CreateAsync(user, userRegistrationData.Password);
-            if (result.Succeeded)
-            {
-                await _userManager.AddToRoleAsync(user, "User");
-            }
 
+            await _userManager.AddToRoleAsync(user, "User");
+            
             return result;
         }
 
@@ -51,8 +48,16 @@ namespace BodyShedule_v_2_0.Server.Repository
         public async Task<IList<string>> GetUserRolesAsync(UserLoginDTO userCredentials)
         {
             var user = await _userManager.FindByNameAsync(userCredentials.Login);
+            if (user == null)
+            {
+                throw new EntityNotFoundException("Пользователь не найден");
+            }
 
-            var roles = await _userManager.GetRolesAsync(user ?? throw new InvalidOperationException("User not found"));
+            var roles = await _userManager.GetRolesAsync(user);
+            if (roles.Count == 0)
+            {
+                throw new EntityNotFoundException("У пользователя отсутствуют роли");
+            }
 
             return roles;
         }
@@ -60,7 +65,11 @@ namespace BodyShedule_v_2_0.Server.Repository
         //get user id 
         public async Task<int> GetUserIdAsync(string userLogin)
         {
-            var user = await _userManager.FindByNameAsync(userLogin) ?? throw new InvalidOperationException($"User {userLogin} not found");  
+            var user = await _userManager.FindByNameAsync(userLogin);
+            if (user == null)
+            {
+                throw new EntityNotFoundException("Пользователь не найден");
+            }
 
             return user.Id;
         }
@@ -68,57 +77,40 @@ namespace BodyShedule_v_2_0.Server.Repository
         //change user password
         public async Task<IdentityResult> ChangeUserPasswordAsync(ChangeUserPasswordDTO changePasswordInfo)
         {
-            var user = await _userManager.FindByNameAsync(changePasswordInfo.UserLogin) ?? throw new InvalidOperationException($"User {changePasswordInfo.UserLogin} not found");
-           
-            var result = await _userManager.ChangePasswordAsync(user, changePasswordInfo.OldPassword, changePasswordInfo.NewPassword);
+            var user = await _userManager.FindByNameAsync(changePasswordInfo.UserLogin);
+            if (user == null)
+            {
+                throw new EntityNotFoundException("Пользователь не найден");
+            }
 
+            var result = await _userManager.ChangePasswordAsync(user, changePasswordInfo.OldPassword, changePasswordInfo.NewPassword);
             return result;
         }
 
-        //forgot user password
-        public async Task<bool> ForgotUserPasswordAsync(string email)
+        //return generate token for reset user password
+        public async Task<string> GenerateTokenAsync(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
-            
-            if(user == null)
+            if (user == null)
             {
-                throw new ArgumentNullException("Пользователь не найден");
+                throw new EntityNotFoundException("Пользователь не найден");
             }
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            var domainName = Environment.GetEnvironmentVariable("DOMAIN_NAME");
-            var link = AbsoluteUrlGenerateHelper.GenerateAbsoluteUrl("reset-password", "account", token, domainName, email);
-
-            var result = EmailSender.SendEmailPasswordReset(email, link);
-            if (result)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return token;
         }
 
-
         //reset user password if forgot it
-        public async Task<bool> ResetUserPasswordAsync(ResetUserPasswordDTO resetPasswordInfo)
+        public async Task<IdentityResult> ResetUserPasswordAsync(ResetUserPasswordDTO resetPasswordInfo)
         {
             var user = await _userManager.FindByEmailAsync(resetPasswordInfo.Email);
-            if(user != null)
+            if (user == null)
             {
-                var result = await _userManager.ResetPasswordAsync(user, resetPasswordInfo.Token, resetPasswordInfo.Password);
-                if (result.Succeeded)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                throw new EntityNotFoundException("Пользователь не найден");
             }
 
-            return false;
+            var result = await _userManager.ResetPasswordAsync(user, resetPasswordInfo.Token, resetPasswordInfo.Password);
+            return result;
         }
     }
 }

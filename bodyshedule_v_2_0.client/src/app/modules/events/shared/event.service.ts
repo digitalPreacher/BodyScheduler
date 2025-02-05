@@ -5,6 +5,12 @@ import { Observable, Subject, catchError, throwError } from 'rxjs';
 import { AuthorizationService } from '../../authorization/shared/authorization.service';
 import { options } from '@fullcalendar/core/preact';
 import { ChangeEventStatus } from './change-event-status.model';
+import { EventList } from './interfaces/event-list.interface';
+import { Event } from './interfaces/event.interface';
+import { environment } from '../../../../environments/environment';
+import { UserData } from '../../authorization/shared/user-data.model';
+import { TrainingStateData } from './models/training-state-data.model';
+import { TrainingResult } from './models/training-result.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,21 +19,19 @@ export class EventService {
   userDataSubscribtion: any;
   eventChangeData$: Subject<boolean> = new Subject<boolean>();
   subscribed: any;
-  userId = '';
+  userData = new UserData();
   occurredErrorMessage = 'Произошла неизвестная ошибка, повторите попытку чуть позже или сообщите в техподдержку';
-
-  baseUrl = 'https://localhost:7191';
 
   constructor(private httpClient: HttpClient, private authService: AuthorizationService)
   {
     this.userDataSubscribtion = this.authService.userData$.asObservable().subscribe(data => {
-      this.userId = data.userId;
+      this.userData = data;
     })
   }
 
   //get all user events by id
-  getEvents(status: string): Observable<any[]> {
-    return this.httpClient.get<any[]>(this.baseUrl + `/Event/GetEvents/${this.userId}/${status}`)
+  getEvents(status: string): Observable<EventList[]> {
+    return this.httpClient.get<EventList[]>(environment.apiUrl + `/Event/GetEvents/${this.userData.userId}/${status}`)
       .pipe(
         result => {
           return result;
@@ -39,8 +43,21 @@ export class EventService {
   }
 
   //getting event by id
-  getEvent(id: number): Observable<any> {
-    return this.httpClient.get<any>(this.baseUrl + `/Event/GetEvent/${id}`)
+  getEvent(id: number): Observable<Event[]> {
+    return this.httpClient.get<Event[]>(environment.apiUrl + `/Event/GetEvent/${id}`)
+      .pipe(
+        result => {
+          return result;
+        },
+        catchError(error => {
+          return throwError(error.error.message || this.occurredErrorMessage);
+        })
+      );
+  }
+
+  //getting training state by eventId
+  getTrainingState(eventId: number) {
+    return this.httpClient.get<string>(environment.apiUrl + `/TrainingState/GetTrainingState/${eventId}`)
       .pipe(
         result => {
           return result;
@@ -52,8 +69,8 @@ export class EventService {
   }
 
   //editing data of event
-  editEvent(model: any) {
-    return this.httpClient.put<any>(this.baseUrl + "/Event/EditEvent", model).
+  editEvent(model: Event) {
+    return this.httpClient.put(environment.apiUrl + "/Event/EditEvent", model).
       pipe(
         result => {
           return result;
@@ -65,8 +82,8 @@ export class EventService {
   }
 
   //adding new event
-  addEvent(model: any) {
-    return this.httpClient.post<any>(this.baseUrl + "/Event/AddEvent", model)
+  addEvent(model: Event) {
+    return this.httpClient.post(environment.apiUrl + "/Event/AddEvent", model)
       .pipe(
         result => {
           return result;
@@ -79,7 +96,7 @@ export class EventService {
 
   //delete event by id
   deleteEvent(id: number) {
-    return this.httpClient.delete(this.baseUrl + `/Event/DeleteEvent/${id}`)
+    return this.httpClient.delete(environment.apiUrl + `/Event/DeleteEvent/${id}`)
       .pipe(
         result => {
           return result;
@@ -92,7 +109,7 @@ export class EventService {
 
   //get titles of exercise
   getExerciseTitles() {
-    return this.httpClient.get<any[]>(this.baseUrl + `/ExerciseTitles/GetExerciseTitles`)
+    return this.httpClient.get<any[]>(environment.apiUrl + `/ExerciseTitles/GetExerciseTitles`)
     .pipe(
         result => {
           return result;
@@ -104,7 +121,7 @@ export class EventService {
   }
 
   changeEventStatus(model: ChangeEventStatus) {
-    return this.httpClient.put<ChangeEventStatus>(this.baseUrl + `/Event/ChangeEventStatus`, model)
+    return this.httpClient.put<ChangeEventStatus>(environment.apiUrl + `/Event/ChangeEventStatus`, model)
       .pipe(
         result => {
           return result;
@@ -114,4 +131,29 @@ export class EventService {
         })
       );
   }
+
+  getTotalSecondsAfterStartTraining(id: number) {
+    return this.httpClient.get<number>(environment.apiUrl + `/TrainingState/GetTotalSeconds/${id}`)
+      .pipe(
+        result => {
+          return result;
+        },
+        catchError(error => {
+          return throwError(error.error.message || this.occurredErrorMessage);
+        })
+      );
+  }
+
+  addTrainingResult(trainingResult: TrainingResult) {
+    return this.httpClient.post(environment.apiUrl + '/TrainingResult/AddTrainingResult', trainingResult)
+      .pipe(
+        result => {
+          return result;
+        },
+        catchError(error => {
+          return throwError(error.error.message || this.occurredErrorMessage);
+        })
+      );
+  }
+
 }

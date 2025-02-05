@@ -1,31 +1,37 @@
 
-  <nav class="navbar navbar-expand fixed-top navbar-custom" *ngIf="isLoggedIn">
-    <div class="container-fluid">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/">Календарь</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/list">Тренировки</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/programs/list">Программы</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/body-measure/details-body-measure">Показатели</a>
-        </li>
-      </ul>
-      <div class="mx-5" ngbDropdown id="drop-down">
-        <a class="btn" id="profile-dropdown"
-                ngbDropdownToggle>
-          {{ login }}
-        </a>
-        <div class="drop-down-menu" ngbDropdownMenu="profile-dropdown">
-            <a class="btn" routerLink="/account/change-user-password">Изменить пароль</a>
-            <a class="btn" (click)="logout()">Выйти</a>
-        </div>
-      </div>
-    </div>
-  </nav>
+<div class="sidebar-mobile-toggle d-flex ms-3"
+      [ngClass]="{ 'sidebar-collapsed': isSidebarCollapsed }"
+      (click)="onSidebarToggle()">
+  <i *ngIf="isMobilePlatform" class="h3 text-white" [class]="isSidebarCollapsed ? 'bi bi-arrow-bar-down' : 'bi bi-arrow-bar-up'"></i>
+</div>
+<div class="sidebar-mobile" [ngClass]="{ 'sidebar-mobile-collapsed': isSidebarCollapsed }" *ngIf="userData.isLoggedIn && isMobilePlatform">
+  <div class="mobile-sidebar-header">
+  </div>
+  <div class="sidebar-menu">
+    <ul>
+      <li class="sidebar-menu-item">
+        <a class="nav-link" routerLink="/">Календарь</a>
+      </li>
+      <li class="sidebar-menu-item">
+        <a class="nav-link" routerLink="/list">Тренировки</a>
+      </li>
+      <li class="sidebar-menu-item">
+        <a class="nav-link" routerLink="/programs/list">Программы</a>
+      </li>
+      <li class="sidebar-menu-item">
+        <a class="nav-link" routerLink="/body-measure/details-body-measure">Показатели</a>
+      </li>
+      <li class="sidebar-menu-item" *ngIf="userData.role === 'Admin'">
+        <a class="nav-link" routerLink="/user-administration/users-list">Список пользоватлей</a>
+      </li>
+      <li class="sidebar-menu-item">
+        <a class="nav-link" routerLink="/account/change-user-password">Изменить пароль</a>
+      </li>
+      <li class="sidebar-menu-item">
+        <a class="nav-link" (click)="logout()">Выйти</a>
+      </li>
+    </ul>
+  </div>
+  </div>
 
 

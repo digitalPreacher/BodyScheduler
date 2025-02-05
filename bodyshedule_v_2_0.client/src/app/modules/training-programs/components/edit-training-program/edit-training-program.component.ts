@@ -8,6 +8,9 @@ import { AuthorizationService } from '../../../authorization/shared/authorizatio
 import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component';
 import { Title } from '@angular/platform-browser';
 import { LoadingService } from '../../../shared/service/loading.service';
+import { Exercise } from '../../../events/shared/interfaces/exercise.interface';
+import { Event} from '../../../events/shared/interfaces/event.interface';
+import { ExerciseTitleSearch } from '../../../shared/classes/exercise-title-search';
 
 @Component({
   selector: 'app-edit-training-program',
@@ -15,22 +18,22 @@ import { LoadingService } from '../../../shared/service/loading.service';
   styles: ``,
   providers: [DatePipe]
 })
-export class EditTrainingProgramComponent implements OnInit {
+export class EditTrainingProgramComponent extends ExerciseTitleSearch {
   isLoading: any;
   isLoadingDataSubscribtion: any;
   userDataSubscribtion: any;
   modalService = inject(NgbModal);
   editForm: FormGroup;
   userId = '';
-  listValue: string[] = [];
-  filterListValue: any[] = [];
 
   @Input() programId!: number;
   @ViewChild('errorModal') errorModal!: ErrorModalComponent;
 
   constructor(private trainingProgramService: TrainingProgramService, private formBuilder: FormBuilder,
     private datePipe: DatePipe, private eventService: EventService, private authService: AuthorizationService,
-    private loadingService: LoadingService) {
+      private loadingService: LoadingService)
+  {
+    super(eventService);
 
     this.userDataSubscribtion = this.authService.userData$.asObservable().subscribe(data => {
       this.userId = data.userId;
@@ -46,19 +49,6 @@ export class EditTrainingProgramComponent implements OnInit {
       weeks: this.formBuilder.array([])
     });
   }
-
-  ngOnInit() {
-    this.eventService.getExerciseTitles().subscribe(data => {
-      this.listValue = data;
-    });
-  }
-
-  //Enter value to input field for title of exercise
-  enterKeyUp(enterValue: string) {
-    this.filterListValue = this.listValue.filter(value =>
-      value.toLowerCase().includes(enterValue.toLowerCase()));
-  }
-
 
   //getting data of training program
   getTrainingProgram() {
@@ -76,15 +66,14 @@ export class EditTrainingProgramComponent implements OnInit {
         //clear all controls to weeks
         this.weeks.clear();
 
-
-        eventData.weeks.forEach((week: { id: number, weekNumber: number, events: [] }, weekIndex: number) => {
+        eventData.weeks.forEach((week: { id: number, weekNumber: number, events?: Event[] }, weekIndex: number) => {
           this.weeks.push(this.formBuilder.group({
             id: week.id,
             weekNumber: week.weekNumber,
             events: this.formBuilder.array([])
           }))
 
-          week.events.forEach((event: { id: number, title: string, description: string, status: string, startTime: string, exercises: [] }, eventIndex: number) => {
+          week.events?.forEach((event: { id?: number, title: string, description: string, status: string, startTime: string, exercises?: Exercise[] }, eventIndex: number) => {
             const array = this.weeks.controls[weekIndex].get('events') as FormArray;
             array.push(this.formBuilder.group({
               id: event.id,
@@ -95,7 +84,7 @@ export class EditTrainingProgramComponent implements OnInit {
               exercises: this.formBuilder.array([])
             }))
 
-            event.exercises.forEach((exercise: { id: number, title: string, quantityApproaches: number, quantityRepetions: number, weight: number }) => {
+            event.exercises?.forEach((exercise: { id: number, title: string, quantityApproaches: number, quantityRepetions: number, weight: number }) => {
               const exerciseArray = array.controls[eventIndex].get('exercises') as FormArray;
               exerciseArray.push(this.formBuilder.group({
                 id: exercise.id,
@@ -254,5 +243,10 @@ export class EditTrainingProgramComponent implements OnInit {
     this.modalService.open(content, options);
   }
 
+  ngOnDestroy() {
+    this.isLoadingDataSubscribtion.unsubscribe();
+    this.userDataSubscribtion.unsubscribe();
+    this.exerciseTitleDataSubscribe.unsubscribe();
+  }
 
 }

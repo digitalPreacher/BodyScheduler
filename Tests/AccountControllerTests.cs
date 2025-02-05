@@ -12,13 +12,15 @@ public class AccountControllerTests
 {
     private readonly Mock<IAccountService> _accountServiceMock;
     private readonly AccountController _accountController;
+    private readonly Mock<IEmailSenderService> _emailSenderServiceMock;
     private readonly Mock<ILogger<AccountController>> _logger;
 
     public AccountControllerTests()
     {
         _accountServiceMock = new Mock<IAccountService>();
         _logger = new Mock<ILogger<AccountController>>();
-        _accountController = new AccountController(_accountServiceMock.Object, _logger.Object);
+        _emailSenderServiceMock = new Mock<IEmailSenderService>();
+        _accountController = new AccountController(_accountServiceMock.Object, _logger.Object, _emailSenderServiceMock.Object);
     }
 
     //Testing successfully registered of a new user and return result OK on response to client
@@ -29,7 +31,7 @@ public class AccountControllerTests
         _accountServiceMock.Setup(x => x.SignUpAsync(It.IsAny<UserRegistationDTO>())).ReturnsAsync(IdentityResult.Success);
 
         //act
-        var result = await _accountController.UserSignUp(new UserRegistationDTO());
+        var result = await _accountController.UserSignUpAsync(new UserRegistationDTO());
 
         //Assert
         Assert.IsType<OkResult>(result);
@@ -55,7 +57,7 @@ public class AccountControllerTests
             .ReturnsAsync(Microsoft.AspNetCore.Identity.SignInResult.Success);
 
         //act
-        var result = await _accountController.UserSignIn(user);
+        var result = await _accountController.UserSignInAsync(user);
 
         //Assert
         Assert.IsType<OkObjectResult>(result);

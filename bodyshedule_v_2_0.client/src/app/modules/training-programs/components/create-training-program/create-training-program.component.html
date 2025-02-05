@@ -121,16 +121,26 @@
                                              id="title-exercise-create-training-form-field"
                                              required
                                              #insertTitleBar
-                                             (keyup)="enterKeyUp(insertTitleBar.value)"
+                                             (focus)="inputFocused(k)"
+                                             (blur)="outFocused(k)"
+                                             (keyup)="enterKeyUp(insertTitleBar.value, k)"
                                              formControlName="title"
                                              name="title-exercise-field"
-                                             list="titleOptions"
                                              placeholder="Становая тяга" />
-                                      <datalist id="titleOptions">
-                                        <option *ngFor="let value of filterListValue">
-                                          {{ value }}
-                                        </option>
-                                      </datalist>
+                                      <div class="exercise-drop-down rounded mt-1" *ngIf="isFocusedExerciseFieldList[k]">
+                                        <div *ngFor="let value of filterListValue[k]">
+                                          <div class="col-12 border d-inline-flex" (click)="getExercisesFormArray(i, j).at(k).get('title')?.setValue(value);" style="cursor: pointer;">
+                                            <div class="col-2 exercise-dropdown-icon">
+                                              <img src="" width="50" height="50" />
+                                            </div>
+                                            <div class="col-10 exercise-dropdown-title">
+                                              <span class="text-dark">
+                                                {{ value }}
+                                              </span>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
                                     </div>
                                     <div class="col-2 mx-1">
                                       <input type="number"
@@ -188,7 +198,10 @@
           </div>
         </div>
         <div class="modal-footer mt-3">
-          <button type="submit" class="w-100 btn btn-outline-success mt-3 text-light" (click)="create(); submittedClick=true">Добавить</button>
+          <div class="d-inline-flex mt-3 col-12 text-light">
+            <button type="submit" class="w-100 btn btn-outline-success text-light me-2" (click)="create(); submittedClick=true">Добавить</button>
+            <button type="button" class="w-100 btn btn-outline-danger text-light" (click)="modal.dismiss()">Отменить</button>
+          </div>
         </div>
       </form>
     </div>

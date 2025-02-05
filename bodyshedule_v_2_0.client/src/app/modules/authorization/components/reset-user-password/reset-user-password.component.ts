@@ -19,7 +19,6 @@ export class ResetUserPasswordComponent implements OnInit {
   confirmedPassword = '';
 
   submittedClick: boolean = false;
-  getErrorMessage = false;
   errorMessages: string[] = [];
   confirmedPasswordResult: boolean = false;
 
@@ -37,11 +36,13 @@ export class ResetUserPasswordComponent implements OnInit {
   }
 
   ngOnInit() {
+    //get token and user email from query parameters
     this.route.queryParamMap.subscribe(params => {
       this.resetPasswordData.token = params.get('token');
       this.resetPasswordData.email = params.get('email');
     });
 
+    //decode token value and replace symbols
     const codec = new HttpUrlEncodingCodec();
     if (this.resetPasswordData.token != null) {
       this.resetPasswordData.token = codec.decodeKey(this.resetPasswordData.token).replaceAll(' ', '+');
@@ -58,6 +59,7 @@ export class ResetUserPasswordComponent implements OnInit {
     }
   }
 
+  //reset user user password
   resetPassword() {
     if (this.resetPasswordForm.valid) {
       if (this.resetPasswordForm.get('password')?.value === this.confirmedPassword) {
@@ -72,7 +74,6 @@ export class ResetUserPasswordComponent implements OnInit {
             this.alertService.showSelfClosedSuccessAlert();
           },
           error: error => {
-            this.getErrorMessage = true;
             this.errorMessages = error;
           }
         })

@@ -2,13 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject, catchError, throwError } from 'rxjs';
 import { AuthorizationService } from '../../authorization/shared/authorization.service';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BodyMeasureService {
-
-  baseUrl = 'https://localhost:7191';
 
   userId = '';
   userDataSubscribtion: any;
@@ -23,7 +22,7 @@ export class BodyMeasureService {
 
   //adding new entry of body measure
   addBodyMeasure(model: any) {
-    return this.httpClient.post<any>(this.baseUrl + '/BodyMeasure/AddBodyMeasure', model)
+    return this.httpClient.post<any>(environment.apiUrl + '/BodyMeasure/AddBodyMeasure', model)
       .pipe(
         result => {
           return result;
@@ -37,7 +36,7 @@ export class BodyMeasureService {
 
   //getting last added entry with unique muscleName
   getUniqueBodyMeasure() {
-    return this.httpClient.get<any[]>(this.baseUrl + `/BodyMeasure/GetUniqueBodyMeasure/${this.userId}`)
+    return this.httpClient.get<any[]>(environment.apiUrl + `/BodyMeasure/GetUniqueBodyMeasure/${this.userId}`)
       .pipe(
         result => {
           return result;
@@ -49,7 +48,7 @@ export class BodyMeasureService {
   }
 
   getBodyMeasuresDataToLineChart() {
-    return this.httpClient.get<any[]>(this.baseUrl + `/BodyMeasure/GetBodyMeasuresToLineChart/${this.userId}`)
+    return this.httpClient.get<any[]>(environment.apiUrl + `/BodyMeasure/GetBodyMeasuresToLineChart/${this.userId}`)
       .pipe(
         result => {
           return result;

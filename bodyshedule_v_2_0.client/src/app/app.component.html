@@ -1,5 +1,16 @@
-<app-navbar></app-navbar>
+
+<div class="custom-navbar" *ngIf="isLoggedIn" (window:resize)="inputChangeWindowSize($event)">
+    <app-sidebar [isSidebarCollapsed]="isSidebarCollapsed"
+                 [isMobilePlatform]="isMobilePlatform">
+    </app-sidebar>
+    <div *ngIf="isMobilePlatform">
+      <app-navbar [isSidebarCollapsed]="isSidebarCollapsed"
+                   [isMobilePlatform]="isMobilePlatform">
+      </app-navbar>
+    </div>
+  </div>
 <div class="container" id="main-component">
-      <app-success-alert></app-success-alert>
-      <router-outlet></router-outlet>
+  <app-success-alert></app-success-alert>
+  <router-outlet></router-outlet>
 </div>
+<app-user-error-report></app-user-error-report>

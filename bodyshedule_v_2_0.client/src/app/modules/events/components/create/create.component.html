@@ -6,7 +6,7 @@
   <div class="bg-dark text-light">
     <div class="modal-header">
       <h3 class="modal-title" id="modal-create-title" style="text-align:center">Добавление тренировки</h3>
-      <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+      <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="modal.dismiss()"></button>
     </div>
     <div class="modal-body">
       <form class="p-3 text-center" [formGroup]="createForm" (ngSubmit)="create()">
@@ -67,21 +67,33 @@
             <div [formGroupName]="i">
               <div class="col-12 d-inline-flex mt-2">
                 <div class="col-5">
-                  <input type="text"
-                         #insertTitleBar
-                         class="form-control"
-                         id="title-exercise-create-form-field"
-                         required
-                         (keyup)="enterKeyUp(insertTitleBar.value)"
-                         formControlName="title"
-                         list="titleOptions"
-                         name="title-exercise-field"
-                         placeholder="Становая тяга" />
-                  <datalist id="titleOptions">
-                    <option *ngFor="let value of filterListValue">
-                      {{ value }}
-                    </option>
-                  </datalist>
+                  <div>
+                    <input type="text"
+                           #insertTitleBar
+                           class="form-control"
+                           id="title-exercise-create-form-field"
+                           required
+                           (focus)="inputFocused(i)"
+                           (blur)="outFocused(i)"
+                           (keyup)="enterKeyUp(insertTitleBar.value, i)"
+                           formControlName="title"
+                           name="title-exercise-field"
+                           placeholder="Становая тяга" />
+                    <div class="exercise-drop-down rounded mt-1" *ngIf="isFocusedExerciseFieldList[i]">
+                      <div *ngFor="let value of filterListValue[i]">
+                        <div class="col-12 border d-inline-flex" (click)="fields.at(i).get('title')?.setValue(value);" style="cursor: pointer;">
+                          <div class="col-2 exercise-dropdown-icon">
+                            <img src=""  width="50" height="50"/>
+                          </div>
+                          <div class="col-10 exercise-dropdown-title">
+                            <span class="text-dark">
+                              {{ value }}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   <div *ngIf="fields.at(i).get('title')?.hasError('required') && submittedClick"
                        class="alert alert-danger mt-2">
                     Поле обязательно для заполнения
@@ -127,8 +139,12 @@
         </div>
         <div class="modal-footer mt-3">
           <div class="d-inline-flex mt-3 col-12 text-light">
-            <button type="submit" class="w-100 btn btn-outline-success me-2" (click)="submittedClick=true">Добавить</button>
-            <button class="w-100 btn btn-outline-danger" (click)="modal.dismiss()">Отменить</button>
+            <div class="col-6 me-2">
+              <button type="submit" class="w-100 btn btn-outline-success text-light me-2" (click)="submittedClick=true">Добавить</button>
+            </div>
+            <div class="col-6">
+              <button type="button" class="w-100 btn btn-outline-danger text-light" (click)="modal.dismiss()">Отменить</button>
+            </div>
           </div>
         </div>
       </form>

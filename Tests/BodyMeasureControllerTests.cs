@@ -100,7 +100,7 @@ namespace Tests
                         new MusclesSizeToLineChartDTO
                         {
                             Value = 1.2f,
-                            Name = "Test",
+                            Name = "10/10/2024",
                         }
                     ]
                 }

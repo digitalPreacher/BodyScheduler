@@ -1,9 +1,12 @@
 ﻿using BodyShedule_v_2_0.Server.Data;
 using BodyShedule_v_2_0.Server.DataTransferObjects.EventDTOs;
 using BodyShedule_v_2_0.Server.DataTransferObjects.TrainingProgramDTOs;
+using BodyShedule_v_2_0.Server.Exceptions;
 using BodyShedule_v_2_0.Server.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
+using System.Reflection;
 
 namespace BodyShedule_v_2_0.Server.Repository
 {
@@ -22,129 +25,154 @@ namespace BodyShedule_v_2_0.Server.Repository
         public async Task<bool> AddTrainingProgramAsync(AddTrainingProgramDTO trainingProgramInfo)
         {
             var user = await _userManager.FindByIdAsync(trainingProgramInfo.UserId);
-            if (user != null)
+            if (user == null)
             {
-                var weeksTraining = new List<WeeksTraining>();
+                throw new EntityNotFoundException($"Пользователь с id:{trainingProgramInfo.UserId} не найден");
+            }
 
-                foreach (var week in trainingProgramInfo.Weeks)
+            var weeksTraining = new List<WeeksTraining>();
+            foreach (var week in trainingProgramInfo.Weeks)
+            {
+                var weekEvents = new List<Event>();
+                foreach (var eventInfo in week.Events)
                 {
-                    var weekEvents = new List<Event>();
-
-                    foreach (var eventInfo in week.Events)
+                    var exercises = new List<Exercise>();
+                    foreach (var exercise in eventInfo.Exercises)
                     {
-                        var exercises = new List<Exercise>();
-
-                        foreach (var exercise in eventInfo.Exercises)
+                        exercises.Add(new Exercise
                         {
-                            exercises.Add(new Exercise
-                            {
-                                Title = exercise.Title,
-                                QuantityApproaches = exercise.QuantityApproaches,
-                                QuantityRepetions = exercise.QuantityRepetions,
-                                Weight = exercise.Weight,
-                                User = user
-                            });
-                        }
-
-                        weekEvents.Add(new Event
-                        {
-                            User = user,
-                            Title = eventInfo.Title,
-                            Description = eventInfo.Description,
-                            StartTime = eventInfo.StartTime,
-                            Exercises = exercises
-
+                            Title = exercise.Title,
+                            QuantityApproaches = exercise.QuantityApproaches,
+                            QuantityRepetions = exercise.QuantityRepetions,
+                            Weight = exercise.Weight,
+                            User = user
                         });
                     }
 
-                    weeksTraining.Add(new WeeksTraining
+                    weekEvents.Add(new Event
                     {
                         User = user,
-                        WeekNumber = week.WeekNumber,
-                        Events = weekEvents
+                        Title = eventInfo.Title,
+                        Description = eventInfo.Description,
+                        StartTime = eventInfo.StartTime,
+                        Exercises = exercises
+
                     });
                 }
 
-
-                TrainingProgram trainingProgram = new TrainingProgram
+                weeksTraining.Add(new WeeksTraining
                 {
-                    Title = trainingProgramInfo.Title,
-                    Description = trainingProgramInfo.Description,
-                    Weeks = weeksTraining,
                     User = user,
-                };
-
-                await _db.AddRangeAsync(trainingProgram);
-                _db.SaveChanges();
-
-                return true;
+                    WeekNumber = week.WeekNumber,
+                    Events = weekEvents
+                });
             }
 
-            return false;
+            TrainingProgram trainingProgram = new TrainingProgram
+            {
+                Title = trainingProgramInfo.Title,
+                Description = trainingProgramInfo.Description,
+                Weeks = weeksTraining,
+                User = user,
+            };
+
+            await _db.AddRangeAsync(trainingProgram);
+            await _db.SaveChangesAsync();
+
+            return true;
         }
 
         //get all user training programs
         public async Task<List<GetTrainingProgramsDTO>> GetTrainingProgramsAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
-
-            var trainingProgramsList = await _db.TrainingProgramSet.Where(x => x.User.Id == user.Id).Select(x => new GetTrainingProgramsDTO
+            if (user == null)
             {
-                Id = x.Id,
-                Title = x.Title,
-                Description = x.Description,  
-            })
-            .ToListAsync();
+                throw new EntityNotFoundException($"Пользователь с id:{userId} не найден");
+            }
 
-            return trainingProgramsList;
+            var userRoleId = await _db.UserRoles.Where(x => x.UserId == user.Id).Select(x => x.RoleId).FirstOrDefaultAsync();
+            var userRoleName = await _db.Roles.Where(x => x.Id == userRoleId).Select(x => x.Name).FirstOrDefaultAsync();
+
+            //get list of training programs by user role
+            if (userRoleName == "User")
+            {
+                var trainingProgramsList = await _db.TrainingProgramSet.Where(x => x.User.Id == user.Id).Select(x => new GetTrainingProgramsDTO
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    Description = x.Description,  
+                })
+                .ToListAsync();
+
+                return trainingProgramsList;
+            }
+
+            //get list of training programs by admin role
+            if (userRoleName == "Admin")
+            {
+                var trainingProgramsList = await _db.TrainingProgramSet.Select(x => new GetTrainingProgramsDTO
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    Description = x.Description,
+                })
+                .ToListAsync();
+
+                return trainingProgramsList;
+            }
+
+            return new List<GetTrainingProgramsDTO>();
         }
 
         //get user training program
         public async Task<List<GetTrainingProgramDTO>> GetTrainingProgramAsync(int trainingProgramId)
         {
-            var trainingProgramsList = await _db.TrainingProgramSet.Where(x => x.Id == trainingProgramId)
+            var trainingProgramList = await _db.TrainingProgramSet.Where(x => x.Id == trainingProgramId)
                 .Include(x => x.Weeks)
                 .ThenInclude(x => x.Events)
                 .ThenInclude(x => x.Exercises)
                 .AsSplitQuery()
                 .ToListAsync();
 
-            var trainingPrograms = new List<GetTrainingProgramDTO>();
-
-            foreach (var trainingProgram in trainingProgramsList)
+            var setTrainingProgram = new List<GetTrainingProgramDTO>();
+            foreach (var trainingProgram in trainingProgramList)
             {
                 var weeksList = new List<GetWeeksTrainingDTO>();
-
                 foreach (var week in trainingProgram.Weeks)
                 {
                     var eventsList = new List<GetEventDTO>();
-
-                    foreach (var getEvent in week.Events)
+                    if(week.Events != null)
                     {
-                        var exercises = new List<ExerciseDTO>();
-
-                        foreach (var exercise in getEvent.Exercises)
+                        foreach (var getEvent in week.Events)
                         {
-                            exercises.Add(new ExerciseDTO
+                            var exercises = new List<ExerciseDTO>();
+                            if(getEvent.Exercises != null)
                             {
-                                Id = exercise.Id,
-                                Title = exercise.Title,
-                                QuantityApproaches = exercise.QuantityApproaches,
-                                QuantityRepetions = exercise.QuantityRepetions,
-                                Weight = exercise.Weight,
+                                foreach (var exercise in getEvent.Exercises)
+                                {
+                                    exercises.Add(new ExerciseDTO
+                                    {
+                                        Id = exercise.Id,
+                                        Title = exercise.Title,
+                                        QuantityApproaches = exercise.QuantityApproaches,
+                                        QuantityRepetions = exercise.QuantityRepetions,
+                                        Weight = exercise.Weight,
+                                    });
+                                }
+                            }
+
+                            eventsList.Add(new GetEventDTO
+                            {
+                                Id = getEvent.Id,
+                                Title = getEvent.Title,
+                                Description = getEvent.Description,
+                                StartTime = getEvent.StartTime,
+                                Status = getEvent.Status,
+                                Exercises = exercises
                             });
+
                         }
-
-                        eventsList.Add(new GetEventDTO
-                        {
-                            Id = getEvent.Id,
-                            Title = getEvent.Title,
-                            Description = getEvent.Description,
-                            StartTime = getEvent.StartTime,
-                            Status = getEvent.Status,
-                            Exercises = exercises
-                        });
-
                     }
 
                     weeksList.Add(new GetWeeksTrainingDTO
@@ -155,7 +183,7 @@ namespace BodyShedule_v_2_0.Server.Repository
                     });
                 }
 
-                trainingPrograms.Add(new GetTrainingProgramDTO
+                setTrainingProgram.Add(new GetTrainingProgramDTO
                 {
                     Id = trainingProgram.Id,
                     Title = trainingProgram.Title,
@@ -164,7 +192,7 @@ namespace BodyShedule_v_2_0.Server.Repository
                 });
             }
 
-            return trainingPrograms;
+            return setTrainingProgram;
         }
 
         //delete training program
@@ -172,134 +200,158 @@ namespace BodyShedule_v_2_0.Server.Repository
         {
             var trainingProgram = await _db.TrainingProgramSet
                 .Include(x => x.Weeks)
-                .ThenInclude(x => x.Events)
-                .ThenInclude(x => x.Exercises)
-                .AsSplitQuery()
                 .FirstOrDefaultAsync(x => x.Id == trainingProgramId);
 
-
-            if(trainingProgram != null)
+            if (trainingProgram == null)
             {
-                _db.Remove(trainingProgram);
-                _db.SaveChanges();
-
-                return true;
+                throw new EntityNotFoundException($"Запись с id: {trainingProgramId} не найдена");
             }
 
-            return false;
+            //remove events
+            if(trainingProgram.Weeks.Count > 0)
+            {
+                foreach(var week in trainingProgram.Weeks)
+                {
+                    var getEvent = _db.Events.Where(x => x.WeeksTrainingId == week.Id).Include(x => x.Exercises).ToList();
+                    if(getEvent.Count > 0)
+                    {
+                        _db.RemoveRange(getEvent);
+                    }
+                }
+            }
+
+            _db.Remove(trainingProgram);
+            await _db.SaveChangesAsync();
+
+            return true;
         }
 
         //edit training program
         public async Task<bool> EditTrainingProgramAsync(EditTrainingProgramDTO trainingProgramInfo)
         {
             var user = await _userManager.FindByIdAsync(trainingProgramInfo.UserId);
-            if(user != null)
+            if (user == null)
             {
-                var trainingProgram = new TrainingProgram
+                throw new EntityNotFoundException($"Пользователь с id: {trainingProgramInfo.UserId} не найден");
+            }
+
+            //set training program data recevied from the frontend
+            var trainingProgram = new TrainingProgram
+            {
+                Id = trainingProgramInfo.Id,
+                Title = trainingProgramInfo.Title,
+                Description = trainingProgramInfo.Description,
+                User = user,
+                Weeks = trainingProgramInfo.Weeks.Select(weekDto => new WeeksTraining
                 {
-                    Id = trainingProgramInfo.Id,
-                    Title = trainingProgramInfo.Title,
-                    Description = trainingProgramInfo.Description,
+                    Id = weekDto.Id,
+                    WeekNumber = weekDto.WeekNumber,
                     User = user,
-                    Weeks = trainingProgramInfo.Weeks.Select(weekDto => new WeeksTraining
+                    Events = weekDto.Events?.Select(eventDto => new Event
                     {
-                        Id = weekDto.Id,
-                        WeekNumber = weekDto.WeekNumber,
+                        Id = eventDto.Id,
+                        Title = eventDto.Title,
+                        Description = eventDto.Description,
+                        StartTime = eventDto.StartTime,
+                        Status = eventDto.Status,
                         User = user,
-                        Events = weekDto.Events.Select(eventDto => new Event
+                        Exercises = eventDto.Exercises?.Select(exerciseDto => new Exercise
                         {
-                            Id = eventDto.Id,
-                            Title = eventDto.Title,
-                            Description = eventDto.Description,
-                            StartTime = eventDto.StartTime,
-                            Status = eventDto.Status,
-                            User = user,
-                            Exercises = eventDto.Exercises.Select(exerciseDto => new Exercise
-                            {
-                                Id = exerciseDto.Id,
-                                Title = exerciseDto.Title,
-                                QuantityApproaches = exerciseDto.QuantityApproaches,
-                                QuantityRepetions = exerciseDto.QuantityRepetions,
-                                Weight = exerciseDto.Weight,
-                                User = user
-                            }).ToList() 
-                        }).ToList() 
-                    }).ToList() 
-                };
+                            Id = exerciseDto.Id,
+                            Title = exerciseDto.Title,
+                            QuantityApproaches = exerciseDto.QuantityApproaches,
+                            QuantityRepetions = exerciseDto.QuantityRepetions,
+                            Weight = exerciseDto.Weight,
+                            User = user
+                        }).ToList() ?? new List<Exercise>()
+                    }).ToList() ?? new List<Event>()
+                }).ToList()
+            };
 
-                var weeksDbList = _db.WeeksTrainingSet
-                    .Where(x => x.ProgramId == trainingProgramInfo.Id)
-                    .Include(x => x.Events)
-                    .ThenInclude(x => x.Exercises)
-                    .AsSingleQuery();
 
-                //Attach trainingProgram and mark it as modified
-                _db.TrainingProgramSet.Attach(trainingProgram);
-                _db.Entry(trainingProgram).State = EntityState.Modified;
+            //Attach trainingProgram and mark it as modified
+            _db.TrainingProgramSet.Attach(trainingProgram);
+            _db.Entry(trainingProgram).State = EntityState.Modified;
 
-                var weekIds = trainingProgram.Weeks.Select(x => x.Id).ToList();
-                var eventIds = trainingProgram.Weeks.SelectMany(x => x.Events.Select(k => k.Id)).ToList();
-                var exerciseIds = trainingProgram.Weeks.SelectMany(x => x.Events.SelectMany(k => k.Exercises.Select(j => j.Id))).ToList();
+            var weekIds = trainingProgram.Weeks.Select(x => x.Id).ToList();
+            var eventIds = trainingProgram.Weeks.SelectMany(x => x.Events.Select(k => k.Id)).ToList();
+            var exerciseIds = trainingProgram.Weeks.SelectMany(x => x.Events.SelectMany(k => k.Exercises!.Select(j => j.Id))).ToList();
 
-                //tracked delete entries and modified week number
-                foreach (var week in weeksDbList)
+            var weeksDbList = _db.WeeksTrainingSet
+                .Where(x => x.ProgramId == trainingProgramInfo.Id)
+                .Include(x => x.Events)
+                .ThenInclude(x => x.Exercises);
+
+            //tracked delete entries and modified week number
+            foreach (var week in weeksDbList)
+            {
+                //check weeks and make ti as modified/deleted state
+                var matchingWeek = trainingProgram.Weeks.FirstOrDefault(w => w.Id == week.Id);
+                if(matchingWeek != null)
                 {
-                    var matchingWeek = trainingProgram.Weeks.FirstOrDefault(w => w.Id == week.Id);
-                    if(matchingWeek != null)
-                    {
-                        week.WeekNumber = matchingWeek.WeekNumber;
-                        _db.Entry(week).State = EntityState.Modified;
-                    }
+                    week.WeekNumber = matchingWeek.WeekNumber;
+                    _db.Entry(week).State = EntityState.Modified;
+                }
 
-                    if (!weekIds.Contains(week.Id))
+                if (!weekIds.Contains(week.Id))
+                {
+                    _db.Entry(week).State = EntityState.Deleted;
+                    foreach(var getEvent in week.Events)
                     {
-                        _db.Entry(week).State = EntityState.Deleted;
-                        foreach(var getEvent in week.Events)
+                        _db.Entry(getEvent).State = EntityState.Deleted;
+                        if (getEvent.Exercises != null && getEvent.Exercises.Any())
                         {
-                            _db.Entry(getEvent).State = EntityState.Deleted;
-
                             foreach(var exercise in getEvent.Exercises)
                             {
                                 _db.Entry(exercise).State = EntityState.Deleted;
                             }
                         }
                     }
-                    else
+                }
+                else
+                {
+                    foreach (var getEvent in week.Events)
                     {
-                        foreach (var getEvent in week.Events)
+                        //check events and make ti as modified/deleted state
+                        var matchEvent = matchingWeek?.Events.FirstOrDefault(x => x.Id == getEvent.Id);
+                        if (matchEvent != null && matchEvent.Id != 0)
                         {
-                            var matchEvent = matchingWeek?.Events.FirstOrDefault(x => x.Id == getEvent.Id);
-                            if (matchEvent != null && matchEvent.Id != 0)
-                            {
-                                getEvent.Title = matchEvent.Title;
-                                getEvent.Description = matchEvent.Description;
-                                getEvent.StartTime = matchEvent.StartTime;
-                                _db.Entry(getEvent).State = EntityState.Modified;
-                            }
+                            getEvent.Title = matchEvent.Title;
+                            getEvent.Description = matchEvent.Description;
+                            getEvent.StartTime = matchEvent.StartTime;
+                            _db.Entry(getEvent).State = EntityState.Modified;
+                        }
 
-                            if (!eventIds.Contains(getEvent.Id))
+                        if (!eventIds.Contains(getEvent.Id))
+                        {
+                            _db.Entry(getEvent).State = EntityState.Deleted;
+                            if(getEvent.Exercises != null)
                             {
-                                _db.Entry(getEvent).State = EntityState.Deleted;
-
                                 foreach (var exercise in getEvent.Exercises)
                                 {
                                     _db.Entry(exercise).State = EntityState.Deleted;
                                 }
                             }
-                            else
+                        }
+                        else
+                        {
+                            if (getEvent.Exercises != null && getEvent.Exercises.Any())
                             {
+                                //check exercises and make ti as modified/deleted state
                                 foreach (var exercise in getEvent.Exercises)
                                 {
-                                    var matchExercise = matchEvent?.Exercises.FirstOrDefault(x => x.Id == exercise.Id);
-                                    if(matchExercise != null && matchExercise.Id != 0)
+                                    if(matchEvent != null && matchEvent.Exercises != null && matchEvent.Exercises.Any())
                                     {
-                                        exercise.Title = matchExercise.Title;
-                                        exercise.QuantityApproaches = matchExercise.QuantityApproaches;
-                                        exercise.QuantityRepetions = matchExercise.QuantityRepetions;
-                                        exercise.Weight = matchExercise.Weight;
-                                        _db.Entry(exercise).State = EntityState.Modified;
+                                        var matchExercise = matchEvent.Exercises.FirstOrDefault(x => x.Id == exercise.Id);
+                                        if(matchExercise != null && matchExercise.Id != 0)
+                                        {
+                                            exercise.Title = matchExercise.Title;
+                                            exercise.QuantityApproaches = matchExercise.QuantityApproaches;
+                                            exercise.QuantityRepetions = matchExercise.QuantityRepetions;
+                                            exercise.Weight = matchExercise.Weight;
+                                            _db.Entry(exercise).State = EntityState.Modified;
+                                        }
                                     }
-
 
                                     if (!exerciseIds.Contains(exercise.Id))
                                     {
@@ -310,14 +362,11 @@ namespace BodyShedule_v_2_0.Server.Repository
                         }
                     }
                 }
-
-                await _db.SaveChangesAsync();
-
-                return true;
-
             }
 
-            return false;
+            await _db.SaveChangesAsync();
+
+            return true;
         }
     }
 }

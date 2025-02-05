@@ -92,7 +92,7 @@ namespace Tests
             _eventServiceMock.Setup(x => x.AddEventAsync(It.IsAny<AddEventDTO>())).ReturnsAsync(true);
 
             //act
-            var result = await _controller.AddEvent(addEvent);
+            var result = await _controller.AddEventAsync(addEvent);
 
             //assert
             Assert.IsType<OkObjectResult>(result);
@@ -133,7 +133,7 @@ namespace Tests
             _eventServiceMock.Setup(x => x.EditEventAsync(It.IsAny<EditEventDTO>())).ReturnsAsync(true);
 
             //act
-            var result = await _controller.EditEvent(editEvent);
+            var result = await _controller.EditEventAsync(editEvent);
 
             //assert
             Assert.IsType<OkObjectResult>(result); 
@@ -161,7 +161,7 @@ namespace Tests
             _eventServiceMock.Setup(x => x.GetEventAsync(It.IsAny<int>())).ReturnsAsync(getEvent);
 
             //act
-            var result = await _controller.GetEvent(1);
+            var result = await _controller.GetEventAsync(1);
 
             //Assert
             Assert.IsType<OkObjectResult>(result);

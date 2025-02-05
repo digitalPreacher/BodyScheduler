@@ -12,11 +12,13 @@ export class AlertService {
 
   constructor() { }
 
+  //show self closed alert
   showSelfClosedSuccessAlert() {
     this._isSuccessAlert.next(true);
     this.selfClosedSuccessAlert();
   }
 
+  //self cloased alert with delay
   selfClosedSuccessAlert() {
     setTimeout(() => this._isSuccessAlert.next(false), this.delayBeforeClosedAlert);
   }
