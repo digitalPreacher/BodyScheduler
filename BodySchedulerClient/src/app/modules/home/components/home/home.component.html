@@ -8,7 +8,7 @@
   <ng-template #eventContent let-arg>
     <div (click)="open(content, arg.event.id)">
       <b>{{arg.timeText}}</b>
-      <i class="limit-text">{{arg.event.title}}</i>
+      <span class="limit-text">{{arg.event.title}}</span>
     </div>
   </ng-template>
 </full-calendar>
@@ -115,26 +115,18 @@
               </div>
             </div>
           </div>
-        <div class="modal-footer mt-3">
-          <div class="d-inline-flex col-12">
-                <div class="d-inline-flex col-7">
-                  <div class="d-inline-flex">
-                    <button type="button" class="btn btn-outline-primary text-light mt-3" (click)="startTimer()" *ngIf="trainingStateData.state === 'Stopped'">Начать тренировку</button>
-                    <button type="button" class="btn btn-outline-primary text-light mt-3" (click)="resumeTimer()" *ngIf="trainingStateData.state === 'Paused'">Возобновить</button>
-                    <button type="button" class="btn btn-outline-primary text-light mt-3" (click)="pauseTimer()" *ngIf="trainingStateData.state === 'Runned' || trainingStateData.state === 'Resumed'">Приостановить</button>
-                    <div class="mt-4 mx-2">
-                      <b>{{displayTime}}</b>
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <button type="submit" class="btn btn-outline-success mt-3 shadow mx-2 text-light" (click)="changeEventStatus('completed')">Завершить тренировку</button>
-                </div>
-                <div>
-                  <button type="button" class="btn btn-outline-danger mt-3 shadow text-light" (click)="modal.dismiss()">Отмена</button>
-                </div>
-              </div>
+          <div class="d-inline-flex">
+            <button type="button" class="btn btn-outline-primary text-light mt-3" (click)="startTimer()" *ngIf="trainingStateData.state === 'Stopped'">Начать тренировку</button>
+            <button type="button" class="btn btn-outline-primary text-light mt-3" (click)="resumeTimer()" *ngIf="trainingStateData.state === 'Paused'">Возобновить</button>
+            <button type="button" class="btn btn-outline-primary text-light mt-3" (click)="pauseTimer()" *ngIf="trainingStateData.state === 'Runned' || trainingStateData.state === 'Resumed'">Приостановить</button>
+            <div class="mt-4 mx-2">
+              <b>{{displayTime}}</b>
             </div>
+            <button type="submit" class="btn btn-outline-success mt-3 shadow mx-2 text-light" (click)="changeEventStatus('completed')">Завершить тренировку</button>
+          </div>
+          <div class="modal-footer mt-3">
+            <button type="button" class="btn btn-outline-danger mt-3 shadow text-light" (click)="modal.dismiss()">Отмена</button>
+          </div>
         </div>
       </form>
     </div>
