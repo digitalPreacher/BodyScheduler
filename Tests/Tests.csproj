@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BodyShedule_v_2_0.Server\BodyShedule_v_2_0.Server.csproj" />
+    <ProjectReference Include="..\BodyShedule_v_2_0.Server\BodySchedulerWebApi.csproj" />
   </ItemGroup>
 
   <ItemGroup>
