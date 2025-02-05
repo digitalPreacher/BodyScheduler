@@ -23,6 +23,18 @@ export class CreateTrainingProgramComponent extends ExerciseTitleSearch implemen
   isLoadingDataSubscribtion: any;
   userId: string = '';
   createForm: FormGroup;
+  startEventTime: string = '';
+  eventInterval: number = 0;
+
+  eventIntervalSet = [
+    { hour: 24, label: "1 день" },
+    { hour: 48, label: "2 дня" },
+    { hour: 72, label: "3 дня" },
+    { hour: 96, label: "4 дня" },
+    { hour: 120, label: "5 дней" },
+    { hour: 144, label: "6 дней" },
+    { hour: 168, label: "7 дней" },
+  ]
 
   submittedClick = false;
 
@@ -76,8 +88,8 @@ export class CreateTrainingProgramComponent extends ExerciseTitleSearch implemen
   removeWeek(weekIndex: number) {
 
     for (let i = weekIndex + 1; i < this.weeks.length; i++) {
-      const week = this.weeks.controls[i];
-      const currentValue = week.get('weekNumber')?.value;
+      let week = this.weeks.controls[i];
+      let currentValue = week.get('weekNumber')?.value;
       week.get('weekNumber')?.setValue(currentValue - 1)
     }
 
@@ -90,7 +102,7 @@ export class CreateTrainingProgramComponent extends ExerciseTitleSearch implemen
       userId: [this.userId, Validators.required],
       title: ['', Validators.required],
       description: [''],
-      startTime: ['', Validators.required],
+      startTime: [''],
       exercises: this.formBuilder.array([])
     })
   }
@@ -147,27 +159,33 @@ export class CreateTrainingProgramComponent extends ExerciseTitleSearch implemen
     exercises.removeAt(exerciseIndex);
   }
 
-  //retrun default create form
-  setDefaultCreateForm() {
-    return this.formBuilder.group({
-      userId: [this.userId, Validators.required],
-      title: ['', Validators.required],
-      description: [''],
-      weeks: this.formBuilder.array([])
-    });
-  }
-
   //sending data to backend
   create() {
     if (this.createForm.valid) {
       this.loadingService.show();
+      const FIRST_WEEK = 0;
+      const FIRST_EVENT = 0;
+      const NO_PREVIOUS_EVENT = -1;
+
+      //filling startTime of events based on interval between its
       for (let i = 0; i < this.weeks.length; i++) {
         const events = this.getEventsFormArray(i);
-        events.controls.forEach((e) => {
-          const currStartTime = this.datePipe.transform(e.get('startTime')?.value, 'yyyy-MM-ddTHH:mm:ss.ssS', 'UTC') + 'Z';
-          e.get('startTime')?.setValue(currStartTime);
-        })
-
+        for (let j = 0; j < events.length; j++) {
+          if (i === FIRST_WEEK && j === FIRST_EVENT) {
+            const currentStartTime = this.datePipe.transform(this.startEventTime, 'yyyy-MM-ddTHH:mm:ss.ssS', 'UTC') + 'Z';
+            this.getEventsControls(i).at(j)?.get('startTime')?.setValue(currentStartTime);
+          } else if (j === FIRST_EVENT && i !== FIRST_WEEK) {
+            let previousEvent = this.getEventsFormArray(i - 1);
+            let previousDateTime = this.getEventsControls(i - 1).at(previousEvent.length - 1)?.get('startTime')?.value;
+            let currStartTime = this.calculateData(previousDateTime, this.eventInterval);
+            this.getEventsControls(i).at(j)?.get('startTime')?.setValue(currStartTime);
+          }
+          else {
+            let previousDateTime = this.getEventsControls(i).at(j - 1)?.get('startTime')?.value;
+            let currentStartTime = this.calculateData(previousDateTime, this.eventInterval);
+            this.getEventsControls(i).at(j)?.get('startTime')?.setValue(currentStartTime);
+          }
+        }
       }
       this.programService.addTrainingProgram(this.createForm.value).subscribe({
         next: result => {
@@ -185,6 +203,42 @@ export class CreateTrainingProgramComponent extends ExerciseTitleSearch implemen
     }
   }
 
+  //calculating data based on previous DateTime of event and interval between its
+  private calculateData(previousDateTime: string, hoursEventInterval: number) {
+    let dateTime = new Date(previousDateTime);
+    let newDateTime = this.addHours(dateTime, hoursEventInterval);
+    let currentStartTime = this.datePipe.transform(newDateTime, 'yyyy-MM-ddTHH:mm:ss.ssS', 'UTC') + 'Z';
+
+    return currentStartTime;
+  }
+
+  //add hours to date
+  private addHours(date: Date, hours: number) {
+    let dateCopy = new Date(date.getTime());
+    let hoursToAdd = hours * 60 * 60 * 1000;
+
+    dateCopy.setTime(date.getTime() + hoursToAdd);
+
+    return dateCopy.toString();
+  }
+
+  //reset create form
+  resetForm() {
+    const defaultCreateForm = this.setDefaultCreateForm();
+    this.submittedClick = false;
+    this.createForm = defaultCreateForm;
+  }
+
+  //retrun default create form
+  setDefaultCreateForm() {
+    return this.formBuilder.group({
+      userId: [this.userId, Validators.required],
+      title: ['', Validators.required],
+      description: [''],
+      weeks: this.formBuilder.array([])
+    });
+  }
+
   //opening modal window of training program form 
   openMain(content: TemplateRef<any>) {
     const options: NgbModalOptions = {
@@ -192,12 +246,6 @@ export class CreateTrainingProgramComponent extends ExerciseTitleSearch implemen
       ariaLabelledBy: 'modal-basic-title'
     };
     this.modalService.open(content, options);
-  }
-
-  resetForm() {
-    const defaultCreateForm = this.setDefaultCreateForm();
-    this.submittedClick = false;
-    this.createForm = defaultCreateForm;
   }
 
   //opening modal window adding of training days 
