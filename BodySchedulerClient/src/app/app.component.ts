@@ -12,7 +12,7 @@ export class AppComponent implements AfterViewInit{
   userDataSubscribtion: any;
   isLoggedIn: any;
   isSidebarCollapsed = true;
-  isMobilePlatform = window.innerWidth < 750 ? true : false;
+  isMobilePlatform = window.innerWidth < 1000 ? true : false;
 
   constructor(private authService: AuthorizationService, private elementRef: ElementRef) {
     if (localStorage.getItem('authToken')) {
