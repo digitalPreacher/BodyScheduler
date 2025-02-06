@@ -43,6 +43,7 @@ import { UsersListComponent } from './modules/user-administration/components/use
 import { UsersEditComponent } from './modules/user-administration/components/users-edit/users-edit.component';
 import { TrainingResultModalComponent } from './modules/shared/components/training-result-modal/training-result-modal.component';
 import { SidebarComponent } from './modules/sidebar/components/sidebar.component';
+import { TrainingResultsListComponent } from './modules/training-results/components/training-results-list/training-results-list.component';
 
 
 
@@ -77,7 +78,8 @@ import { SidebarComponent } from './modules/sidebar/components/sidebar.component
     UsersListComponent,
     UsersEditComponent,
     TrainingResultModalComponent,
-    SidebarComponent
+    SidebarComponent,
+    TrainingResultsListComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,
