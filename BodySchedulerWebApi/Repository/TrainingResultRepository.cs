@@ -35,6 +35,7 @@ namespace BodyShedule_v_2_0.Server.Repository
                     Id = x.Id,
                     AmountWeight = x.AmountWeight,
                     TrainingTime = x.TrainingTime,
+                    CreateAt = x.CreateAt,
                     EventId = x.Event.Id
                 })
                 .ToListAsync();
