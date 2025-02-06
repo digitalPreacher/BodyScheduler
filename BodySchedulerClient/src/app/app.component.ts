@@ -12,7 +12,7 @@ export class AppComponent implements AfterViewInit{
   userDataSubscribtion: any;
   isLoggedIn: any;
   isSidebarCollapsed = true;
-  isMobilePlatform = window.innerWidth < 450 ? true : false;
+  isMobilePlatform = window.innerWidth < 750 ? true : false;
 
   constructor(private authService: AuthorizationService, private elementRef: ElementRef) {
     if (localStorage.getItem('authToken')) {
@@ -31,7 +31,7 @@ export class AppComponent implements AfterViewInit{
 
   //check mobile platform by window size 
   inputChangeWindowSize(size: any) {
-    if (size.target.innerWidth < 600) {
+    if (size.target.innerWidth < 750) {
       this.isMobilePlatform = true;
     }
     else {
