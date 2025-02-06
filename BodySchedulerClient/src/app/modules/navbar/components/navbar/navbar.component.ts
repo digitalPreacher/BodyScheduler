@@ -16,7 +16,7 @@ export class NavbarComponent {
 
   @Output() isLoggedIn: boolean = false;
   @Input() isSidebarCollapsed = true;
-  @Input() isMobilePlatform = window.innerWidth < 1000 ? true : false;
+  @Input() isMobilePlatform = window.innerWidth < 750 ? true : false;
 
   constructor(private authService: AuthorizationService) {
     this.authService.userData$.asObservable().subscribe(data => {
