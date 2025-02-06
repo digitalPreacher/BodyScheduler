@@ -17,7 +17,7 @@ interface MenuItem {
 export class SidebarComponent {
   @Input() isSidebarCollapsed = true;
   @Output() sidebarToggle = new EventEmitter<void>();
-  @Input() isMobilePlatform = window.innerWidth < 750 ? true : false;
+  @Input() isMobilePlatform = false;
 
   userData: UserData = new UserData();
 
