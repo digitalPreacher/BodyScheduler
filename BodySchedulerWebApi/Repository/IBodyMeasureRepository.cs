@@ -1,6 +1,6 @@
-﻿using BodyShedule_v_2_0.Server.DataTransferObjects.BodyMeasureDTOs;
+﻿using BodySchedulerWebApi.DataTransferObjects.BodyMeasureDTOs;
 
-namespace BodyShedule_v_2_0.Server.Repository
+namespace BodySchedulerWebApi.Repository
 {
     public interface IBodyMeasureRepository
     {

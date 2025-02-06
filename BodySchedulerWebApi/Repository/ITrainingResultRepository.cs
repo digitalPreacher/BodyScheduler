@@ -1,10 +1,10 @@
-﻿using BodyShedule_v_2_0.Server.DataTransferObjects.EventDTOs;
-using BodyShedule_v_2_0.Server.Models;
+﻿using BodySchedulerWebApi.DataTransferObjects.EventDTOs;
 
-namespace BodyShedule_v_2_0.Server.Repository
+namespace BodySchedulerWebApi.Repository
 {
     public interface ITrainingResultRepository
     {
         public Task<bool> AddTrainingResultAsync(TrainingResultDto trainingResultInfo);
+        public Task<List<GetTrainingResults>> GetTrainingResultsAsync(string userId);
     }
 }

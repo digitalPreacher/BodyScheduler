@@ -1,4 +1,4 @@
-﻿namespace BodyShedule_v_2_0.Server.DataTransferObjects.AccountDTOs
+﻿namespace BodySchedulerWebApi.DataTransferObjects.AccountDTOs
 {
     public class ResetUserPasswordDTO
     {

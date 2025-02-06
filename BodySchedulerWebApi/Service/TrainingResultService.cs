@@ -1,8 +1,7 @@
-﻿using BodyShedule_v_2_0.Server.DataTransferObjects.EventDTOs;
-using BodyShedule_v_2_0.Server.Models;
-using BodyShedule_v_2_0.Server.Repository;
+﻿using BodySchedulerWebApi.DataTransferObjects.EventDTOs;
+using BodySchedulerWebApi.Repository;
 
-namespace BodyShedule_v_2_0.Server.Service
+namespace BodySchedulerWebApi.Service
 {
     public class TrainingResultService : ITrainingResultService
     {
@@ -11,6 +10,11 @@ namespace BodyShedule_v_2_0.Server.Service
         public TrainingResultService(ITrainingResultRepository repository)
         {
             _repository = repository;
+        }
+
+        public async Task<List<GetTrainingResults>> GetTrainingResultsAsync(string userId)
+        {
+            return await _repository.GetTrainingResultsAsync(userId);
         }
 
         public async Task<bool> AddTrainingResultAsync(TrainingResultDto trainingResultInfo)

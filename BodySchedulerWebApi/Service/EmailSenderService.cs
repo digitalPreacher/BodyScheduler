@@ -1,6 +1,6 @@
 ﻿using System.Net.Mail;
 
-namespace BodyShedule_v_2_0.Server.Service
+namespace BodySchedulerWebApi.Service
 {
     public class EmailSenderService : IEmailSenderService
     {

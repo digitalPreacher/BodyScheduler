@@ -3,7 +3,8 @@ b { /* used for event dates/times */
 
 }
 
-i {
+span {
+  text-decoration: none;
   display: block;
   white-space: nowrap; /* Prevent wrapping of text */
   overflow: hidden; /* Hide content that overflows */

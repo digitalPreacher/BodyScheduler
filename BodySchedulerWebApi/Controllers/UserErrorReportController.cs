@@ -1,11 +1,11 @@
-﻿using BodyShedule_v_2_0.Server.DataTransferObjects.UserErrorReportDTOs;
-using BodyShedule_v_2_0.Server.Exceptions;
-using BodyShedule_v_2_0.Server.Service;
+﻿using BodySchedulerWebApi.DataTransferObjects.UserErrorReportDTOs;
+using BodySchedulerWebApi.Exceptions;
+using BodySchedulerWebApi.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace BodyShedule_v_2_0.Server.Controllers
+namespace BodySchedulerWebApi.Controllers
 {
     [Authorize]
     [ApiController]

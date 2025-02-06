@@ -1,7 +1,6 @@
-﻿using BodyShedule_v_2_0.Server.DataTransferObjects.AdminUserDTOs;
-using BodyShedule_v_2_0.Server.Models;
+﻿using BodySchedulerWebApi.DataTransferObjects.AdminUserDTOs;
 
-namespace BodyShedule_v_2_0.Server.Service
+namespace BodySchedulerWebApi.Service
 {
     public interface IAdminUserService
     {

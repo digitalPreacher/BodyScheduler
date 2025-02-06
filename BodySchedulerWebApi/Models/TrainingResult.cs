@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BodyShedule_v_2_0.Server.Models
+namespace BodySchedulerWebApi.Models
 {
     public class TrainingResult
     {

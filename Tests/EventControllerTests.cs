@@ -1,16 +1,9 @@
-﻿using BodyShedule_v_2_0.Server.Controllers;
-using BodyShedule_v_2_0.Server.DataTransferObjects.EventDTOs;
-using BodyShedule_v_2_0.Server.Service;
+﻿using BodySchedulerWebApi.Controllers;
+using BodySchedulerWebApi.DataTransferObjects.EventDTOs;
+using BodySchedulerWebApi.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
-using Sprache;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Tests
 {

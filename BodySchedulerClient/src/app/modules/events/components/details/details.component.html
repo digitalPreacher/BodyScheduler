@@ -25,12 +25,12 @@
           <div class="form-group me-2 col-8">
             <label>Описание</label>
             <textarea type="text"
-                   class="form-control"
-                   id="description-details-form-field"
-                   required
-                   formControlName="description"
-                   name="description-field"
-                   readonly></textarea>
+                      class="form-control"
+                      id="description-details-form-field"
+                      required
+                      formControlName="description"
+                      name="description-field"
+                      readonly></textarea>
           </div>
           <div class="form-group col-3">
             <label>Начало</label>
@@ -44,88 +44,81 @@
           </div>
         </div>
         <div class="form-group mt-2" formArrayName="exercises">
-            <div class="col-12 d-inline-flex mx-auto" *ngIf="getExercise.length > 0">
-              <div class="col-6">
-                <label for="title-exercise-details-form-field">Упражнение</label>
-              </div>
-              <div class="col-2 mx-2">
-                <label for="quantity-approaches-details-form-field">Подходы</label>
-              </div>
-              <div class="col-2">
-                <label for="quantity-repetions-details-form-field">Повт-ия</label>
-              </div>
-              <div class="col-2 pe-4">
-                <label for="weight-details-form-field">Вес</label>
-              </div>
+          <div class="col-12 d-inline-flex mx-auto" *ngIf="getExercise.length > 0">
+            <div class="col-6">
+              <label for="title-exercise-details-form-field">Упражнение</label>
             </div>
-            <div *ngFor="let exercise of getExercise.controls; let i=index">
-              <div [formGroupName]="i">
-                <div class="col-12 d-inline-flex mt-2">
-                  <div class="col-6">
-                    <input type="text"
-                           class="form-control"
-                           id="title-exercise-details-form-field"
-                           required
-                           formControlName="title"
-                           name="title-exercise-field"
-                           readonly />
-                  </div>
-                  <div class="col-2 mx-1">
-                    <input type="number"
-                           class="form-control"
-                           id="quantity-approaches-details-form-field"
-                           required
-                           formControlName="quantityApproaches"
-                           name="quantity-approaches-field"
-                           min="0"
-                           readonly />
-                  </div>
-                  <div class="col-2 me-1">
-                    <input type="number"
-                           class="form-control"
-                           id="quantity-repetions-details-form-field"
-                           required
-                           formControlName="quantityRepetions"
-                           name="quantity-repetions-field"
-                           min="0"
-                           readonly />
-                  </div>
-                  <div class="col-2 pe-3">
-                    <input type="number"
-                           class="form-control"
-                           id="weight-details-form-field"
-                           required
-                           formControlName="weight"
-                           name="weight-field"
-                           min="0"
-                           readonly/>
-                  </div>
+            <div class="col-2 mx-2">
+              <label for="quantity-approaches-details-form-field">Подходы</label>
+            </div>
+            <div class="col-2">
+              <label for="quantity-repetions-details-form-field">Повт-ия</label>
+            </div>
+            <div class="col-2 pe-4">
+              <label for="weight-details-form-field">Вес</label>
+            </div>
+          </div>
+          <div *ngFor="let exercise of getExercise.controls; let i=index">
+            <div [formGroupName]="i">
+              <div class="col-12 d-inline-flex mt-2">
+                <div class="col-6">
+                  <input type="text"
+                         class="form-control"
+                         id="title-exercise-details-form-field"
+                         required
+                         formControlName="title"
+                         name="title-exercise-field"
+                         readonly />
+                </div>
+                <div class="col-2 mx-1">
+                  <input type="number"
+                         class="form-control"
+                         id="quantity-approaches-details-form-field"
+                         required
+                         formControlName="quantityApproaches"
+                         name="quantity-approaches-field"
+                         min="0"
+                         readonly />
+                </div>
+                <div class="col-2 me-1">
+                  <input type="number"
+                         class="form-control"
+                         id="quantity-repetions-details-form-field"
+                         required
+                         formControlName="quantityRepetions"
+                         name="quantity-repetions-field"
+                         min="0"
+                         readonly />
+                </div>
+                <div class="col-2 pe-3">
+                  <input type="number"
+                         class="form-control"
+                         id="weight-details-form-field"
+                         required
+                         formControlName="weight"
+                         name="weight-field"
+                         min="0"
+                         readonly />
                 </div>
               </div>
+            </div>
           </div>
         </div>
-        <div class="modal-footer mt-3">
-          <div class="d-inline-flex col-12">
-            <div class="d-inline-flex col-7" *ngIf="detailsForm.get('status')?.value === 'inProgress'">
-              <div class="d-inline-flex">
-                <button type="button" class="btn btn-outline-primary text-light mt-3" (click)="startTimer()" *ngIf="trainingStateData.state === 'Stopped'">Начать тренировку</button>
-                <button type="button" class="btn btn-outline-primary text-light mt-3" (click)="resumeTimer()" *ngIf="trainingStateData.state === 'Paused'">Возобновить</button>
-                <button type="button" class="btn btn-outline-primary text-light mt-3" (click)="pauseTimer()" *ngIf="trainingStateData.state === 'Runned' || trainingStateData.state === 'Resumed'">Приостановить</button>
-                <div class="mt-4 mx-2">
-                  <b>{{displayTime}}</b>
-                </div>
-              </div>
+        <div class="d-inline-flex" *ngIf="detailsForm.get('status')?.value === 'inProgress'">
+          <div class="d-inline-flex">
+            <button type="button" class="btn btn-outline-primary text-light mt-3" (click)="startTimer()" *ngIf="trainingStateData.state === 'Stopped'">Начать тренировку</button>
+            <button type="button" class="btn btn-outline-primary text-light mt-3" (click)="resumeTimer()" *ngIf="trainingStateData.state === 'Paused'">Возобновить</button>
+            <button type="button" class="btn btn-outline-primary text-light mt-3" (click)="pauseTimer()" *ngIf="trainingStateData.state === 'Runned' || trainingStateData.state === 'Resumed'">Приостановить</button>
+            <div class="mt-4 mx-2">
+              <b>{{displayTime}}</b>
             </div>
-            <div *ngIf="detailsForm.get('status')?.value === 'inProgress'">
-              <button type="submit" class="btn btn-outline-success mt-3 shadow mx-2 text-light" (click)="changeEventStatus('completed')">Завершить тренировку</button>
-            </div>
-            <div *ngIf="detailsForm.get('status')?.value === 'completed'">
-              <button type="submit" class="btn btn-outline-success mt-3 shadow mx-2 text-light" (click)="changeEventStatus('inProgress')">Возобновить тренировку</button>
-            </div>
-            <div>
-              <button class="btn btn-outline-danger mt-3 shadow text-light" (click)="modal.dismiss()">Отмена</button>
-            </div>
+            <button *ngIf="detailsForm.get('status')?.value === 'inProgress'" type="submit" class="btn btn-outline-success mt-3 shadow mx-2 text-light" (click)="changeEventStatus('completed')">Завершить тренировку</button>
+            <button *ngIf="detailsForm.get('status')?.value === 'completed'" type="submit" class="btn btn-outline-success mt-3 shadow mx-2 text-light" (click)="changeEventStatus('inProgress')">Возобновить тренировку</button>
           </div>
+        </div>
+        <button *ngIf="detailsForm.get('status')?.value === 'completed'" type="submit" class="btn btn-outline-success mt-3 shadow mx-2 text-light" (click)="changeEventStatus('inProgress')">Возобновить тренировку</button>
+        <div class="modal-footer mt-3">
+          <button class="btn btn-outline-danger mt-3 shadow text-light" (click)="modal.dismiss()">Отмена</button>
         </div>
       </form>
     </div>

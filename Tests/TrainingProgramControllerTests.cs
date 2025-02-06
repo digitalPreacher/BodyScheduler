@@ -1,10 +1,10 @@
 ﻿using Moq;
-using BodyShedule_v_2_0.Server.Controllers;
-using BodyShedule_v_2_0.Server.Service;
+using BodySchedulerWebApi.Controllers;
+using BodySchedulerWebApi.Service;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc;
-using BodyShedule_v_2_0.Server.DataTransferObjects.EventDTOs;
-using BodyShedule_v_2_0.Server.DataTransferObjects.TrainingProgramDTOs;
+using BodySchedulerWebApi.DataTransferObjects.EventDTOs;
+using BodySchedulerWebApi.DataTransferObjects.TrainingProgramDTOs;
 
 namespace Tests
 {

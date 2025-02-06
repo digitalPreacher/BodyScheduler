@@ -1,4 +1,4 @@
-﻿namespace BodyShedule_v_2_0.Server.Helpers
+﻿namespace BodySchedulerWebApi.Helpers
 {
     public static class AbsoluteUrlGenerateHelper
     {

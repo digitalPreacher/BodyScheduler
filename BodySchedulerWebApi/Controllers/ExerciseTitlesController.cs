@@ -1,9 +1,8 @@
-﻿using BodyShedule_v_2_0.Server.Service;
+﻿using BodySchedulerWebApi.Service;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BodyShedule_v_2_0.Server.Controllers
+namespace BodySchedulerWebApi.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]

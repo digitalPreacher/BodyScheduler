@@ -1,4 +1,4 @@
-﻿namespace BodyShedule_v_2_0.Server.DataTransferObjects.EventDTOs
+﻿namespace BodySchedulerWebApi.DataTransferObjects.EventDTOs
 {
     public class GetEventDTO
     {

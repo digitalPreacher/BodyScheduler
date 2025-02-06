@@ -1,14 +1,12 @@
-﻿using BodyShedule_v_2_0.Server.Data;
-using BodyShedule_v_2_0.Server.DataTransferObjects.EventDTOs;
-using BodyShedule_v_2_0.Server.DataTransferObjects.TrainingProgramDTOs;
-using BodyShedule_v_2_0.Server.Exceptions;
-using BodyShedule_v_2_0.Server.Models;
+﻿using BodySchedulerWebApi.Data;
+using BodySchedulerWebApi.DataTransferObjects.EventDTOs;
+using BodySchedulerWebApi.DataTransferObjects.TrainingProgramDTOs;
+using BodySchedulerWebApi.Exceptions;
+using BodySchedulerWebApi.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
-using System.Reflection;
 
-namespace BodyShedule_v_2_0.Server.Repository
+namespace BodySchedulerWebApi.Repository
 {
     public class TrainingProgramRepository : ITrainingProgramRepository
     {
