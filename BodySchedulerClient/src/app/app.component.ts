@@ -31,7 +31,7 @@ export class AppComponent implements AfterViewInit{
 
   //check mobile platform by window size 
   inputChangeWindowSize(size: any) {
-    if (size.target.innerWidth < 750) {
+    if (size.target.innerWidth < 1000) {
       this.isMobilePlatform = true;
     }
     else {
