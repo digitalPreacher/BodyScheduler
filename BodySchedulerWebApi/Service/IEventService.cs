@@ -1,8 +1,6 @@
-﻿using BodyShedule_v_2_0.Server.DataTransferObjects.EventDTOs;
-using BodyShedule_v_2_0.Server.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using BodySchedulerWebApi.DataTransferObjects.EventDTOs;
 
-namespace BodyShedule_v_2_0.Server.Service
+namespace BodySchedulerWebApi.Service
 {
     public interface IEventService
     {

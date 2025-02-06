@@ -1,6 +1,6 @@
-﻿using BodyShedule_v_2_0.Server.Controllers;
-using BodyShedule_v_2_0.Server.DataTransferObjects.BodyMeasureDTOs;
-using BodyShedule_v_2_0.Server.Service;
+﻿using BodySchedulerWebApi.Controllers;
+using BodySchedulerWebApi.DataTransferObjects.BodyMeasureDTOs;
+using BodySchedulerWebApi.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;

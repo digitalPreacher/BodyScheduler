@@ -1,4 +1,4 @@
-﻿namespace BodyShedule_v_2_0.Server.Service
+﻿namespace BodySchedulerWebApi.Service
 {
     public interface IExportExerciseTitlesService
     {

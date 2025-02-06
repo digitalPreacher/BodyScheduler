@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace BodyShedule_v_2_0.Server.Data
+namespace BodySchedulerWebApi.Data
 {
     public class CustomIdentityErrorDescriber : IdentityErrorDescriber
     {

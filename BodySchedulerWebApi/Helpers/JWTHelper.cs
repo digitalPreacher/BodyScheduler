@@ -1,10 +1,10 @@
-﻿using BodyShedule_v_2_0.Server.DataTransferObjects.AccountDTOs;
+﻿using BodySchedulerWebApi.DataTransferObjects.AccountDTOs;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace BodyShedule_v_2_0.Server.Helpers
+namespace BodySchedulerWebApi.Helpers
 {
     public static class JWTHelper
     { 

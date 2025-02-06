@@ -1,7 +1,7 @@
-﻿using BodyShedule_v_2_0.Server.Data;
+﻿using BodySchedulerWebApi.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace BodyShedule_v_2_0.Server.Repository
+namespace BodySchedulerWebApi.Repository
 {
     public class ExportExerciseTitlesRepository : IExportExerciseTitlesRepository
     {

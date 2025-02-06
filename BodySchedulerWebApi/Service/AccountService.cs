@@ -1,8 +1,8 @@
-﻿using BodyShedule_v_2_0.Server.DataTransferObjects.AccountDTOs;
-using BodyShedule_v_2_0.Server.Repository;
+﻿using BodySchedulerWebApi.DataTransferObjects.AccountDTOs;
+using BodySchedulerWebApi.Repository;
 using Microsoft.AspNetCore.Identity;
 
-namespace BodyShedule_v_2_0.Server.Service
+namespace BodySchedulerWebApi.Service
 {
     public class AccountService : IAccountService
     {

@@ -1,6 +1,6 @@
-﻿using BodyShedule_v_2_0.Server.DataTransferObjects.UserErrorReportDTOs;
+﻿using BodySchedulerWebApi.DataTransferObjects.UserErrorReportDTOs;
 
-namespace BodyShedule_v_2_0.Server.Service
+namespace BodySchedulerWebApi.Service
 {
     public interface IUserErrorReportService
     {
