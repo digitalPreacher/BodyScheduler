@@ -1,7 +1,7 @@
-using BodyShedule_v_2_0.Server.Data;
-using BodyShedule_v_2_0.Server.Models;
-using BodyShedule_v_2_0.Server.Repository;
-using BodyShedule_v_2_0.Server.Service;
+using BodySchedulerWebApi.Data;
+using BodySchedulerWebApi.Models;
+using BodySchedulerWebApi.Repository;
+using BodySchedulerWebApi.Service;
 using DotNetEnv;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;

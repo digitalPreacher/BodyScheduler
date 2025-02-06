@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BodyShedule_v_2_0.Server.Models
+namespace BodySchedulerWebApi.Models
 {
     public class Exercise
     {

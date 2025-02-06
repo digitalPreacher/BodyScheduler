@@ -1,4 +1,4 @@
-﻿namespace BodyShedule_v_2_0.Server.Exceptions
+﻿namespace BodySchedulerWebApi.Exceptions
 {
     public class EntityNotFoundException : CustomException
     {

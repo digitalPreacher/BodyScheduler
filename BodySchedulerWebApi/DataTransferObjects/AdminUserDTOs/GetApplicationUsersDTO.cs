@@ -1,4 +1,4 @@
-﻿namespace BodyShedule_v_2_0.Server.DataTransferObjects.AdminUserDTOs
+﻿namespace BodySchedulerWebApi.DataTransferObjects.AdminUserDTOs
 {
     public class GetApplicationUsersDTO
     {

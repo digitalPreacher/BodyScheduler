@@ -1,4 +1,4 @@
-﻿namespace BodyShedule_v_2_0.Server.DataTransferObjects.UserErrorReportDTOs
+﻿namespace BodySchedulerWebApi.DataTransferObjects.UserErrorReportDTOs
 {
     public class UserErrorReportDTO
     {

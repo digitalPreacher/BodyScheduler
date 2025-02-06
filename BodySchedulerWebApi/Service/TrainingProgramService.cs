@@ -1,7 +1,7 @@
-﻿using BodyShedule_v_2_0.Server.DataTransferObjects.TrainingProgramDTOs;
-using BodyShedule_v_2_0.Server.Repository;
+﻿using BodySchedulerWebApi.DataTransferObjects.TrainingProgramDTOs;
+using BodySchedulerWebApi.Repository;
 
-namespace BodyShedule_v_2_0.Server.Service
+namespace BodySchedulerWebApi.Service
 {
     public class TrainingProgramService : ITrainingProgramService
     {

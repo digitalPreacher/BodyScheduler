@@ -1,12 +1,11 @@
-﻿using BodyShedule_v_2_0.Server.Data;
-using BodyShedule_v_2_0.Server.DataTransferObjects.BodyMeasureDTOs;
-using BodyShedule_v_2_0.Server.Exceptions;
-using BodyShedule_v_2_0.Server.Models;
+﻿using BodySchedulerWebApi.Data;
+using BodySchedulerWebApi.DataTransferObjects.BodyMeasureDTOs;
+using BodySchedulerWebApi.Exceptions;
+using BodySchedulerWebApi.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
-namespace BodyShedule_v_2_0.Server.Repository
+namespace BodySchedulerWebApi.Repository
 {
     public class BodyMeasureRepository : IBodyMeasureRepository
     {

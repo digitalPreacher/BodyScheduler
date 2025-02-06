@@ -1,4 +1,4 @@
-﻿namespace BodyShedule_v_2_0.Server.DataTransferObjects.TrainingProgramDTOs
+﻿namespace BodySchedulerWebApi.DataTransferObjects.TrainingProgramDTOs
 {
     public class GetTrainingProgramsDTO
     {

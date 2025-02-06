@@ -1,9 +1,9 @@
-﻿using BodyShedule_v_2_0.Server.Models;
+﻿using BodySchedulerWebApi.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace BodyShedule_v_2_0.Server.Data
+namespace BodySchedulerWebApi.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole<int>, int>
     {

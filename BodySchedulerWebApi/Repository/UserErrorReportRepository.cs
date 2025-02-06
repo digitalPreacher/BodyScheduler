@@ -1,8 +1,8 @@
-﻿using BodyShedule_v_2_0.Server.Data;
-using BodyShedule_v_2_0.Server.DataTransferObjects.UserErrorReportDTOs;
-using BodyShedule_v_2_0.Server.Models;
+﻿using BodySchedulerWebApi.Data;
+using BodySchedulerWebApi.DataTransferObjects.UserErrorReportDTOs;
+using BodySchedulerWebApi.Models;
 
-namespace BodyShedule_v_2_0.Server.Repository
+namespace BodySchedulerWebApi.Repository
 {
     public class UserErrorReportRepository: IUserErrorReportRepository
     {

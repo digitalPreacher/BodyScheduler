@@ -1,13 +1,12 @@
-﻿using BodyShedule_v_2_0.Server.DataTransferObjects.AccountDTOs;
-using BodyShedule_v_2_0.Server.Exceptions;
-using BodyShedule_v_2_0.Server.Helpers;
-using BodyShedule_v_2_0.Server.Service;
+﻿using BodySchedulerWebApi.DataTransferObjects.AccountDTOs;
+using BodySchedulerWebApi.Exceptions;
+using BodySchedulerWebApi.Helpers;
+using BodySchedulerWebApi.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
 
-namespace BodyShedule_v_2_0.Server.Controllers
+namespace BodySchedulerWebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

@@ -1,9 +1,7 @@
 ﻿using BodySchedulerWebApi.DataTransferObjects.EventDTOs;
-using BodyShedule_v_2_0.Server.DataTransferObjects.EventDTOs;
-using BodyShedule_v_2_0.Server.Models;
-using BodyShedule_v_2_0.Server.Repository;
+using BodySchedulerWebApi.Repository;
 
-namespace BodyShedule_v_2_0.Server.Service
+namespace BodySchedulerWebApi.Service
 {
     public class TrainingResultService : ITrainingResultService
     {

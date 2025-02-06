@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
-namespace BodyShedule_v_2_0.Server.Models
+namespace BodySchedulerWebApi.Models
 {
     public class ApplicationUser : IdentityUser<int>
     {

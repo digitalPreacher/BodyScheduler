@@ -1,4 +1,4 @@
-﻿namespace BodyShedule_v_2_0.Server.DataTransferObjects.BodyMeasureDTOs
+﻿namespace BodySchedulerWebApi.DataTransferObjects.BodyMeasureDTOs
 {
     public class AddBodyMeasureDTO
     {

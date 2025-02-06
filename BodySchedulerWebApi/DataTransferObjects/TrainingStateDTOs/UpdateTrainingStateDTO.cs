@@ -1,4 +1,4 @@
-﻿namespace BodyShedule_v_2_0.Server.DataTransferObjects.TrainingStateDTOs
+﻿namespace BodySchedulerWebApi.DataTransferObjects.TrainingStateDTOs
 {
     public class UpdateTrainingStateDTO
     {
