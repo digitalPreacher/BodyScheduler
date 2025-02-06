@@ -1,4 +1,5 @@
-﻿using BodyShedule_v_2_0.Server.Data;
+﻿using BodySchedulerWebApi.DataTransferObjects.EventDTOs;
+using BodyShedule_v_2_0.Server.Data;
 using BodyShedule_v_2_0.Server.DataTransferObjects.EventDTOs;
 using BodyShedule_v_2_0.Server.Exceptions;
 using BodyShedule_v_2_0.Server.Models;
@@ -16,6 +17,29 @@ namespace BodyShedule_v_2_0.Server.Repository
         {
             _db = db;
             _userManager = userManager;
+        }
+
+        //get training results by user id
+        public async Task<List<GetTrainingResults>> GetTrainingResultsAsync(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if(user == null)
+            {
+                throw new EntityNotFoundException($"Пользователь с id: {userId} не найден");
+            }
+
+            List<GetTrainingResults> trainingResults = await _db.TraininResultSet.Where(x => x.User.Id == user.Id)
+                .OrderByDescending(x => x.CreateAt)
+                .Select(x => new GetTrainingResults
+                {
+                    Id = x.Id,
+                    AmountWeight = x.AmountWeight,
+                    TrainingTime = x.TrainingTime,
+                    EventId = x.Event.Id
+                })
+                .ToListAsync();
+
+            return trainingResults;
         }
 
         //Add user training result
