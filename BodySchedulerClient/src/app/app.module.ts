@@ -44,6 +44,7 @@ import { UsersEditComponent } from './modules/user-administration/components/use
 import { TrainingResultModalComponent } from './modules/shared/components/training-result-modal/training-result-modal.component';
 import { SidebarComponent } from './modules/sidebar/components/sidebar.component';
 import { TrainingResultsListComponent } from './modules/training-results/components/training-results-list/training-results-list.component';
+import { CreateExerciseComponent } from './modules/exercises/components/create-exercise/create-exercise.component';
 
 
 
@@ -79,7 +80,8 @@ import { TrainingResultsListComponent } from './modules/training-results/compone
     UsersEditComponent,
     TrainingResultModalComponent,
     SidebarComponent,
-    TrainingResultsListComponent
+    TrainingResultsListComponent,
+    CreateExerciseComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,
