@@ -61,3 +61,11 @@
 .search-box:focus-within .search-icon {
   color: #007bff;
 }
+
+::ng-deep .nav-link {
+  color: white;
+}
+
+::ng-deep .nav-link:hover{
+    color:gray;
+}
