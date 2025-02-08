@@ -12,6 +12,11 @@ namespace BodySchedulerWebApi.Service
             _repository = repository;
         }
 
+        public async Task<List<GetCustomExercisesDTO>> GetExercisesAsync(string userId)
+        {
+            return await _repository.GetExercisesAsync(userId);
+        }
+
         public async Task AddCustomExercisesAsync(AddCustomExerciseDTO exerciseInfo)
         {
             await _repository.AddCustomExercisesAsync(exerciseInfo);

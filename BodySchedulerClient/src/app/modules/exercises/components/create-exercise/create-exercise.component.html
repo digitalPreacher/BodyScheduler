@@ -1,6 +1,8 @@
 <button class="btn btn-outline-secondary text-light" (click)="open(content)">Добавить упражнение</button>
 
 <ng-template #content let-modal>
+  <app-loader *ngIf="isLoading">
+  </app-loader>
   <div class="bg-dark text-light">
     <div class="modal-header">
       <h3 class="modal-title" id="modal-create-title" style="text-align:center">Добавление упражнения</h3>
@@ -18,7 +20,7 @@
                    [ngModelOptions]="{standalone: true}"
                    #title="ngModel"
                    required>
-            <div [hidden]="title.valid"
+            <div *ngIf="!title.valid && submitButtonClick"
                  class="alert alert-danger mt-2">
               Поле обязательно для заполнения
             </div>

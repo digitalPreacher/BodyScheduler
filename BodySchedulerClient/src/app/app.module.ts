@@ -3,7 +3,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
-import { NgbModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbScrollSpyModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FullCalendarModule } from '@fullcalendar/angular';
@@ -45,6 +45,7 @@ import { TrainingResultModalComponent } from './modules/shared/components/traini
 import { SidebarComponent } from './modules/sidebar/components/sidebar.component';
 import { TrainingResultsListComponent } from './modules/training-results/components/training-results-list/training-results-list.component';
 import { CreateExerciseComponent } from './modules/exercises/components/create-exercise/create-exercise.component';
+import { ListExercisesComponent } from './modules/exercises/components/list-exercises/list-exercises.component';
 
 
 
@@ -81,13 +82,14 @@ import { CreateExerciseComponent } from './modules/exercises/components/create-e
     TrainingResultModalComponent,
     SidebarComponent,
     TrainingResultsListComponent,
-    CreateExerciseComponent
+    CreateExerciseComponent,
+    ListExercisesComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,
     AppRoutingModule, FormsModule, NgbModule,
     ReactiveFormsModule, FullCalendarModule, MdbTabsModule,
-    NgxChartsModule, BrowserAnimationsModule, NgbAlertModule, NgbTooltipModule
+    NgxChartsModule, BrowserAnimationsModule, NgbAlertModule, NgbTooltipModule, NgbScrollSpyModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true }],
   bootstrap: [AppComponent]

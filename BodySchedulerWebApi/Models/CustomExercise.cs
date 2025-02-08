@@ -12,6 +12,8 @@ namespace BodySchedulerWebApi.Models
         public string? ExerciseDescription { get; set; }
         [MaxLength(1000)]
         public string? Path { get; set; }
+        [MaxLength(100)]
+        public string? Type { get; set; }
         public DateTime CreateAt { get; set; }
         public required ApplicationUser User { get; set; }
     }

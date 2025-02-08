@@ -18,22 +18,44 @@ namespace BodySchedulerWebApi.Controllers
             _logger = logger;
         }
 
+        //add exercises by userId
+        [HttpGet]
+        [Route("GetExercises/{userId}")]
+        public async Task<IActionResult> GetExercisesAsync([FromRoute]string userId)
+        {
+            try
+            {
+                var exerciseList = await _service.GetExercisesAsync(userId);
+                return Ok(exerciseList);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex.Message);
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        //add custom exercise 
         [HttpPost]
         [Route("AddCustomExercises")]
         public async Task<IActionResult> AddCustomExercisesAsync([FromForm]AddCustomExerciseDTO exerciseInfo)
         {
             try
             {
-                var allowedExtensions = new[] { ".jpg", ".jpeg", ".png" };
-
                 if(exerciseInfo.Image != null)
                 {
+                    var allowedExtensions = new[] { ".jpg", ".jpeg", ".png" };
+
                     var extension = Path.GetExtension(exerciseInfo.Image.FileName).ToLowerInvariant();
                     if (!allowedExtensions.Contains(extension))
                     {
                         return BadRequest("Некорректный тип файла");
                     }
-
                 }
 
                 await _service.AddCustomExercisesAsync(exerciseInfo);
