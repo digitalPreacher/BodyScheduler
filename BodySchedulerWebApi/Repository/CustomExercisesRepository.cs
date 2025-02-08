@@ -21,7 +21,7 @@ namespace BodySchedulerWebApi.Repository
         
 
         //get custom exercise by userId
-        public async Task<List<GetCustomExercisesDTO>> GetExercisesAsync(string userId)
+        public async Task<List<GetCustomExercisesDTO>> GetCustomExercisesAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
@@ -90,5 +90,30 @@ namespace BodySchedulerWebApi.Repository
                 await _db.SaveChangesAsync();
             }
         }
+
+        //delete custom exercise by exerciseId
+        public async Task DeleteCustomExerciseAsync(string userId, int exerciseId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                throw new EntityNotFoundException($"Пользователь с id: {userId} не найден");
+            }
+
+            var customExercise = await _db.CustomExerciseSet.FirstOrDefaultAsync(x => x.Id == exerciseId && x.User.Id == user.Id);
+            if (customExercise == null)
+            {
+                throw new EntityNotFoundException($"Упражнение с id: {exerciseId} не найдено");
+            }
+
+            if(!string.IsNullOrEmpty(customExercise.Path))
+            {
+                File.Delete(customExercise.Path);
+            }
+
+            _db.CustomExerciseSet.Remove(customExercise);
+            await _db.SaveChangesAsync();
+        }
     }
+
 }

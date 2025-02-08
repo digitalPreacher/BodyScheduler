@@ -25,7 +25,7 @@ namespace BodySchedulerWebApi.Controllers
         {
             try
             {
-                var exerciseList = await _service.GetExercisesAsync(userId);
+                var exerciseList = await _service.GetCustomExercisesAsync(userId);
                 return Ok(exerciseList);
             }
             catch (EntityNotFoundException ex)
@@ -62,6 +62,28 @@ namespace BodySchedulerWebApi.Controllers
                 return Ok();
             }
             catch(EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex.Message);
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        //delete custome exercise by userId and exerciseId
+        [HttpDelete]
+        [Route("DeleteCustomExercise/{userId}&exerciseId={exerciseId}")]
+        public async Task<IActionResult> DeleteCustomExerciseAsync([FromRoute]string userId, int exerciseId)
+        {
+            try
+            {
+                await _service.DeleteCustomExerciseAsync(userId, exerciseId);
+                return Ok();
+            }
+            catch (EntityNotFoundException ex)
             {
                 _logger.LogInformation(ex.Message);
                 return BadRequest(ex.Message);
