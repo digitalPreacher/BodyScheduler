@@ -46,6 +46,7 @@ import { SidebarComponent } from './modules/sidebar/components/sidebar.component
 import { TrainingResultsListComponent } from './modules/training-results/components/training-results-list/training-results-list.component';
 import { CreateExerciseComponent } from './modules/exercises/components/create-exercise/create-exercise.component';
 import { ListExercisesComponent } from './modules/exercises/components/list-exercises/list-exercises.component';
+import { DeleteExerciseComponent } from './modules/exercises/components/delete-exercise/delete-exercise.component';
 
 
 
@@ -83,7 +84,8 @@ import { ListExercisesComponent } from './modules/exercises/components/list-exer
     SidebarComponent,
     TrainingResultsListComponent,
     CreateExerciseComponent,
-    ListExercisesComponent
+    ListExercisesComponent,
+    DeleteExerciseComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,

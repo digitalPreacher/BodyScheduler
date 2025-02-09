@@ -20,12 +20,14 @@ export class ListExercisesComponent {
   exercise!: GetExerciseData | undefined;
   isGetExercise = false;
   imageData: string = '';
+  userRole: string = '';
 
   @ViewChild('errorModal') errorModal!: ErrorModalComponent;
 
   constructor(private exercisesService: ExercisesService, private authService: AuthorizationService, private loadingService: LoadingService) {
     this.userDataSubscribtion = this.authService.userData$.asObservable().subscribe(data => {
       this.userId = data.userId;
+      this.userRole = data.role;
     })
   }
 
@@ -65,6 +67,9 @@ export class ListExercisesComponent {
       this.exercise = this.exercises[0];
       this.isGetExercise = true;
       this.imageData = 'data:image/jpg;base64,' + this.exercise?.image;
+    }
+    else {
+      this.isGetExercise = false;
     }
   }
 
