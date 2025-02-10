@@ -1,5 +1,8 @@
 export class ExerciseData {
+  userId!: string;
+  exerciseId!: number;
   exerciseTitle!: string;
-  exerciseDescription!: string;
-  image!: File;
+  exerciseDescription?: string;
+  fileName!: string;
+  image?: File;
 }

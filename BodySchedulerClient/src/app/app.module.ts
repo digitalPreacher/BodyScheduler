@@ -47,6 +47,7 @@ import { TrainingResultsListComponent } from './modules/training-results/compone
 import { CreateExerciseComponent } from './modules/exercises/components/create-exercise/create-exercise.component';
 import { ListExercisesComponent } from './modules/exercises/components/list-exercises/list-exercises.component';
 import { DeleteExerciseComponent } from './modules/exercises/components/delete-exercise/delete-exercise.component';
+import { EditExerciseComponent } from './modules/exercises/components/edit-exercise/edit-exercise.component';
 
 
 
@@ -85,7 +86,8 @@ import { DeleteExerciseComponent } from './modules/exercises/components/delete-e
     TrainingResultsListComponent,
     CreateExerciseComponent,
     ListExercisesComponent,
-    DeleteExerciseComponent
+    DeleteExerciseComponent,
+    EditExerciseComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,

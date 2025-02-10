@@ -1,11 +1,11 @@
-<button class="btn btn-outline-secondary text-light" (click)="open(content)">Добавить упражнение</button>
+<button class="btn btn-outline-secondary text-light" (click)="open(content)">Редактировать</button>
 
 <ng-template #content let-modal>
   <app-loader *ngIf="isLoading">
   </app-loader>
   <div class="bg-dark text-light">
     <div class="modal-header">
-      <h3 class="modal-title" id="modal-create-title" style="text-align:center">Добавление упражнения</h3>
+      <h3 class="modal-title" id="modal-create-title" style="text-align:center">Редактирование упражнения</h3>
       <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="modal.dismiss()"></button>
     </div>
     <div class="modal-body">
@@ -27,8 +27,13 @@
             </div>
           </div>
           <div class="form-group col-4 ms-2 pe-2">
-            <label for="formFile" class="form-label">Изображение</label>
-            <input type="file"
+            <label class="form-label">Изображение<span class="ms-2" *ngIf="isGetImage" (click)="removeImage()"><i class="bi bi-x-lg"></i></span></label>
+            <img *ngIf="previewImage && isGetImage"
+                 [src]="previewImage"
+                 id="previewImage"
+                 class="img-thumbnail">
+            <input *ngIf="!isGetImage"
+                   type="file"
                    class="form-control"
                    accept=".jpeg,.png,.jpg"
                    id="formFile" (change)="onChange($event)">
@@ -46,7 +51,7 @@
         <div class="modal-footer mt-2">
           <div class="d-inline-flex mt-3 col-12 text-light">
             <div class="col-6 me-2">
-              <button type="submit" class="w-100 btn btn-outline-success text-light me-2" (click)="saveData()">Добавить</button>
+              <button type="submit" class="w-100 btn btn-outline-success text-light me-2" (click)="saveData()">Сохранить</button>
             </div>
             <div class="col-6">
               <button type="button" class="w-100 btn btn-outline-danger text-light" (click)="modal.dismiss()">Отменить</button>
@@ -57,5 +62,6 @@
     </div>
   </div>
 </ng-template>
+
 
 <app-error-modal #errorModal></app-error-modal>

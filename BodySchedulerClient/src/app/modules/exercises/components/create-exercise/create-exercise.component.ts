@@ -5,6 +5,7 @@ import { AuthorizationService } from '../../../authorization/shared/authorizatio
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component';
 import { LoadingService } from '../../../shared/service/loading.service';
+import { concatMap, filter, switchMap, take } from 'rxjs';
 
 @Component({
   selector: 'app-create-exercise',
@@ -17,16 +18,12 @@ export class CreateExerciseComponent implements OnInit, OnDestroy {
   userDataSubscribtion: any;
   exerciseData: ExerciseData = new ExerciseData();
   modalService = inject(NgbModal);
-  userId: string = '';
   submitButtonClick: boolean = false;
+
 
   @ViewChild('errorModal') errorModal!: ErrorModalComponent;
 
-  constructor(private exerciseService: ExercisesService, private authService: AuthorizationService, private loadingService: LoadingService) {
-    this.userDataSubscribtion = this.authService.userData$.asObservable().subscribe(data => {
-      this.userId = data.userId;
-    })
-  }
+  constructor(private exerciseService: ExercisesService, private authService: AuthorizationService, private loadingService: LoadingService) {}
 
   ngOnInit() {
     this.isLoadingDataSubscribtion = this.loadingService.loading$.subscribe(loading => this.isLoading = loading);
@@ -43,14 +40,19 @@ export class CreateExerciseComponent implements OnInit, OnDestroy {
 
     if (this.exerciseData.exerciseTitle !== undefined && this.exerciseData.exerciseTitle !== '') {
       this.loadingService.show();
+      this.authService.userData$.pipe(
+        filter(x => !!x.userId),
+        switchMap(data => {
+          let formData = new FormData();
+          formData.append('userId', data.userId);
+          formData.append('image', this.exerciseData.image || '');
+          formData.append('exerciseTitle', this.exerciseData.exerciseTitle);
+          formData.append('exerciseDescription', this.exerciseData.exerciseDescription || '');
 
-      let formData = new FormData();
-      formData.append('userId', this.userId);
-      formData.append('image', this.exerciseData.image);
-      formData.append('exerciseTitle', this.exerciseData.exerciseTitle);
-      formData.append('exerciseDescription', this.exerciseData.exerciseDescription || '');
-
-      this.exerciseService.addExercises(formData).subscribe({
+          return this.exerciseService.addExercises(formData);
+        })
+      )
+      .subscribe({
         next: result => {
           this.loadingService.hide();
           this.modalService.dismissAll();
@@ -77,7 +79,6 @@ export class CreateExerciseComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.userDataSubscribtion.unsubscribe();
     this.isLoadingDataSubscribtion.unsubscribe();
   }
 }

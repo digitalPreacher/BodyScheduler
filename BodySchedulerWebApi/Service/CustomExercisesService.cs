@@ -12,6 +12,11 @@ namespace BodySchedulerWebApi.Service
             _repository = repository;
         }
 
+        public async Task<GetCustomExercisesDTO> GetCustomExerciseAsync(int exerciseId)
+        {
+            return await _repository.GetCustomExerciseAsync(exerciseId);
+        }
+
         public async Task<List<GetCustomExercisesDTO>> GetCustomExercisesAsync(string userId)
         {
             return await _repository.GetCustomExercisesAsync(userId);
@@ -25,6 +30,11 @@ namespace BodySchedulerWebApi.Service
         public async Task DeleteCustomExerciseAsync(string userId, int exerciseId)
         {
             await _repository.DeleteCustomExerciseAsync(userId, exerciseId);
+        }
+
+        public async Task EditCustomExerciseAsync(EditCustomExerciseDTO exerciseInfo)
+        {
+            await _repository.EditCustomExerciseAsync(exerciseInfo);
         }
     }
 }

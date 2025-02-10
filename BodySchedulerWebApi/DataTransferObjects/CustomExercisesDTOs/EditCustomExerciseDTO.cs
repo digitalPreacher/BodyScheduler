@@ -1,12 +1,11 @@
 ﻿namespace BodySchedulerWebApi.DataTransferObjects.CustomExercisesDTOs
 {
-    public class GetCustomExercisesDTO
+    public class EditCustomExerciseDTO
     {
+        public required string UserId { get; set; }
         public required int ExerciseId { get; set; }
         public required string ExerciseTitle { get; set; }
-        public string? Type { get; set; }
         public string? ExerciseDescription { get; set; }
-        public string? ImageName { get; set; }
-        public byte[]? Image { get; set; }
+        public IFormFile? Image { get; set; }
     }
 }

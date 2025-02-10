@@ -26,6 +26,19 @@ export class ExercisesService {
       )
   }
 
+  //get custom exercise by exerciseId
+  getCustomExercise(exerciseId: number) {
+    return this.httpClient.get<any>(environment.apiUrl + `/CustomExercises/GetExercise/${exerciseId}`)
+      .pipe(
+        result => {
+          return result;
+        },
+        catchError(error => {
+          return singleErrorHandler(error);
+        })
+      )
+  }
+
   //get custom exercise by userId
   getCustomExercises(userId: string) {
     return this.httpClient.get<any>(environment.apiUrl + `/CustomExercises/GetExercises/${userId}`)
@@ -42,6 +55,19 @@ export class ExercisesService {
   //delete custom exercise by userId and exerciseId
   deleteCustomExercise(userId: string, exerciseId: number) {
     return this.httpClient.delete(environment.apiUrl + `/CustomExercises/DeleteCustomExercise/${userId}&exerciseId=${exerciseId}`)
+      .pipe(
+        result => {
+          return result;
+        },
+        catchError(error => {
+          return singleErrorHandler(error);
+        })
+      )
+  }
+
+  //edit custom exercises
+  editCustomExercises(exerciseFormData: FormData) {
+    return this.httpClient.put(environment.apiUrl + `/CustomExercises/EditCustomExercise`, exerciseFormData)
       .pipe(
         result => {
           return result;

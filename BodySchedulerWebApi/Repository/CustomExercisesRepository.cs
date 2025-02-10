@@ -18,8 +18,30 @@ namespace BodySchedulerWebApi.Repository
             _db = db;
             _userManager = userManager;
         }
-        
-        //get custom exercise by userId
+
+        //get custom exercise by exerciseId
+        public async Task<GetCustomExercisesDTO> GetCustomExerciseAsync(int exerciseId)
+        {
+            var currentCustomExercise = await _db.CustomExerciseSet.FirstOrDefaultAsync(x => x.Id == exerciseId);
+            if (currentCustomExercise == null)
+            {
+                throw new EntityNotFoundException($"Упражнение с id: {exerciseId} не найдено");
+            }
+
+            var getCustomExercise = new GetCustomExercisesDTO
+            {
+                ExerciseId = currentCustomExercise.Id,
+                ExerciseTitle = currentCustomExercise.ExerciseTitle,
+                ExerciseDescription = currentCustomExercise.ExerciseDescription,
+                ImageName = Path.GetFileName(currentCustomExercise.Path),
+                Image = currentCustomExercise.Path != null ? await File.ReadAllBytesAsync(currentCustomExercise.Path) : null
+            };
+
+            return getCustomExercise;
+        }
+
+
+        //get custom exercises by userId
         public async Task<List<GetCustomExercisesDTO>> GetCustomExercisesAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -152,6 +174,44 @@ namespace BodySchedulerWebApi.Repository
                 _db.CustomExerciseSet.Remove(customExercise);
                 await _db.SaveChangesAsync();
             }
+        }
+
+
+        //edit custom exercise
+        public async Task EditCustomExerciseAsync(EditCustomExerciseDTO exerciseInfo)
+        {
+            var user = await _userManager.FindByIdAsync(exerciseInfo.UserId);
+            if (user == null)
+            {
+                throw new EntityNotFoundException($"Пользователь с id: {exerciseInfo.UserId} не найден");
+            }
+
+            var currentExercise = await _db.CustomExerciseSet.FindAsync(exerciseInfo.ExerciseId);
+            if(currentExercise == null)
+            {
+                throw new EntityNotFoundException($"Упражнение с id: {exerciseInfo.UserId} не найдено");
+            }
+
+            currentExercise.ExerciseTitle = exerciseInfo.ExerciseTitle;
+            currentExercise.ExerciseDescription = exerciseInfo.ExerciseDescription;
+
+            //edit entity with and without an image
+            if (exerciseInfo.Image != null)
+            {
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "ExerciseImages", exerciseInfo.Image.FileName);
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    exerciseInfo.Image.CopyTo(stream);
+                }
+
+                currentExercise.Path = path;
+            }
+            else
+            {
+                currentExercise.Path = null;
+            }
+            
+            await _db.SaveChangesAsync();
         }
     }
 

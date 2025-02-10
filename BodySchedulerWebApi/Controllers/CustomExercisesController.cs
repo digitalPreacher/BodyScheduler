@@ -18,6 +18,27 @@ namespace BodySchedulerWebApi.Controllers
             _logger = logger;
         }
 
+        [HttpGet]
+        [Route("GetExercise/{exerciseId}")]
+        public async Task<IActionResult> GetCustomExerciseAsync(int exerciseId)
+        {
+            try
+            {
+                var customExercise = await _service.GetCustomExerciseAsync(exerciseId);
+                return Ok(customExercise);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex.Message);
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
         //add exercises by userId
         [HttpGet]
         [Route("GetExercises/{userId}")]
@@ -81,6 +102,27 @@ namespace BodySchedulerWebApi.Controllers
             try
             {
                 await _service.DeleteCustomExerciseAsync(userId, exerciseId);
+                return Ok();
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex.Message);
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut]
+        [Route("EditCustomExercise")]
+        public async Task<IActionResult> EditCustomExerciseAsync([FromForm]EditCustomExerciseDTO exerciseInfo)
+        {
+            try
+            {
+                await _service.EditCustomExerciseAsync(exerciseInfo);
                 return Ok();
             }
             catch (EntityNotFoundException ex)
