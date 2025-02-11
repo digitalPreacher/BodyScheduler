@@ -1,4 +1,5 @@
-﻿using BodySchedulerWebApi.Repository;
+﻿using BodySchedulerWebApi.DataTransferObjects.CustomExercisesDTOs;
+using BodySchedulerWebApi.Repository;
 
 namespace BodySchedulerWebApi.Service
 {
@@ -10,9 +11,9 @@ namespace BodySchedulerWebApi.Service
         {
             _repository = repository;
         }
-        public async Task<List<string>> GetExerciseTitlesAsync()
+        public async Task<List<GetCustomExerciseTitleDTO>> GetExerciseTitlesAsync(string userId)
         {
-            return await _repository.GetExerciseTitlesAsync();
+            return await _repository.GetExerciseTitlesAsync(userId);
         }
     }
 }

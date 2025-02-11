@@ -77,15 +77,20 @@ namespace BodySchedulerWebApi.Data
             .Property(x => x.CreateAt)
             .HasColumnType("timestamp without time zone")
             .HasDefaultValueSql("now()");
+
+            builder.Entity<CustomExercise>()
+            .Property(x => x.CreateAt)
+            .HasColumnType("timestamp without time zone")
+            .HasDefaultValueSql("now()");
         }
 
         public DbSet<Event> Events { get; set; }
         public DbSet<Exercise> Exercises { get; set; }
         public DbSet<TrainingProgram> TrainingProgramSet { get; set; }
         public DbSet<WeeksTraining> WeeksTrainingSet { get; set; }  
-        public DbSet<ExerciseTitle> ExerciseTitleSet { get; set; }
         public DbSet<BodyMeasure> BodyMeasureSet { get; set; }
         public DbSet<UserErrorReport> UserErrorReportSet { get; set; }
         public DbSet<TrainingResult> TraininResultSet {  get; set; }
+        public DbSet<CustomExercise> CustomExerciseSet { get; set; }
     }
 }

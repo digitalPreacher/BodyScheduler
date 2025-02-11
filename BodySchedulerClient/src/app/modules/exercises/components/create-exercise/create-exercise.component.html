@@ -1,0 +1,61 @@
+<button class="btn btn-outline-secondary text-light" (click)="open(content)">Добавить упражнение</button>
+
+<ng-template #content let-modal>
+  <app-loader *ngIf="isLoading">
+  </app-loader>
+  <div class="bg-dark text-light">
+    <div class="modal-header">
+      <h3 class="modal-title" id="modal-create-title" style="text-align:center">Добавление упражнения</h3>
+      <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <form class="p-3 text-center">
+        <div class="d-inline-flex mt-2 col-12">
+          <div class="form-group col-8">
+            <label for="formExerciseTitle" class="form-label">Название</label>
+            <input type="text"
+                   class="form-control"
+                   id="formExerciseTitle"
+                   [(ngModel)]="exerciseData.exerciseTitle"
+                   [ngModelOptions]="{standalone: true}"
+                   #title="ngModel"
+                   maxlength="100"
+                   required>
+            <div *ngIf="!title.valid && submitButtonClick"
+                 class="alert alert-danger mt-2">
+              Поле обязательно для заполнения
+            </div>
+          </div>
+          <div class="form-group col-4 ms-2 pe-2">
+            <label for="formFile" class="form-label">Изображение</label>
+            <input type="file"
+                   class="form-control"
+                   accept=".jpeg,.png,.jpg"
+                   id="formFile" (change)="onChange($event)">
+          </div>
+        </div>
+        <div class="form-group mt-2">
+          <label for="formExerciseDescription" class="form-label">Описание</label>
+          <textarea type="text"
+                    class="form-control"
+                    id="formExerciseDescription"
+                    [(ngModel)]="exerciseData.exerciseDescription"
+                    [ngModelOptions]="{standalone: true}"
+                    maxlength="2000"></textarea>
+        </div>
+        <div class="modal-footer mt-2">
+          <div class="d-inline-flex mt-3 col-12 text-light">
+            <div class="col-6 me-2">
+              <button type="submit" class="w-100 btn btn-outline-success text-light me-2" (click)="saveData()">Добавить</button>
+            </div>
+            <div class="col-6">
+              <button type="button" class="w-100 btn btn-outline-danger text-light" (click)="modal.dismiss()">Отменить</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
+
+<app-error-modal #errorModal></app-error-modal>
