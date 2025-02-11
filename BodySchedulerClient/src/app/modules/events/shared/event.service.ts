@@ -109,7 +109,7 @@ export class EventService {
 
   //get titles of exercise
   getExerciseTitles() {
-    return this.httpClient.get<any[]>(environment.apiUrl + `/ExerciseTitles/GetExerciseTitles`)
+    return this.httpClient.get<any[]>(environment.apiUrl + `/ExerciseTitles/GetExerciseTitles/${this.userData.userId}`)
     .pipe(
         result => {
           return result;

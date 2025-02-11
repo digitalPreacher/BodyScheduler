@@ -90,6 +90,8 @@ builder.Services.AddScoped<IAdminUserService, AdminUserService>();
 builder.Services.AddScoped<ITrainingResultRepository, TrainingResultRepository>();
 builder.Services.AddScoped<ITrainingResultService, TrainingResultService>();
 builder.Services.AddScoped<IEmailSenderService, EmailSenderService>();
+builder.Services.AddScoped<ICustomExercisesRepository, CustomExercisesRepository>();
+builder.Services.AddScoped<ICustomExercisesService, CustomExercisesService>();
 
 var app = builder.Build();
 

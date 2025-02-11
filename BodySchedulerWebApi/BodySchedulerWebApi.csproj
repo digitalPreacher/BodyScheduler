@@ -30,7 +30,7 @@
   <ItemGroup>
     <Folder Include="Logs\" />
     <Folder Include="Migrations\" />
-    <Folder Include="Utilities\" />
+    <Folder Include="ExerciseImages\" />
   </ItemGroup>
 
 </Project>
