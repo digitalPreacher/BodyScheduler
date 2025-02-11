@@ -28,33 +28,40 @@ namespace BodySchedulerWebApi.Repository
                 throw new EntityNotFoundException($"Пользователь с id: {userId} не найден");
             }
 
+            IQueryable<CustomExercise> exerciseTitlesQuery = _db.CustomExerciseSet;
+
             var isAdmin = await _userManager.IsInRoleAsync(user, UserRolesConstants.AdminRole);
-
-            if(isAdmin)
+            //setting query condition for user
+            if (!isAdmin)
             {
-                var exerciseTitlesList = await _db.CustomExerciseSet
-                  .Select(x => new GetCustomExerciseTitleDTO
-                  {
-                      Image = !string.IsNullOrEmpty(x.Path) ? File.ReadAllBytes(x.Path) : null,
-                      Title = x.ExerciseTitle
-                  })
-                  .ToListAsync();
+                exerciseTitlesQuery = exerciseTitlesQuery.Where(x => x.User.Id == user.Id || x.Type == CustomExerciseConstants.GeneralExerciseType);
+            }
 
-                return exerciseTitlesList;
-            }
-            else
+            var exerciseTitles = await exerciseTitlesQuery.Select(x => new
             {
-                var exerciseTitlesList = await _db.CustomExerciseSet
-                    .Where(x => x.User.Id == user.Id || x.Type == CustomExerciseConstants.GeneralExerciseType)
-                    .Select(x => new GetCustomExerciseTitleDTO
-                    {
-                        Image = !string.IsNullOrEmpty(x.Path) ? File.ReadAllBytes(x.Path) : null,
-                        Title = x.ExerciseTitle
-                    })
-                    .ToListAsync(); 
-                
-                return exerciseTitlesList;
+                x.ExerciseTitle,
+                x.Path
+            })
+            .ToListAsync();
+
+            //setting and return dto
+            var returnedExerciseTitles = new List<GetCustomExerciseTitleDTO>();
+            foreach(var exerciseTitle in exerciseTitles)
+            {
+                byte[]? imageByte = null;
+                if (exerciseTitle.Path != null)
+                {
+                    imageByte = await File.ReadAllBytesAsync(exerciseTitle.Path);
+                }
+
+                returnedExerciseTitles.Add(new GetCustomExerciseTitleDTO
+                {
+                    Title = exerciseTitle.ExerciseTitle,
+                    Image = imageByte
+                });
             }
+
+            return returnedExerciseTitles;
         }
     }
 }

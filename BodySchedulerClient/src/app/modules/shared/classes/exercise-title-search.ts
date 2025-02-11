@@ -19,19 +19,15 @@ export abstract class ExerciseTitleSearch extends LoadExerciseTitleData {
   //Enter value to input field for title of exercise
   enterKeyUp(enterValue: string, index: number) {
     this.filterListValue[index] = this.listValue.filter((value) => {
-
      return value.title.toLowerCase().includes(enterValue.toLowerCase());
     }).map(item => ({
       title: item.title,
       image: 'data:image/jpg;base64,' + item.image
     }))
-
-    console.log(this.filterListValue[index])
   }
 
   //focused user input field for title of exercise 
   inputFocused(index: number) {
-
     this.isFocusedExerciseFieldList[index] = true;
   }
 

@@ -88,7 +88,6 @@ namespace BodySchedulerWebApi.Data
         public DbSet<Exercise> Exercises { get; set; }
         public DbSet<TrainingProgram> TrainingProgramSet { get; set; }
         public DbSet<WeeksTraining> WeeksTrainingSet { get; set; }  
-        public DbSet<ExerciseTitle> ExerciseTitleSet { get; set; }
         public DbSet<BodyMeasure> BodyMeasureSet { get; set; }
         public DbSet<UserErrorReport> UserErrorReportSet { get; set; }
         public DbSet<TrainingResult> TraininResultSet {  get; set; }

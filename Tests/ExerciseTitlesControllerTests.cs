@@ -1,4 +1,5 @@
 ﻿using BodySchedulerWebApi.Controllers;
+using BodySchedulerWebApi.DataTransferObjects.CustomExercisesDTOs;
 using BodySchedulerWebApi.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -23,23 +24,27 @@ namespace Tests
         [Fact]
         public async Task GetExerciseTitlesOkResult()
         {
+            var userId = "1";
             //arrange
-            var exerciseTitlesList = new List<string>
+            var exerciseTitlesList = new List<GetCustomExerciseTitleDTO>
              {
-                 "test",
-                 "test2"
+                 new GetCustomExerciseTitleDTO
+                 {
+                     Title = "test",
+                     Image = null
+                 }
              };
 
-            _service.Setup(x => x.GetExerciseTitlesAsync()).ReturnsAsync(exerciseTitlesList);
+            _service.Setup(x => x.GetExerciseTitlesAsync(It.IsAny<string>())).ReturnsAsync(exerciseTitlesList);
 
             //act
-            var result = await _controller.GetExerciseTitlesAsync();
+            var result = await _controller.GetExerciseTitlesAsync(userId);
 
             //Assert
             Assert.IsType<OkObjectResult>(result);
             var objectResult = result as ObjectResult;
             Assert.NotNull(objectResult);
-            var actualExerciseTitles = objectResult.Value as List<string>;
+            var actualExerciseTitles = objectResult.Value as List<GetCustomExerciseTitleDTO>;
             Assert.NotNull(actualExerciseTitles);
             Assert.Equal(exerciseTitlesList, actualExerciseTitles);
         }

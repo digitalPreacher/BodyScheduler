@@ -1,10 +1,12 @@
 ﻿using BodySchedulerWebApi.DataTransferObjects.CustomExercisesDTOs;
 using BodySchedulerWebApi.Exceptions;
 using BodySchedulerWebApi.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BodySchedulerWebApi.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class CustomExercisesController : ControllerBase
@@ -35,7 +37,7 @@ namespace BodySchedulerWebApi.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return BadRequest(ex.Message);
+                return StatusCode(500, new { Message = "Произошла неизвестная ошибка, повторите попытку чуть позже" });
             }
         }
 
@@ -57,7 +59,7 @@ namespace BodySchedulerWebApi.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return BadRequest(ex.Message);
+                return StatusCode(500, new { Message = "Произошла неизвестная ошибка, повторите попытку чуть позже" });
             }
         }
 
@@ -90,7 +92,7 @@ namespace BodySchedulerWebApi.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return BadRequest(ex.Message);
+                return StatusCode(500, new { Message = "Произошла неизвестная ошибка, повторите попытку чуть позже" });
             }
         }
 
@@ -112,7 +114,7 @@ namespace BodySchedulerWebApi.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return BadRequest(ex.Message);
+                return StatusCode(500, new { Message = "Произошла неизвестная ошибка, повторите попытку чуть позже" });
             }
         }
 
@@ -133,7 +135,7 @@ namespace BodySchedulerWebApi.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return BadRequest(ex.Message);
+                return StatusCode(500, new { Message = "Произошла неизвестная ошибка, повторите попытку чуть позже" });
             }
         }
     }

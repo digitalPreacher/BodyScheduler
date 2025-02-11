@@ -1,4 +1,4 @@
-import { Component, Input, TemplateRef, ViewChild, inject } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
 import { ChangeEventStatus } from '../../shared/change-event-status.model';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -7,14 +7,15 @@ import { EventService } from '../../shared/event.service';
 import { LoadingService } from '../../../shared/service/loading.service';
 import { DatePipe } from '@angular/common';
 import { AuthorizationService } from '../../../authorization/shared/authorization.service';
+import { ExerciseTitleSearch } from '../../../shared/classes/exercise-title-search';
 
 @Component({
   selector: 'app-copy',
   templateUrl: './copy.component.html',
-  styles: ``,
+  styleUrl: './copy.component.css',
   providers: [DatePipe]
 })
-export class CopyComponent {
+export class CopyComponent extends ExerciseTitleSearch implements OnInit {
   isLoadingDataSubscribtion: any;
   userDataSubscribtion: any;
   titleDataSubscribtion: any;
@@ -22,8 +23,6 @@ export class CopyComponent {
   userId: any;
   title: string = '';
   copyForm: FormGroup;
-  listValue: string[] = [];
-  filterListValue: any[] = [];
   isLoading!: boolean;
 
 
@@ -33,7 +32,10 @@ export class CopyComponent {
   @ViewChild('errorModal') errorModal!: ErrorModalComponent;
 
   constructor(private eventService: EventService, private formBuilder: FormBuilder,
-    private authService: AuthorizationService, private datePipe: DatePipe, private loadingService: LoadingService) {
+    private authService: AuthorizationService, private datePipe: DatePipe, private loadingService: LoadingService)
+  {
+    super(eventService);
+
     this.userDataSubscribtion = this.authService.userData$.asObservable().subscribe(data => {
       this.userId = data.userId;
     });
@@ -47,12 +49,6 @@ export class CopyComponent {
       startTime: ['', Validators.required],
       status: ['', Validators.required],
       exercises: this.formBuilder.array([])
-    });
-  }
-
-  ngOnInit() {
-    this.titleDataSubscribtion = this.eventService.getExerciseTitles().subscribe(data => {
-      this.listValue = data;
     });
   }
 
@@ -77,12 +73,6 @@ export class CopyComponent {
         }
       });
     }
-  }
-
-  //Enter value to input field for title of exercise
-  enterKeyUp(enterValue: string) {
-    this.filterListValue = this.listValue.filter(value =>
-      value.toLowerCase().includes(enterValue.toLowerCase()));
   }
 
   //getting data of event and pushing it to form
@@ -161,7 +151,6 @@ export class CopyComponent {
   ngOnDestroy() {
     this.userDataSubscribtion.unsubscribe();
     this.isLoadingDataSubscribtion.unsubscribe();
-    this.titleDataSubscribtion.unsubscribe();
   }
 
 }
