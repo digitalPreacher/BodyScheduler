@@ -20,12 +20,12 @@ namespace BodySchedulerWebApi.Controllers
 
         //get all titles for exercise fields to event and training program forms
         [HttpGet]
-        [Route("GetExerciseTitles")]
-        public async Task<IActionResult> GetExerciseTitlesAsync()
+        [Route("GetExerciseTitles/{userId}")]
+        public async Task<IActionResult> GetExerciseTitlesAsync([FromRoute]string userId)
         {
             try
             {
-                var exerciseTitlesList = await _service.GetExerciseTitlesAsync();
+                var exerciseTitlesList = await _service.GetExerciseTitlesAsync(userId);
                 return Ok(exerciseTitlesList);
             }
             catch (Exception ex)

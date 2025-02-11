@@ -15,7 +15,8 @@
                  id="title"
                  required
                  formControlName="title"
-                 name="titleField" />
+                 name="titleField"
+                 maxlength="100"/>
           <div *ngIf="copyForm.get('title')?.hasError('required') && submittedClick"
                class="alert alert-danger mt-2">
             Поле обязательно для заполнения

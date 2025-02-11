@@ -15,7 +15,8 @@
                  id="title"
                  required
                  formControlName="title"
-                 name="titleField"/>
+                 name="titleField"
+                 maxlength="100"/>
           <div *ngIf="createForm.get('title')?.hasError('required') && submittedClick"
                class="alert alert-danger mt-2">
             Поле обязательно для заполнения
@@ -75,18 +76,15 @@
                            (keyup)="enterKeyUp(insertTitleBar.value, i)"
                            formControlName="title"
                            name="title-exercise-field"
-                           placeholder="Становая тяга" />
+                           placeholder="Становая тяга"
+                           autocomplete="off"/>
                     <div class="exercise-drop-down rounded mt-1" *ngIf="isFocusedExerciseFieldList[i]">
                       <div *ngFor="let value of filterListValue[i]">
-                        <div class="col-12 border d-inline-flex" (click)="getExercise.at(i).get('title')?.setValue(value);" style="cursor: pointer;">
-                          <div class="col-2 exercise-dropdown-icon">
-                            <img src="" width="50" height="50" />
-                          </div>
-                          <div class="col-10 exercise-dropdown-title">
-                            <span class="text-dark">
-                              {{ value }}
-                            </span>
-                          </div>
+                        <div class="col-12 border d-inline-flex" (click)="getExercise.at(i).get('title')?.setValue(value);"  style="cursor: pointer; align-items: center;">
+                          <img [src]="value.image" width="80" height="80" />
+                          <span class="col-8 text-dark exercise-dropdown-item-title" style="white-space: pre-line; word-wrap: break-word;">
+                            {{ value.title }}
+                          </span>
                         </div>
                       </div>
                     </div>

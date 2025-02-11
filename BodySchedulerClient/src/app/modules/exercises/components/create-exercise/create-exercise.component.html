@@ -19,7 +19,7 @@
                    [(ngModel)]="exerciseData.exerciseTitle"
                    [ngModelOptions]="{standalone: true}"
                    #title="ngModel"
-                   maxlength="1000"
+                   maxlength="100"
                    required>
             <div *ngIf="!title.valid && submitButtonClick"
                  class="alert alert-danger mt-2">

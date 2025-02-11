@@ -14,6 +14,7 @@ import { startWith } from 'rxjs';
 import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component';
 import { LoadingService } from '../../../shared/service/loading.service';
 import { ExerciseTitleSearch } from '../../../shared/classes/exercise-title-search';
+import { CustomExerciseTitleData } from '../../../shared/models/custom-exercise-title-data.model';
 
 @Component({
   selector: 'app-create',
@@ -28,8 +29,9 @@ export class CreateComponent extends ExerciseTitleSearch implements OnInit, OnDe
   modalService = inject(NgbModal);
   userId: string = '';
   isLoading!: boolean;
+  customExerciseTitleData!: CustomExerciseTitleData[];
 
-  override listValue: string[] = [];
+/*  override listValue: string[] = []*/;
   submittedClick = false;
 
   @ViewChild('errorModal') errorModal!: ErrorModalComponent;
@@ -130,6 +132,7 @@ export class CreateComponent extends ExerciseTitleSearch implements OnInit, OnDe
       size: 'lg',
       ariaLabelledBy: 'modal-basic-title'
     };
+
     this.modalService.open(content, options);
   }
 
