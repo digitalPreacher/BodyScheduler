@@ -37,9 +37,9 @@
         </div>
       </div>
     </div>
-    <div ngbScrollSpy class="bg-light p-3 bg-dark text-light col-4" style="max-height: 700px">
+    <div ngbScrollSpy class="bg-light p-3 bg-dark text-light col-4" style="max-height: 700px" >
       <ul style="list-style: none" *ngFor="let exercise of exercises">
-        <li style="cursor:pointer" (click)="getExercise(exercise.exerciseId)">
+        <li class="custom-exercise-list-item"  style="cursor:pointer" (click)="getExercise(exercise.exerciseId)">
           {{exercise.exerciseTitle}}
         </li>
       </ul>
