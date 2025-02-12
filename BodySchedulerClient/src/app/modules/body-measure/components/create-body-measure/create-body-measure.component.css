@@ -1,0 +1,81 @@
+
+.body-measure-form {
+  position: relative;
+  background-image: url('../../../../../assets/backgrounds/BodyMeasureBackground.png');
+  background-size: 1300px;
+  height: 1100px;
+}
+.body-measure-form-item-0 {
+  position: absolute;
+  top: 440px;
+  right: 280px;
+  color: black;
+  width: 100px;
+}
+
+.body-measure-form-item-1 {
+  position: absolute;
+  top: 440px;
+  left: 150px;
+  color: black;
+  width: 100px;
+}
+
+.body-measure-form-item-2 {
+  position: absolute;
+  top: 270px;
+  left: 200px;
+  color: black;
+  width: 100px;
+}
+
+
+.body-measure-form-item-3 {
+  position: absolute;
+  top: 490px;
+  left: 300px;
+  color: black;
+  width: 100px;
+}
+
+.body-measure-form-item-4 {
+  position: absolute;
+  top: 700px;
+  left: 250px;
+  color: black;
+  width: 100px;
+}
+
+.body-measure-form-item-5 {
+  position: absolute;
+  top: 950px;
+  right: 300px;
+  color: black;
+  width: 100px;
+}
+
+.body-measure-form-item-6 {
+  position: absolute;
+  top: 200px;
+  right: 400px;
+  color: black;
+  width: 100px;
+}
+
+.body-measure-form-item-7 {
+  position: absolute;
+  top: 480px;
+  right: 430px;
+  color: black;
+  width: 100px;
+}
+
+.body-measure-form-item-8 {
+  position: absolute;
+  top: 590px;
+  left: 350px;
+  color: black;
+  width: 100px;
+}
+
+

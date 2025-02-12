@@ -10,7 +10,7 @@ import { LoadingService } from '../../../shared/service/loading.service';
 @Component({
   selector: 'app-create-body-measure',
   templateUrl: './create-body-measure.component.html',
-  styles: ``
+  styleUrl: './create-body-measure.component.css'
 })
 export class CreateBodyMeasureComponent implements OnInit, OnDestroy {
   isLoadingDataSubscribtion: any;
@@ -59,15 +59,7 @@ export class CreateBodyMeasureComponent implements OnInit, OnDestroy {
         musclesSize: [0]
       }),
       this.formBuilder.group({
-        muscleName: ['Лодыжка'],
-        musclesSize: [0]
-      }),
-      this.formBuilder.group({
         muscleName: ['Шея'],
-        musclesSize: [0]
-      }),
-      this.formBuilder.group({
-        muscleName: ['Плечевой пояс'],
         musclesSize: [0]
       }),
       this.formBuilder.group({
@@ -76,10 +68,6 @@ export class CreateBodyMeasureComponent implements OnInit, OnDestroy {
       }),
       this.formBuilder.group({
         muscleName: ['Таз'],
-        musclesSize: [0]
-      }),
-      this.formBuilder.group({
-        muscleName: ['Вес'],
         musclesSize: [0]
       })])
     });
