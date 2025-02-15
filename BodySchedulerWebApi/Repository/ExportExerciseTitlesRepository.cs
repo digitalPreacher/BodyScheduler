@@ -2,7 +2,7 @@
 using BodySchedulerWebApi.DataTransferObjects.CustomExercisesDTOs;
 using BodySchedulerWebApi.Exceptions;
 using BodySchedulerWebApi.Models;
-using BodySchedulerWebApi.Utilities;
+using BodySchedulerWebApi.Utilities.Constants;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

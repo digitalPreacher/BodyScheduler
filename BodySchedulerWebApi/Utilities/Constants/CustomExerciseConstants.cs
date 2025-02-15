@@ -1,4 +1,4 @@
-﻿namespace BodySchedulerWebApi.Utilities
+﻿namespace BodySchedulerWebApi.Utilities.Constants
 {
     public static class CustomExerciseConstants
     {

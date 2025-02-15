@@ -1,4 +1,5 @@
 ﻿using BodySchedulerWebApi.Models;
+using BodySchedulerWebApi.Utilities.Constants;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -64,24 +65,43 @@ namespace BodySchedulerWebApi.Data
                 .HasDefaultValue("inProgress");
 
             builder.Entity<BodyMeasure>()
-            .Property(x => x.CreateAt)
-            .HasColumnType("timestamp with time zone")
-            .HasDefaultValueSql("now()");
+                .Property(x => x.CreateAt)
+                .HasColumnType("timestamp with time zone")
+                .HasDefaultValueSql("now()");
 
             builder.Entity<TrainingResult>()
-            .Property(x => x.CreateAt)
-            .HasColumnType("timestamp with time zone")
-            .HasDefaultValueSql("now()");
+                .Property(x => x.CreateAt)
+                .HasColumnType("timestamp with time zone")
+                .HasDefaultValueSql("now()");
 
             builder.Entity<UserErrorReport>()
-            .Property(x => x.CreateAt)
-            .HasColumnType("timestamp without time zone")
-            .HasDefaultValueSql("now()");
+                .Property(x => x.CreateAt)
+                .HasColumnType("timestamp without time zone")
+                .HasDefaultValueSql("now()");
 
             builder.Entity<CustomExercise>()
-            .Property(x => x.CreateAt)
-            .HasColumnType("timestamp without time zone")
-            .HasDefaultValueSql("now()");
+                .Property(x => x.CreateAt)
+                .HasColumnType("timestamp without time zone")
+                .HasDefaultValueSql("now()");
+
+            builder.Entity<AchievementType>().HasData(
+                new AchievementType { Id = 1, Name = AchievementTypeConstants.Beginner },
+                new AchievementType { Id = 2, Name = AchievementTypeConstants.Young },
+                new AchievementType { Id = 3, Name = AchievementTypeConstants.Сontinuing },
+                new AchievementType { Id = 4, Name = AchievementTypeConstants.Athlete },
+                new AchievementType { Id = 5, Name = AchievementTypeConstants.Universe },
+                new AchievementType { Id = 6, Name = AchievementTypeConstants.Disciplined },
+                new AchievementType { Id = 7, Name = AchievementTypeConstants.Started });
+
+            builder.Entity<Achievement>()
+                .Property(x => x.CreateAt)
+                .HasColumnType("timestamp without time zone")
+                .HasDefaultValueSql("now()");
+
+            builder.Entity<Achievement>()
+             .Property(x => x.ModTime)
+             .HasColumnType("timestamp without time zone")
+             .HasDefaultValueSql("now()");
         }
 
         public DbSet<Event> Events { get; set; }
@@ -92,5 +112,7 @@ namespace BodySchedulerWebApi.Data
         public DbSet<UserErrorReport> UserErrorReportSet { get; set; }
         public DbSet<TrainingResult> TraininResultSet {  get; set; }
         public DbSet<CustomExercise> CustomExerciseSet { get; set; }
+        public DbSet<AchievementType> AchievementTypeSet { get; set; }
+        public DbSet<Achievement> AchievementSet { get; set; }
     }
 }
