@@ -10,7 +10,7 @@ import { Title } from '@angular/platform-browser';
 import { LoadingService } from '../../../shared/service/loading.service';
 import { Exercise } from '../../../events/shared/interfaces/exercise.interface';
 import { Event} from '../../../events/shared/interfaces/event.interface';
-import { ExerciseTitleSearch } from '../../../shared/classes/exercise-title-search';
+import { EventBase } from '../../../shared/classes/event-base';
 
 @Component({
   selector: 'app-edit-training-program',
@@ -18,7 +18,7 @@ import { ExerciseTitleSearch } from '../../../shared/classes/exercise-title-sear
   styles: ``,
   providers: [DatePipe]
 })
-export class EditTrainingProgramComponent extends ExerciseTitleSearch {
+export class EditTrainingProgramComponent extends EventBase {
   isLoading: any;
   isLoadingDataSubscribtion: any;
   userDataSubscribtion: any;
@@ -236,6 +236,8 @@ export class EditTrainingProgramComponent extends ExerciseTitleSearch {
 
   //opening modal window which displays data of training days 
   openDays(content: TemplateRef<any>) {
+    this.getExerciseTitles();
+
     const options: NgbModalOptions = {
       size: 'lg',
       ariaLabelledBy: 'modal-basic-title'
@@ -243,10 +245,10 @@ export class EditTrainingProgramComponent extends ExerciseTitleSearch {
     this.modalService.open(content, options);
   }
 
-  ngOnDestroy() {
+  override ngOnDestroy() {
+    super.ngOnDestroy()
     this.isLoadingDataSubscribtion.unsubscribe();
     this.userDataSubscribtion.unsubscribe();
-    this.exerciseTitleDataSubscribe.unsubscribe();
   }
 
 }
