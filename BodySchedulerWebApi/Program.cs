@@ -1,4 +1,5 @@
 using BodySchedulerWebApi.Data;
+using BodySchedulerWebApi.HubConfig;
 using BodySchedulerWebApi.Models;
 using BodySchedulerWebApi.Repository;
 using BodySchedulerWebApi.Service;
@@ -14,9 +15,9 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSignalR();
 
 Env.Load("./Environments.env");
 
@@ -46,7 +47,8 @@ builder.Services.AddCors(options =>
     options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin()
     .WithOrigins("http://localhost:4200", "http://127.0.0.1:4200")
     .AllowAnyMethod()
-    .AllowAnyHeader());
+    .AllowAnyHeader()
+    .AllowCredentials());
 });
 
 builder.Services.AddAuthentication(x =>
@@ -71,6 +73,7 @@ builder.Services.AddAuthentication(x =>
           ClockSkew = TimeSpan.Zero
       };
   });
+
 
 
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
@@ -126,7 +129,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.MapHub<ChatHub>("/chat");
 app.MapFallbackToFile("/index.html");
 
 app.Run();
