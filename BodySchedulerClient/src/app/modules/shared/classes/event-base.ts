@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, OnDestroy } from "@angular/core";
 import { EventService } from "../../events/shared/event.service";
 import { LoadExerciseTitleData } from "./load-exercise-title-data";
 import { ExerciseTitleDataProvider } from "../interfaces/exercise-title-data-provider.interface";
@@ -7,14 +7,13 @@ import { CustomExerciseTitleData } from "../models/custom-exercise-title-data.mo
 @Injectable({
   providedIn: 'root'
 })
-export abstract class ExerciseTitleSearch extends LoadExerciseTitleData {
+export abstract class EventBase {
+  exerciseTitleDataSubscribe: any;
+  listValue!: any[];
   filterListValue: any[] = [];
   isFocusedExerciseFieldList: boolean[] = [];
 
-  constructor(protected override exerciseTitleDataProvider: ExerciseTitleDataProvider)
-  {
-    super(exerciseTitleDataProvider);
-  }
+  constructor(private readonly exerciseTitleDataProvider: ExerciseTitleDataProvider){}
 
   //Enter value to input field for title of exercise
   enterKeyUp(enterValue: string, index: number) {
@@ -39,4 +38,16 @@ export abstract class ExerciseTitleSearch extends LoadExerciseTitleData {
     }, 100)
   }
 
+  //get exercise title for exercise input field
+  getExerciseTitles() {
+     this.exerciseTitleDataSubscribe = this.exerciseTitleDataProvider.getExerciseTitles().subscribe(data => {
+        this.listValue = data;
+     });
+  }
+
+  ngOnDestroy() {
+    if (this.exerciseTitleDataSubscribe) {
+      this.exerciseTitleDataSubscribe.unsubscribe();
+    }
+  }
 }

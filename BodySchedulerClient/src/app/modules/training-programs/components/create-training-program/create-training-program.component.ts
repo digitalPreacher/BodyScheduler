@@ -7,7 +7,7 @@ import { TrainingProgramService } from '../../shared/training-program.service';
 import { EventService } from '../../../events/shared/event.service';
 import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component';
 import { LoadingService } from '../../../shared/service/loading.service';
-import { ExerciseTitleSearch } from '../../../shared/classes/exercise-title-search';
+import { EventBase } from '../../../shared/classes/event-base';
 
 
 @Component({
@@ -16,7 +16,7 @@ import { ExerciseTitleSearch } from '../../../shared/classes/exercise-title-sear
   styles: ``,
   providers: [DatePipe]
 })
-export class CreateTrainingProgramComponent extends ExerciseTitleSearch implements OnDestroy {
+export class CreateTrainingProgramComponent extends EventBase implements OnDestroy {
   modalService = inject(NgbModal);
   userDataSubscribtion: any;
   isLoading: any;
@@ -250,6 +250,8 @@ export class CreateTrainingProgramComponent extends ExerciseTitleSearch implemen
 
   //opening modal window adding of training days 
   openDays(content: TemplateRef<any>) {
+    this.getExerciseTitles();
+
     const options: NgbModalOptions = {
       size: 'lg',
       ariaLabelledBy: 'modal-basic-title'
@@ -257,7 +259,8 @@ export class CreateTrainingProgramComponent extends ExerciseTitleSearch implemen
     this.modalService.open(content, options);
   }
 
-  ngOnDestroy() {
+  override ngOnDestroy() {
+    super.ngOnDestroy()
     this.isLoadingDataSubscribtion.unsubscribe();
     this.userDataSubscribtion.unsubscribe();
   }

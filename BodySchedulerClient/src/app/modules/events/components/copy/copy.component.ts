@@ -7,7 +7,7 @@ import { EventService } from '../../shared/event.service';
 import { LoadingService } from '../../../shared/service/loading.service';
 import { DatePipe } from '@angular/common';
 import { AuthorizationService } from '../../../authorization/shared/authorization.service';
-import { ExerciseTitleSearch } from '../../../shared/classes/exercise-title-search';
+import { EventBase } from '../../../shared/classes/event-base';
 
 @Component({
   selector: 'app-copy',
@@ -15,7 +15,7 @@ import { ExerciseTitleSearch } from '../../../shared/classes/exercise-title-sear
   styleUrl: './copy.component.css',
   providers: [DatePipe]
 })
-export class CopyComponent extends ExerciseTitleSearch implements OnInit {
+export class CopyComponent extends EventBase {
   isLoadingDataSubscribtion: any;
   userDataSubscribtion: any;
   titleDataSubscribtion: any;
@@ -140,15 +140,19 @@ export class CopyComponent extends ExerciseTitleSearch implements OnInit {
 
   //open modal form
   open(content: TemplateRef<any>) {
+    this.getEvent();
+    this.getExerciseTitles();
+
     const options: NgbModalOptions = {
       size: 'lg',
       ariaLabelledBy: 'modal-basic-title'
     };
-    this.getEvent();
+
     this.modalService.open(content, options);
   }
 
-  ngOnDestroy() {
+  override ngOnDestroy() {
+    super.ngOnDestroy();
     this.userDataSubscribtion.unsubscribe();
     this.isLoadingDataSubscribtion.unsubscribe();
   }

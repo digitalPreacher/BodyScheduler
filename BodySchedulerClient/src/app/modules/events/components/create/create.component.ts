@@ -13,7 +13,7 @@ import { ex } from '@fullcalendar/core/internal-common';
 import { startWith } from 'rxjs';
 import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component';
 import { LoadingService } from '../../../shared/service/loading.service';
-import { ExerciseTitleSearch } from '../../../shared/classes/exercise-title-search';
+import { EventBase } from '../../../shared/classes/event-base';
 import { CustomExerciseTitleData } from '../../../shared/models/custom-exercise-title-data.model';
 
 @Component({
@@ -22,7 +22,7 @@ import { CustomExerciseTitleData } from '../../../shared/models/custom-exercise-
   styleUrl: './create.component.css',
   providers: [DatePipe]
 })
-export class CreateComponent extends ExerciseTitleSearch implements OnInit, OnDestroy {
+export class CreateComponent extends EventBase implements OnDestroy {
   isLoadingDataSubscribtion: any;
   userDataSubscribtion: any;
   createForm: FormGroup;
@@ -128,6 +128,8 @@ export class CreateComponent extends ExerciseTitleSearch implements OnInit, OnDe
 
   //open modal form
   open(content: TemplateRef<any>) {
+    this.getExerciseTitles();
+
     const options: NgbModalOptions = {
       size: 'lg',
       ariaLabelledBy: 'modal-basic-title'
@@ -136,9 +138,9 @@ export class CreateComponent extends ExerciseTitleSearch implements OnInit, OnDe
     this.modalService.open(content, options);
   }
 
-  ngOnDestroy() {
+  override ngOnDestroy() {
+    super.ngOnDestroy()
     this.userDataSubscribtion.unsubscribe();
     this.isLoadingDataSubscribtion.unsubscribe();
-    this.exerciseTitleDataSubscribe.unsubscribe();
   }
 }

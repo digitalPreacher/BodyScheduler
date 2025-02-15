@@ -7,7 +7,7 @@ import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { Event } from '../../shared/event.model';
 import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component';
 import { LoadingService } from '../../../shared/service/loading.service';
-import { ExerciseTitleSearch } from '../../../shared/classes/exercise-title-search';
+import { EventBase } from '../../../shared/classes/event-base';
 
 @Component({
   selector: 'app-edit',
@@ -15,7 +15,7 @@ import { ExerciseTitleSearch } from '../../../shared/classes/exercise-title-sear
   styles: ``,
   providers: [DatePipe]
 })
-export class EditComponent extends ExerciseTitleSearch implements OnInit, OnDestroy {
+export class EditComponent extends EventBase implements OnDestroy {
   isLoadingDataSubscribtion: any;
   userDataSubscribtion: any;
   modalService = inject(NgbModal);
@@ -142,17 +142,20 @@ export class EditComponent extends ExerciseTitleSearch implements OnInit, OnDest
 
   //open modal form
   open(content: TemplateRef<any>) {
+    this.getEvent();
+    this.getExerciseTitles();
+
     const options: NgbModalOptions = {
       size: 'lg',
       ariaLabelledBy: 'modal-basic-title'
     };
-    this.getEvent();
+
     this.modalService.open(content, options);
   }
 
-  ngOnDestroy() {
+  override ngOnDestroy() {
+    super.ngOnDestroy()
     this.userDataSubscribtion.unsubscribe();
     this.isLoadingDataSubscribtion.unsubscribe();
-    this.exerciseTitleDataSubscribe.unsubscribe();
   }
 }
