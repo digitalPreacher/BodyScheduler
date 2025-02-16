@@ -40,7 +40,7 @@ namespace BodySchedulerWebApi.Repository
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(user, "User");
-                await _achievementService.AddAchivementsAsync(user);   
+                await _achievementService.AddAchievementsAsync(user);   
             }
             
             return result;

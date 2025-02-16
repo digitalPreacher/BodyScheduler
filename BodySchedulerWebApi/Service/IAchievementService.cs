@@ -4,6 +4,7 @@ namespace BodySchedulerWebApi.Service
 {
     public interface IAchievementService
     {
-        public Task AddAchivementsAsync(ApplicationUser user);
+        public Task AddAchievementsAsync(ApplicationUser user);
+        public Task UpdateAchievementsAsync(string userId, string achievemetName);
     }
 }

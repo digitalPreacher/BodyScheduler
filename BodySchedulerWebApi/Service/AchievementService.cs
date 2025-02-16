@@ -12,9 +12,14 @@ namespace BodySchedulerWebApi.Service
             _repository = repository;
         }
 
-        public async Task AddAchivementsAsync(ApplicationUser user)
+        public async Task AddAchievementsAsync(ApplicationUser user)
         {
-            await _repository.AddAchivementsAsync(user);
+            await _repository.AddAchievementsAsync(user);
+        }
+
+        public async Task UpdateAchievementsAsync(string userId, string achievemetName)
+        {
+            await _repository.UpdateAchievementsAsync(userId, achievemetName);
         }
     }
 }
