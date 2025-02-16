@@ -1,4 +1,5 @@
-﻿using BodySchedulerWebApi.Models;
+﻿using BodySchedulerWebApi.DataTransferObjects.AchievenetsDTOs;
+using BodySchedulerWebApi.Models;
 using BodySchedulerWebApi.Repository;
 
 namespace BodySchedulerWebApi.Service
@@ -20,6 +21,11 @@ namespace BodySchedulerWebApi.Service
         public async Task UpdateAchievementsAsync(string userId, string achievemetName)
         {
             await _repository.UpdateAchievementsAsync(userId, achievemetName);
+        }
+
+        public async Task<List<GetAchievementsDTO>> GetAchievementsAsync(string userId)
+        {
+            return await _repository.GetAchievementsAsync(userId);
         }
     }
 }

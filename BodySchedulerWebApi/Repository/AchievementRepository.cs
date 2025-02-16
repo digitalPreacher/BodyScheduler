@@ -1,10 +1,10 @@
 ﻿using BodySchedulerWebApi.Data;
+using BodySchedulerWebApi.DataTransferObjects.AchievenetsDTOs;
 using BodySchedulerWebApi.Exceptions;
 using BodySchedulerWebApi.Models;
 using BodySchedulerWebApi.Utilities.Constants;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 
 namespace BodySchedulerWebApi.Repository
 {
@@ -90,6 +90,30 @@ namespace BodySchedulerWebApi.Repository
             }
 
             await _db.SaveChangesAsync();
+        }
+
+        //return user achievement list
+        public async Task<List<GetAchievementsDTO>> GetAchievementsAsync(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                throw new EntityNotFoundException($"Пользователь с id:{userId} не найден");
+            }
+
+            IQueryable<Achievement> userAchievements =_db.AchievementSet.Where(x => x.User == user);
+
+            var returnedAchievements = await userAchievements.Select(x => new GetAchievementsDTO
+            {
+                Id = x.Id,
+                CurrentCountValue = x.CurrentCountValue,
+                IsCompleted = x.IsCompleted,
+                PurposeValue = x.PurposeValue,
+                Name = x.Type.Name
+            })
+            .ToListAsync();
+
+            return returnedAchievements;
         }
 
         enum AchievementValues
