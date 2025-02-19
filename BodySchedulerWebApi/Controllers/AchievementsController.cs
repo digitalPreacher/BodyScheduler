@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BodySchedulerWebApi.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class AchievementsController : ControllerBase
@@ -47,11 +47,6 @@ namespace BodySchedulerWebApi.Controllers
         [Route("UpdateAchievements")]
         public async Task<IActionResult> UpdateAchievementsAsync([FromBody]UpdateAchievementDTO updateAchievementDTO)
         {
-            if (updateAchievementDTO == null)
-            {
-                return BadRequest("Invalid data"); // Important: Check for null
-            }
-
             try
             {
                 await _achievementService.UpdateAchievementsAsync(updateAchievementDTO);
