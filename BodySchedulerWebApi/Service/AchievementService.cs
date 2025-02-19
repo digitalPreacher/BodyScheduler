@@ -18,9 +18,9 @@ namespace BodySchedulerWebApi.Service
             await _repository.AddAchievementsAsync(user);
         }
 
-        public async Task UpdateAchievementsAsync(string userId, string achievemetName)
+        public async Task UpdateAchievementsAsync(UpdateAchievementDTO updateAchievementDTO)
         {
-            await _repository.UpdateAchievementsAsync(userId, achievemetName);
+            await _repository.UpdateAchievementsAsync(updateAchievementDTO);
         }
 
         public async Task<List<GetAchievementsDTO>> GetAchievementsAsync(string userId)

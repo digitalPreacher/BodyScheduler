@@ -7,5 +7,6 @@
         public int CurrentCountValue { get; set; }
         public int PurposeValue { get; set; }
         public bool IsCompleted { get; set; }
+        public string Description { get; set; }
     }
 }

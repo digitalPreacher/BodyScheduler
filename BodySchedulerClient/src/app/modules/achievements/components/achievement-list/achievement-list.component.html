@@ -1,0 +1,8 @@
+<app-loader *ngIf="isLoading">
+</app-loader>
+
+<ul *ngFor="let achievement of achievements">
+  <li style="color: white; list-style:none; font-size: 24px">{{ achievement.name }}  = {{ achievement.currentCountValue }} - {{ achievement.purposeValue }} - {{ achievement.description }}</li>
+</ul>
+
+<app-error-modal #errorModal></app-error-modal>

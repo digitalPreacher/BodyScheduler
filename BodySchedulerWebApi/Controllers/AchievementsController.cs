@@ -1,11 +1,12 @@
-﻿using BodySchedulerWebApi.Exceptions;
+﻿using BodySchedulerWebApi.DataTransferObjects.AchievenetsDTOs;
+using BodySchedulerWebApi.Exceptions;
 using BodySchedulerWebApi.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BodySchedulerWebApi.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class AchievementsController : ControllerBase
@@ -21,8 +22,8 @@ namespace BodySchedulerWebApi.Controllers
 
         //return user achievement list
         [HttpGet]
-        [Route("GetAchievements")]
-        public async Task<IActionResult> GetAchievementsAsync(string userId)
+        [Route("GetAchievements/{userId}")]
+        public async Task<IActionResult> GetAchievementsAsync([FromRoute]string userId)
         {
             try
             {
@@ -43,12 +44,17 @@ namespace BodySchedulerWebApi.Controllers
 
         //update user achievements
         [HttpPut]
-        [Route("UpdateAchievements/userId={userId}&achievemetName={achievemetName}")]
-        public async Task<IActionResult> UpdateAchievementsAsync([FromRoute]string userId, [FromRoute]string achievemetName)
+        [Route("UpdateAchievements")]
+        public async Task<IActionResult> UpdateAchievementsAsync([FromBody]UpdateAchievementDTO updateAchievementDTO)
         {
+            if (updateAchievementDTO == null)
+            {
+                return BadRequest("Invalid data"); // Important: Check for null
+            }
+
             try
             {
-                await _achievementService.UpdateAchievementsAsync(userId, achievemetName);
+                await _achievementService.UpdateAchievementsAsync(updateAchievementDTO);
                 return Ok();
             }
             catch(EntityNotFoundException ex)

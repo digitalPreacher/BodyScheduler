@@ -15,6 +15,7 @@ import { ErrorModalComponent } from '../../../shared/components/error-modal/erro
 import { LoadingService } from '../../../shared/service/loading.service';
 import { EventBase } from '../../../shared/classes/event-base';
 import { CustomExerciseTitleData } from '../../../shared/models/custom-exercise-title-data.model';
+import { UpdateAchievementService } from '../../../shared/service/update-achievement.service';
 
 @Component({
   selector: 'app-create',
@@ -33,6 +34,8 @@ export class CreateComponent extends EventBase implements OnDestroy {
 
 /*  override listValue: string[] = []*/;
   submittedClick = false;
+
+  updateAchievementService = inject(UpdateAchievementService);
 
   @ViewChild('errorModal') errorModal!: ErrorModalComponent;
 
@@ -70,6 +73,9 @@ export class CreateComponent extends EventBase implements OnDestroy {
           this.modalService.dismissAll();
           this.eventService.eventChangeData$.next(true);
           this.resetForm();
+
+          //update user achievement
+          this.updateAchievementService.updateAchievement(this.userId, [AchievementName.started]).subscribe();
         },
         error: err => {
           this.loadingService.hide();
@@ -143,4 +149,8 @@ export class CreateComponent extends EventBase implements OnDestroy {
     this.userDataSubscribtion.unsubscribe();
     this.isLoadingDataSubscribtion.unsubscribe();
   }
+
+}
+enum AchievementName {
+  started = "На старт!",
 }

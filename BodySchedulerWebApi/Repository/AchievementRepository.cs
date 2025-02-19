@@ -30,25 +30,22 @@ namespace BodySchedulerWebApi.Repository
 
                 switch (achievementTypes[i].Name)
                 {
-                    case AchievementTypeConstants.Beginner:
+                    case AchievementTypeNameConstants.Beginner:
                         achievement[i].PurposeValue = (int)AchievementValues.BeginnerPurposeValue;
                         break;
-                    case AchievementTypeConstants.Young:
+                    case AchievementTypeNameConstants.Young:
                         achievement[i].PurposeValue = (int)AchievementValues.YoungPurposeValue;
                         break;
-                    case AchievementTypeConstants.Сontinuing:
+                    case AchievementTypeNameConstants.Сontinuing:
                         achievement[i].PurposeValue = (int)AchievementValues.СontinuingPurposeValue;
                         break;
-                    case AchievementTypeConstants.Athlete:
+                    case AchievementTypeNameConstants.Athlete:
                         achievement[i].PurposeValue = (int)AchievementValues.AthletePurposeValue;
                         break;
-                    case AchievementTypeConstants.Universe:
+                    case AchievementTypeNameConstants.Universe:
                         achievement[i].PurposeValue = (int)AchievementValues.UniversePurposeValue;
                         break;
-                    case AchievementTypeConstants.Disciplined:
-                        achievement[i].PurposeValue = (int)AchievementValues.DisciplinedPurposeValue;
-                        break;
-                    case AchievementTypeConstants.Started:
+                    case AchievementTypeNameConstants.Started:
                         achievement[i].PurposeValue = (int)AchievementValues.StartedPurposeValue;
                         break;
                 }
@@ -59,37 +56,47 @@ namespace BodySchedulerWebApi.Repository
         }
 
         //update user achievements
-        public async Task UpdateAchievementsAsync(string userId, string achievemetName)
+        public async Task UpdateAchievementsAsync(UpdateAchievementDTO updateAchievementDTO)
         {
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await _userManager.FindByIdAsync(updateAchievementDTO.UserId);
             if (user == null)
             {
-                throw new EntityNotFoundException($"Пользователь с id:{userId} не найден");
+                throw new EntityNotFoundException($"Пользователь с id:{updateAchievementDTO.UserId} не найден");
             }
 
-            var achievementType = await _db.AchievementTypeSet.FirstOrDefaultAsync(x => x.Name == achievemetName);
-            if (achievementType == null)
+            
+            foreach(var achievementName in updateAchievementDTO.AchievemetNames)
             {
-                throw new EntityNotFoundException($"Достижение с названием:{achievemetName} не найдено");
-            }
+                var achievementType = await _db.AchievementTypeSet.FirstOrDefaultAsync(x => x.Name == achievementName);
+                if (achievementType == null)
+                {
+                    throw new EntityNotFoundException($"Достижение с названием:{achievementName} не найдено");
+                }
 
-            var achivement = await _db.AchievementSet.FirstOrDefaultAsync(x => x.User == user && x.Type == achievementType);
-            if (achivement == null)
-            {
-                throw new EntityNotFoundException($"У пользователя отсутствует достижение с названием:{achievemetName}");
-            }
+                var achivement = await _db.AchievementSet.FirstOrDefaultAsync(x => x.User == user && x.Type == achievementType);
+                if (achivement == null)
+                {
+                    throw new EntityNotFoundException($"У пользователя отсутствует достижение с названием:{achievementName}");
+                }
 
-            if (achivement.CurrentCountValue < achivement.PurposeValue)
-            {
-                achivement.CurrentCountValue += 1;
-            }
+                if (!achivement.IsCompleted)
+                {
+                    if (achivement.CurrentCountValue < achivement.PurposeValue)
+                    {
+                        achivement.CurrentCountValue += 1;
+                        achivement.ModTime = DateTime.Now;
+                    }
 
-            if (achivement.CurrentCountValue == achivement.PurposeValue)
-            { 
-                achivement.IsCompleted = true;
+                    if (achivement.CurrentCountValue == achivement.PurposeValue)
+                    { 
+                        achivement.IsCompleted = true;
+                        achivement.ModTime = DateTime.Now;
+                    }
+                }   
             }
 
             await _db.SaveChangesAsync();
+
         }
 
         //return user achievement list
@@ -109,7 +116,8 @@ namespace BodySchedulerWebApi.Repository
                 CurrentCountValue = x.CurrentCountValue,
                 IsCompleted = x.IsCompleted,
                 PurposeValue = x.PurposeValue,
-                Name = x.Type.Name
+                Name = x.Type.Name,
+                Description = x.Type.Description,
             })
             .ToListAsync();
 
@@ -124,8 +132,7 @@ namespace BodySchedulerWebApi.Repository
             СontinuingPurposeValue = 50,
             AthletePurposeValue = 100,
             UniversePurposeValue = 500,
-            DisciplinedPurposeValue = 50,
-            StartedPurposeValue = 1,
+            StartedPurposeValue = 1
         }
     }
 }

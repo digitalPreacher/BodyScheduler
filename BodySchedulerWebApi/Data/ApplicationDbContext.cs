@@ -64,6 +64,10 @@ namespace BodySchedulerWebApi.Data
                 .Property(x => x.Status)
                 .HasDefaultValue("inProgress");
 
+            builder.Entity<Event>()
+               .Property(x => x.EndTime)
+               .HasColumnType("timestamp without time zone");
+
             builder.Entity<BodyMeasure>()
                 .Property(x => x.CreateAt)
                 .HasColumnType("timestamp with time zone")
@@ -85,13 +89,12 @@ namespace BodySchedulerWebApi.Data
                 .HasDefaultValueSql("now()");
 
             builder.Entity<AchievementType>().HasData(
-                new AchievementType { Id = 1, Name = AchievementTypeConstants.Beginner },
-                new AchievementType { Id = 2, Name = AchievementTypeConstants.Young },
-                new AchievementType { Id = 3, Name = AchievementTypeConstants.Сontinuing },
-                new AchievementType { Id = 4, Name = AchievementTypeConstants.Athlete },
-                new AchievementType { Id = 5, Name = AchievementTypeConstants.Universe },
-                new AchievementType { Id = 6, Name = AchievementTypeConstants.Disciplined },
-                new AchievementType { Id = 7, Name = AchievementTypeConstants.Started });
+                new AchievementType { Id = 1, Name = AchievementTypeNameConstants.Beginner, Description = AchievementTypeDescriptionConstants.BeginnerDescription },
+                new AchievementType { Id = 2, Name = AchievementTypeNameConstants.Young, Description = AchievementTypeDescriptionConstants.YoungDescription },
+                new AchievementType { Id = 3, Name = AchievementTypeNameConstants.Сontinuing, Description = AchievementTypeDescriptionConstants.СontinuingDescription },
+                new AchievementType { Id = 4, Name = AchievementTypeNameConstants.Athlete, Description = AchievementTypeDescriptionConstants.AthleteDescription },
+                new AchievementType { Id = 5, Name = AchievementTypeNameConstants.Universe, Description = AchievementTypeDescriptionConstants.UniverseDescription },
+                new AchievementType { Id = 6, Name = AchievementTypeNameConstants.Started, Description = AchievementTypeDescriptionConstants.StartedDescription });
 
             builder.Entity<Achievement>()
                 .Property(x => x.CreateAt)
