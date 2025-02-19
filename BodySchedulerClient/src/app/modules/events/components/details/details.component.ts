@@ -13,6 +13,7 @@ import { AuthorizationService } from '../../../authorization/shared/authorizatio
 import { EventImpl } from '@fullcalendar/core/internal';
 import { TrainingStateData } from '../../shared/models/training-state-data.model';
 import { TrainingResultModalComponent } from '../../../shared/components/training-result-modal/training-result-modal.component';
+import { UpdateAchievementService } from '../../../shared/service/update-achievement.service';
 
 @Component({
   selector: 'app-details',
@@ -23,7 +24,6 @@ export class DetailsComponent implements OnDestroy {
   eventChangeDataSubscribtion: any;
   isLoadingDataSubscribtion: any;
   eventDataSubscribtion!: any;
-  modalService = inject(NgbModal);
   detailsForm: FormGroup;
   isLoading!: boolean;
   userDataSubscribtion: any;
@@ -36,10 +36,11 @@ export class DetailsComponent implements OnDestroy {
   trainingResult: TrainingResult = new TrainingResult();
   trainingStateData: TrainingStateData = new TrainingStateData();
   trainingStateChangeDataSubscribtion: any;
-
   valueArray: any[] = []
-
   model: ChangeEventStatus = new ChangeEventStatus();
+
+  modalService = inject(NgbModal);
+  updateAchievementService = inject(UpdateAchievementService);
 
   @Input() eventId!: number;
   @ViewChild('errorModal') errorModal!: ErrorModalComponent;
@@ -123,6 +124,9 @@ export class DetailsComponent implements OnDestroy {
         if (this.model.status === 'completed') {
           this.setTrainingResult();
           this.stopTimer();
+
+          //update user achievement
+          this.updateAchievementService.updateAchievement(this.userId, [AchievementName.beginner, AchievementName.young, AchievementName.continuing, AchievementName.athlete, AchievementName.universe]).subscribe();
         }
       },
       error: err => {
@@ -279,4 +283,14 @@ export class DetailsComponent implements OnDestroy {
     clearInterval(this.interval);
     this.isLoadingDataSubscribtion.unsubscribe();
   }
+
 }
+
+enum AchievementName {
+  beginner = "Новичок",
+  young = "Юноша",
+  continuing = "Продолжающий",
+  athlete = "Атлет",
+  universe = "Вселенная",
+}
+

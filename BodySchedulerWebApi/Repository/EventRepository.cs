@@ -223,7 +223,13 @@ namespace BodySchedulerWebApi.Repository
                 throw new EntityNotFoundException($"Запись с id:{eventStatusInfo.Id} не найдена");
             }
    
+            if (eventStatusInfo.Status == "completed")
+            {
+                getEvent.EndTime = DateTime.Now;
+            }
+
             getEvent.Status = eventStatusInfo.Status;
+
 
             _db.Entry(getEvent).State = EntityState.Modified;
             await _db.SaveChangesAsync();

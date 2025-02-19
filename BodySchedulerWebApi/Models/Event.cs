@@ -16,6 +16,7 @@ namespace BodySchedulerWebApi.Models
 
         [Required(ErrorMessage = "Поле StartTime обязательно для заполнения")]
         public required DateTimeOffset StartTime { get; set; }
+        public DateTime? EndTime { get; set;}
         public int? WeeksTrainingId { get; set; }
         public string? Status { get; set; }
         public ICollection<Exercise>? Exercises { get; set; }

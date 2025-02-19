@@ -2,6 +2,7 @@
 using BodySchedulerWebApi.DataTransferObjects.AccountDTOs;
 using BodySchedulerWebApi.Exceptions;
 using BodySchedulerWebApi.Models;
+using BodySchedulerWebApi.Service;
 using Microsoft.AspNetCore.Identity;
 
 namespace BodySchedulerWebApi.Repository
@@ -9,15 +10,17 @@ namespace BodySchedulerWebApi.Repository
     public class AccountRepository : IAccountRepository
     {
         private readonly ApplicationDbContext _db;
+        private readonly IAchievementService _achievementService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;   
 
         public AccountRepository(ApplicationDbContext db,
-            UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ILogger<AccountRepository> logger)
+            UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IAchievementService service)
         {
             _db = db;
             _userManager = userManager;
             _signInManager = signInManager;
+            _achievementService = service;
         }
         
         //create new user in db with return result
@@ -33,7 +36,12 @@ namespace BodySchedulerWebApi.Repository
             
             var result = await _userManager.CreateAsync(user, userRegistrationData.Password);
 
-            await _userManager.AddToRoleAsync(user, "User");
+            //added roles and achievemets after successful user registration
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(user, "User");
+                await _achievementService.AddAchievementsAsync(user);   
+            }
             
             return result;
         }

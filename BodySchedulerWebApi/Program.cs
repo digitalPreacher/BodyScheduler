@@ -92,6 +92,8 @@ builder.Services.AddScoped<ITrainingResultService, TrainingResultService>();
 builder.Services.AddScoped<IEmailSenderService, EmailSenderService>();
 builder.Services.AddScoped<ICustomExercisesRepository, CustomExercisesRepository>();
 builder.Services.AddScoped<ICustomExercisesService, CustomExercisesService>();
+builder.Services.AddScoped<IAchievementRepository, AchievementRepository>();
+builder.Services.AddScoped<IAchievementService, AchievementService>();
 
 var app = builder.Build();
 

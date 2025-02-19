@@ -48,6 +48,7 @@ import { CreateExerciseComponent } from './modules/exercises/components/create-e
 import { ListExercisesComponent } from './modules/exercises/components/list-exercises/list-exercises.component';
 import { DeleteExerciseComponent } from './modules/exercises/components/delete-exercise/delete-exercise.component';
 import { EditExerciseComponent } from './modules/exercises/components/edit-exercise/edit-exercise.component';
+import { AchievementListComponent } from './modules/achievements/components/achievement-list/achievement-list.component';
 
 
 
@@ -87,7 +88,8 @@ import { EditExerciseComponent } from './modules/exercises/components/edit-exerc
     CreateExerciseComponent,
     ListExercisesComponent,
     DeleteExerciseComponent,
-    EditExerciseComponent
+    EditExerciseComponent,
+    AchievementListComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,

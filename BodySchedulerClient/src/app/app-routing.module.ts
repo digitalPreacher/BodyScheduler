@@ -22,10 +22,11 @@ import { LineChartBodyMeasureComponent } from './modules/body-measure/components
 import { CopyComponent } from './modules/events/components/copy/copy.component';
 import { UsersListComponent } from './modules/user-administration/components/users-list/users-list.component';
 import { AuthorizationAdminGuard } from './modules/authorization/guards/authorization-admin.guard';
-import { TrainingResultsListComponent } from './modules/training-results/components/training-results-list/training-results-list.component'
-import { CreateExerciseComponent } from './modules/exercises/components/create-exercise/create-exercise.component'
-import { ListExercisesComponent } from './modules/exercises/components/list-exercises/list-exercises.component'
-
+import { TrainingResultsListComponent } from './modules/training-results/components/training-results-list/training-results-list.component';
+import { CreateExerciseComponent } from './modules/exercises/components/create-exercise/create-exercise.component';
+import { ListExercisesComponent } from './modules/exercises/components/list-exercises/list-exercises.component';
+import { AchievementListComponent } from '../app/modules/achievements/components/achievement-list/achievement-list.component';
+;
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthorizationUserGuard] },
   { path: 'login', component: LoginComponent, pathMatch: 'full' },
@@ -48,7 +49,8 @@ const routes: Routes = [
   { path: 'user-administration/users-list', component: UsersListComponent, canActivate: [AuthorizationAdminGuard] },
   { path: 'training-result/training-results-list', component: TrainingResultsListComponent, canActivate: [AuthorizationUserGuard] },
   { path: 'exercises/create-exercise', component: CreateExerciseComponent, canActivate: [AuthorizationUserGuard] },
-  { path: 'exercises/list-exercises', component: ListExercisesComponent, canActivate: [AuthorizationUserGuard] }
+  { path: 'exercises/list-exercises', component: ListExercisesComponent, canActivate: [AuthorizationUserGuard] },
+  { path: 'achievements/list-achievement', component: AchievementListComponent, canActivate: [AuthorizationUserGuard] }
 ];
 
 @NgModule({
