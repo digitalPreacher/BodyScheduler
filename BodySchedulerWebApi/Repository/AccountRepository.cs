@@ -1,8 +1,10 @@
 ﻿using BodySchedulerWebApi.Data;
 using BodySchedulerWebApi.DataTransferObjects.AccountDTOs;
+using BodySchedulerWebApi.Events.Register;
 using BodySchedulerWebApi.Exceptions;
 using BodySchedulerWebApi.Models;
 using BodySchedulerWebApi.Service;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 
 namespace BodySchedulerWebApi.Repository
@@ -10,19 +12,18 @@ namespace BodySchedulerWebApi.Repository
     public class AccountRepository : IAccountRepository
     {
         private readonly ApplicationDbContext _db;
-        private readonly IAchievementService _achievementService;
-        private readonly IUserExperienceService _userExperienceService;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;   
+        private readonly SignInManager<ApplicationUser> _signInManager;  
+        private readonly IPublisher _publisher;
 
         public AccountRepository(ApplicationDbContext db,
-            UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IAchievementService service, IUserExperienceService userExperienceService)
+            UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IAchievementService service,
+                IUserExperienceService userExperienceService, IPublisher publisher)
         {
             _db = db;
             _userManager = userManager;
             _signInManager = signInManager;
-            _achievementService = service;
-            _userExperienceService = userExperienceService;
+            _publisher = publisher;
         }
         
         //create new user in db with return result
@@ -41,9 +42,11 @@ namespace BodySchedulerWebApi.Repository
             //added roles and achievemets after successful user registration
             if (result.Succeeded)
             {
-                await _userManager.AddToRoleAsync(user, "User");
-                await _achievementService.AddAchievementsAsync(user);   
-                await _userExperienceService.AddUserExperienceAsync(user);
+                //added roles 
+                await _userManager.AddToRoleAsync(user, "User"); 
+
+                //Add achievements and experience notifications
+                await _publisher.Publish(new UserRegisteredEvent(user));
             }
             
             return result;
