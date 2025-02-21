@@ -11,16 +11,18 @@ namespace BodySchedulerWebApi.Repository
     {
         private readonly ApplicationDbContext _db;
         private readonly IAchievementService _achievementService;
+        private readonly IUserExperienceService _userExperienceService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;   
 
         public AccountRepository(ApplicationDbContext db,
-            UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IAchievementService service)
+            UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IAchievementService service, IUserExperienceService userExperienceService)
         {
             _db = db;
             _userManager = userManager;
             _signInManager = signInManager;
             _achievementService = service;
+            _userExperienceService = userExperienceService;
         }
         
         //create new user in db with return result
@@ -41,6 +43,7 @@ namespace BodySchedulerWebApi.Repository
             {
                 await _userManager.AddToRoleAsync(user, "User");
                 await _achievementService.AddAchievementsAsync(user);   
+                await _userExperienceService.AddUserExperienceAsync(user);
             }
             
             return result;

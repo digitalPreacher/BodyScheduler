@@ -105,6 +105,16 @@ namespace BodySchedulerWebApi.Data
              .Property(x => x.ModTime)
              .HasColumnType("timestamp without time zone")
              .HasDefaultValueSql("now()");
+
+            builder.Entity<UserExperience>(entity =>
+            {
+                entity.Property(x => x.CreateAt)
+                    .HasColumnType("timestamp without time zone")
+                    .HasDefaultValueSql("now()");
+
+                entity.Property(x => x.ModTime)
+                    .HasColumnType("timestamp without time zone");
+            });
         }
 
         public DbSet<Event> Events { get; set; }
@@ -117,5 +127,6 @@ namespace BodySchedulerWebApi.Data
         public DbSet<CustomExercise> CustomExerciseSet { get; set; }
         public DbSet<AchievementType> AchievementTypeSet { get; set; }
         public DbSet<Achievement> AchievementSet { get; set; }
+        public DbSet<UserExperience> UserExperienceSet { get; set; }
     }
 }

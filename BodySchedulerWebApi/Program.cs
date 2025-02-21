@@ -94,6 +94,8 @@ builder.Services.AddScoped<ICustomExercisesRepository, CustomExercisesRepository
 builder.Services.AddScoped<ICustomExercisesService, CustomExercisesService>();
 builder.Services.AddScoped<IAchievementRepository, AchievementRepository>();
 builder.Services.AddScoped<IAchievementService, AchievementService>();
+builder.Services.AddScoped<IUserExperienceRepository, UserExperienceRepository>();
+builder.Services.AddScoped<IUserExperienceService, UserExperienceService>();
 
 var app = builder.Build();
 
