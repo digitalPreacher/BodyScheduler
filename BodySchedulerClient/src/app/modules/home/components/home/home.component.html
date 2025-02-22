@@ -2,6 +2,10 @@
   <app-create></app-create>
 </div>
 
+<div class="mb-2">
+  <app-experience-bar></app-experience-bar>
+</div>
+
 <app-loader *ngIf="isLoading">
 </app-loader>
 <full-calendar [options]="calendarOptions" class="border rounded-4 p-4 bg-dark" id="fullcalendar">

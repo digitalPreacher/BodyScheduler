@@ -49,6 +49,7 @@ import { ListExercisesComponent } from './modules/exercises/components/list-exer
 import { DeleteExerciseComponent } from './modules/exercises/components/delete-exercise/delete-exercise.component';
 import { EditExerciseComponent } from './modules/exercises/components/edit-exercise/edit-exercise.component';
 import { AchievementListComponent } from './modules/achievements/components/achievement-list/achievement-list.component';
+import { ExperienceBarComponent } from './modules/experience-bar/components/experience-bar/experience-bar.component';
 
 
 
@@ -89,7 +90,8 @@ import { AchievementListComponent } from './modules/achievements/components/achi
     ListExercisesComponent,
     DeleteExerciseComponent,
     EditExerciseComponent,
-    AchievementListComponent
+    AchievementListComponent,
+    ExperienceBarComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,
