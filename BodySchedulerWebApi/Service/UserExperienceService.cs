@@ -1,4 +1,5 @@
-﻿using BodySchedulerWebApi.Exceptions;
+﻿using BodySchedulerWebApi.DataTransferObjects.UserExperienceDTOs;
+using BodySchedulerWebApi.Exceptions;
 using BodySchedulerWebApi.Models;
 using BodySchedulerWebApi.Repository;
 using Microsoft.AspNetCore.Identity;
@@ -15,6 +16,25 @@ namespace BodySchedulerWebApi.Service
         {
             _userExperienceRepository = userExperienceRepository;
             _userManager = userManager;
+        }
+
+        public async Task<GetUserExperienceDTO> GetUserExperienceAsync(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                throw new EntityNotFoundException("Пользователь не найден");
+            }
+
+            var currentUserExperience = await _userExperienceRepository.GetUserExperienceAsync(user);
+            
+            var convertedCurrentUserExperience = new GetUserExperienceDTO 
+            { 
+                CurrentExperienceValue = currentUserExperience.CurrentExperienceValue, 
+                GoalExperienceValue = currentUserExperience.GoalExperienceValue 
+            };
+
+            return convertedCurrentUserExperience;
         }
 
         //add user experience after registration account

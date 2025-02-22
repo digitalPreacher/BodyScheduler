@@ -6,7 +6,7 @@ import { EventService } from '../../shared/event.service';
 import { ChangeEventStatus } from '../../shared/change-event-status.model';
 import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component';
 import { LoadingService } from '../../../shared/service/loading.service';
-import { EMPTY, Observable, Subject, Subscription, filter, interval, map, mapTo, merge, switchMap, switchMapTo, takeUntil, takeWhile, withLatestFrom } from 'rxjs';
+import { EMPTY, Observable, Subject, Subscription, catchError, filter, interval, map, mapTo, merge, switchMap, switchMapTo, takeUntil, takeWhile, tap, throwError, withLatestFrom } from 'rxjs';
 import { countupTimer } from '../../../../utils/timer';
 import { TrainingResult } from '../../shared/models/training-result.model';
 import { AuthorizationService } from '../../../authorization/shared/authorization.service';
@@ -14,6 +14,7 @@ import { EventImpl } from '@fullcalendar/core/internal';
 import { TrainingStateData } from '../../shared/models/training-state-data.model';
 import { TrainingResultModalComponent } from '../../../shared/components/training-result-modal/training-result-modal.component';
 import { UpdateAchievementService } from '../../../shared/service/update-achievement.service';
+import { ExperienceBarService } from '../../../experience-bar/shared/experience-bar.service';
 
 @Component({
   selector: 'app-details',
@@ -41,6 +42,8 @@ export class DetailsComponent implements OnDestroy {
 
   modalService = inject(NgbModal);
   updateAchievementService = inject(UpdateAchievementService);
+  userExperienceBarService = inject(ExperienceBarService);
+
 
   @Input() eventId!: number;
   @ViewChild('errorModal') errorModal!: ErrorModalComponent;
@@ -114,25 +117,54 @@ export class DetailsComponent implements OnDestroy {
 
   //change status of an event
   changeEventStatus(status: string) {
+    this.loadingService.show()
     this.model.id = this.eventId;
     this.model.status = status;
-    this.eventService.changeEventStatus(this.model).subscribe({
-      next: result => {
-        this.modalService.dismissAll();
-        this.eventService.eventChangeData$.next(true);
 
-        if (this.model.status === 'completed') {
-          this.setTrainingResult();
-          this.stopTimer();
+    if (status === 'completed') {
+      this.eventService.changeEventStatus(this.model)
+        .pipe(
+          switchMap(() => {
+            //increment user experience
+            return this.userExperienceBarService.incrementUserExperience(this.userId);
+          }),
+          switchMap(() => {
+            //update user achievement
+            return this.updateAchievementService.updateAchievement(this.userId, [AchievementName.beginner, AchievementName.young, AchievementName.continuing, AchievementName.athlete, AchievementName.universe]);
+          }),
+          tap(() => {
+            this.setTrainingResult();
 
-          //update user achievement
-          this.updateAchievementService.updateAchievement(this.userId, [AchievementName.beginner, AchievementName.young, AchievementName.continuing, AchievementName.athlete, AchievementName.universe]).subscribe();
-        }
-      },
-      error: err => {
-        this.errorModal.openModal(err);
-      }
-    });
+            this.stopTimer();
+
+            this.modalService.dismissAll();
+            this.eventService.eventChangeData$.next(true);
+            this.loadingService.hide();
+          })
+        )
+        .subscribe({
+          error: err => {
+            this.errorModal.openModal(err);
+            this.loadingService.hide();
+          }
+        });
+    }
+    else {
+      this.eventService.changeEventStatus(this.model)
+        .pipe(
+          tap(() => {
+            this.loadingService.hide();
+            this.modalService.dismissAll();
+            this.eventService.eventChangeData$.next(true);
+          })
+        )
+        .subscribe({
+          error: err => {
+            this.loadingService.hide();
+            this.errorModal.openModal(err);
+          }
+        });
+    }
   }
 
   //Run timer by user start event
