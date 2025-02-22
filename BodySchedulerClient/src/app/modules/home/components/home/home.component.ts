@@ -188,6 +188,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             this.stopTimer();
 
             this.modalService.dismissAll();
+            this.userExperienceBarService.userExperienceChangeData$.next(true);
             this.eventService.eventChangeData$.next(true);
             this.loadingService.hide();
           })
