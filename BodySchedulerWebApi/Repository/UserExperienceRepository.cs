@@ -26,7 +26,6 @@ namespace BodySchedulerWebApi.Repository
                 CurrentExperienceValue = (int)UserExperienceValue.Initial,
                 GoalExperienceValue = (int)UserExperienceValue.Goal,
                 CreateAt = DateTime.Now,
-                ModTime = DateTime.Now,
                 User = user
             };
 

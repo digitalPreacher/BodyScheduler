@@ -6,32 +6,30 @@
   <div class="d-inline-flex col-12">
     <div class="bg-dark text-light col-8 me-2 border-end border-3">
       <div class="mt-2 col-12 p-3" *ngIf="isGetExercise">
-        <div class="d-inline-flex col-12">
-          <div class="form-group col-6 me-1">
-            <label for="formExerciseTitle" class="form-label">Название</label>
-            <input type="text"
-                   class="form-control"
-                   [(ngModel)]="exercise!.exerciseTitle"
-                   readonly>
-          </div>
-          <div class="form-group col-6 mx-auto pe-2" *ngIf="exercise?.image">
-            <label for="formFile" class="form-label">Изображение</label>
-            <img [src]="imageData"
-                 class="img-thumbnail">
-          </div>
+        <div class="form-group col-6 mx-auto">
+          <label for="formExerciseTitle" class="form-label">Название</label>
+          <input type="text"
+                  class="form-control"
+                  [(ngModel)]="exercise!.exerciseTitle"
+                  readonly>
         </div>
-        <div class="form-group mt-2">
+        <div class="form-group col-6 mx-auto pe-2 mt-2" *ngIf="exercise?.image">
+          <label for="formFile" class="form-label">Изображение</label>
+          <img [src]="imageData"
+                class="img-thumbnail">
+        </div>
+        <div class="form-group col-6 mx-auto mt-2">
           <label for="formExerciseDescription" class="form-label" style="max-height: 700px">Описание</label>
           <textarea type="text"
                     class="form-control"
                     [(ngModel)]="exercise!.exerciseDescription"
                     readonly></textarea>
         </div>
-        <div class="form-group mt-2 d-flex justify-content-end" *ngIf="exercise!.type === 'custom' && userRole === 'User'">
+        <div class="form-group mt-2 col-6 mx-auto" *ngIf="exercise!.type === 'custom' && userRole === 'User'">
           <app-edit-exercise [exerciseId]="exercise!.exerciseId" class="me-2"></app-edit-exercise>
           <app-delete-exercise [exerciseId]="exercise!.exerciseId"></app-delete-exercise>
         </div>
-        <div class="form-group mt-2 d-flex justify-content-end" *ngIf="userRole === 'Admin'">
+        <div class="form-group mt-2 col-6 mx-auto" *ngIf="userRole === 'Admin'">
           <app-edit-exercise [exerciseId]="exercise!.exerciseId" class="me-2"></app-edit-exercise>
           <app-delete-exercise [exerciseId]="exercise!.exerciseId"></app-delete-exercise>
         </div>
