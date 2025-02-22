@@ -56,7 +56,7 @@ namespace BodySchedulerWebApi.Service
             var experience = await _userExperienceRepository.GetUserExperienceAsync(user);
 
             //calculate increment experience value 
-            var totalHoursBetweenUpdateExp = (DateTime.Now - experience.ModTime).TotalHours;
+            var totalHoursBetweenUpdateExp = (DateTime.Now - experience.ModTime)?.TotalHours;
             if (totalHoursBetweenUpdateExp > (int)IncrementUserExperienceValue.AmountHoursBeforeIncrement ||  experience?.ModTime == null)
             {
                 if (experience!.CurrentExperienceValue < experience.GoalExperienceValue)
