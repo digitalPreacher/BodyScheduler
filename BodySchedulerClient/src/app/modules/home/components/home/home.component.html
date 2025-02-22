@@ -2,6 +2,10 @@
   <app-create></app-create>
 </div>
 
+<div class="mb-2">
+  <app-experience-bar></app-experience-bar>
+</div>
+
 <app-loader *ngIf="isLoading">
 </app-loader>
 <full-calendar [options]="calendarOptions" class="border rounded-4 p-4 bg-dark" id="fullcalendar">
@@ -56,7 +60,7 @@
           </div>
         </div>
         <div class="form-group mt-2" formArrayName="exercises">
-          <div class="col-12 d-inline-flex mx-auto">
+          <div class="col-12 d-inline-flex mx-auto" *ngIf="detailsForm.get('exercises')?.value.length != 0">
             <div class="col-6">
               <label for="title-exercise-details-form-field">Упражнение</label>
             </div>
@@ -115,14 +119,14 @@
               </div>
             </div>
           </div>
-          <div class="d-inline-flex">
+          <div class="d-flex">
             <button type="button" class="btn btn-outline-primary text-light mt-3" (click)="startTimer()" *ngIf="trainingStateData.state === 'Stopped'">Начать тренировку</button>
             <button type="button" class="btn btn-outline-primary text-light mt-3" (click)="resumeTimer()" *ngIf="trainingStateData.state === 'Paused'">Возобновить</button>
             <button type="button" class="btn btn-outline-primary text-light mt-3" (click)="pauseTimer()" *ngIf="trainingStateData.state === 'Runned' || trainingStateData.state === 'Resumed'">Приостановить</button>
             <div class="mt-4 mx-2">
               <b>{{displayTime}}</b>
             </div>
-            <button type="submit" class="btn btn-outline-success mt-3 shadow mx-2 text-light" (click)="changeEventStatus('completed')">Завершить тренировку</button>
+            <button type="submit" class="btn btn-outline-success position-relative mt-3 shadow text-light" (click)="changeEventStatus('completed')">Завершить тренировку</button>
           </div>
           <div class="modal-footer mt-3">
             <button type="button" class="btn btn-outline-danger mt-3 shadow text-light" (click)="modal.dismiss()">Отмена</button>

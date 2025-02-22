@@ -1,0 +1,15 @@
+<app-loader *ngIf="isLoading">
+</app-loader>
+
+<ul *ngFor="let achievement of achievements">
+  <li class="col-5 mx-auto border rounded text-center" style="color: white; list-style:none">
+    <i class="bi bi-lock-fill me-2 h3" *ngIf="!achievement.isCompleted"></i>
+    <i class="bi bi-check-circle me-2 h3" *ngIf="achievement.isCompleted" style="color: greenyellow"></i>
+    <span  style="font-size: 2rem;">{{ achievement.name }}</span>
+    <div>
+      <span style="font-size: 1rem;">{{ achievement.description }}</span>
+    </div>
+  </li>
+</ul>
+
+<app-error-modal #errorModal></app-error-modal>

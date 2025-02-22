@@ -1,7 +1,10 @@
 ﻿using BodySchedulerWebApi.Data;
 using BodySchedulerWebApi.DataTransferObjects.AccountDTOs;
+using BodySchedulerWebApi.Events.Register;
 using BodySchedulerWebApi.Exceptions;
 using BodySchedulerWebApi.Models;
+using BodySchedulerWebApi.Service;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 
 namespace BodySchedulerWebApi.Repository
@@ -10,14 +13,17 @@ namespace BodySchedulerWebApi.Repository
     {
         private readonly ApplicationDbContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;   
+        private readonly SignInManager<ApplicationUser> _signInManager;  
+        private readonly IPublisher _publisher;
 
         public AccountRepository(ApplicationDbContext db,
-            UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ILogger<AccountRepository> logger)
+            UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IAchievementService service,
+                IUserExperienceService userExperienceService, IPublisher publisher)
         {
             _db = db;
             _userManager = userManager;
             _signInManager = signInManager;
+            _publisher = publisher;
         }
         
         //create new user in db with return result
@@ -33,7 +39,15 @@ namespace BodySchedulerWebApi.Repository
             
             var result = await _userManager.CreateAsync(user, userRegistrationData.Password);
 
-            await _userManager.AddToRoleAsync(user, "User");
+            //added roles and achievemets after successful user registration
+            if (result.Succeeded)
+            {
+                //added roles 
+                await _userManager.AddToRoleAsync(user, "User"); 
+
+                //Add achievements and experience notifications
+                await _publisher.Publish(new UserRegisteredEvent(user));
+            }
             
             return result;
         }

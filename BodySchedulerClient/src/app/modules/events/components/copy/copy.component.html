@@ -71,6 +71,7 @@
                            required
                            #insertTitleBar
                            (focus)="inputFocused(i)"
+                           (blur)="outFocused(i)"
                            (keyup)="enterKeyUp(insertTitleBar.value, i)"
                            formControlName="title"
                            name="title-exercise-field"

@@ -1,0 +1,10 @@
+<div class="d-inline-flex">
+  <div class="text-white me-2" style="top: 50%">
+    <a> {{ userLevel }} уровень </a>
+  </div>
+  <div class="progress mx-auto mt-1 mb-1" role="progressbar" aria-label="Warning example" aria-valuemin="0" aria-valuemax="100" style="width: 50rem; position: center">
+    <div class="progress-bar bg-warning" [style]="progressStyle"></div>
+  </div>
+</div>
+
+<app-error-modal #errorModal></app-error-modal>

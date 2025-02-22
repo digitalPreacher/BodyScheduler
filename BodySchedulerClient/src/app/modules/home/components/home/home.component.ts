@@ -9,7 +9,7 @@ import { DatePipe } from '@angular/common';
 import { UserInactivityService } from '../../../authorization/shared/user-inactivity.service';
 import { AuthorizationService } from '../../../authorization/shared/authorization.service';
 import { EventService } from '../../../events/shared/event.service';
-import { pipe } from 'rxjs';
+import { pipe, switchMap, tap } from 'rxjs';
 import { Event } from '../../../events/shared/event.model';
 import { ChangeEventStatus } from '../../../events/shared/change-event-status.model';
 import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component';
@@ -19,6 +19,8 @@ import { TrainingResult } from '../../../events/shared/models/training-result.mo
 import { DetailsComponent } from '../../../events/components/details/details.component';
 import { TrainingStateData } from '../../../events/shared/models/training-state-data.model';
 import { TrainingResultModalComponent } from '../../../shared/components/training-result-modal/training-result-modal.component';
+import { UpdateAchievementService } from '../../../shared/service/update-achievement.service';
+import { ExperienceBarService } from '../../../experience-bar/shared/experience-bar.service';
 
 
 @Component({
@@ -50,6 +52,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   detailsForm: FormGroup;
 
   modalService = inject(NgbModal);
+  updateAchievementService = inject(UpdateAchievementService);
+  userExperienceBarService = inject(ExperienceBarService);
 
   @ViewChild('errorModal') errorModal!: ErrorModalComponent;
   @ViewChild('trainingResultModal') trainingResultModal!: TrainingResultModalComponent;
@@ -163,25 +167,54 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   //change status of an event
   changeEventStatus(status: string) {
-    this.loadingService.show();
+    this.loadingService.show()
+    this.model.id = this.eventId;
     this.model.status = status;
-    this.eventService.changeEventStatus(this.model).subscribe({
-      next: result => {
-        this.loadingService.hide();
-        this.modalService.dismissAll();
-        this.eventService.eventChangeData$.next(true);
 
-        if (this.model.status === 'completed') {
-          /*this.setTrainingResult();*/
-          this.setTrainingResult();
-          this.stopTimer();
-        }
-      },
-      error: err => {
-        this.loadingService.hide();
-        this.errorModal.openModal(err);
-      }
-    });
+    if (status === 'completed') {
+      this.eventService.changeEventStatus(this.model)
+        .pipe(
+          switchMap(() => {
+            //increment user experience
+            return this.userExperienceBarService.incrementUserExperience(this.userId);
+          }),
+          switchMap(() => {
+            //update user achievement
+            return this.updateAchievementService.updateAchievement(this.userId, [AchievementName.beginner, AchievementName.young, AchievementName.continuing, AchievementName.athlete, AchievementName.universe]);
+          }),
+          tap(() => {
+            this.setTrainingResult();
+
+            this.stopTimer();
+
+            this.modalService.dismissAll();
+            this.eventService.eventChangeData$.next(true);
+            this.loadingService.hide();
+          })
+        )
+        .subscribe({
+          error: err => {
+            this.errorModal.openModal(err);
+            this.loadingService.hide();
+          }
+        });
+    }
+    else {
+      this.eventService.changeEventStatus(this.model)
+        .pipe(
+          tap(() => {
+            this.loadingService.hide();
+            this.modalService.dismissAll();
+            this.eventService.eventChangeData$.next(true);
+          })
+        )
+        .subscribe({
+          error: err => {
+            this.loadingService.hide();
+            this.errorModal.openModal(err);
+          }
+        });
+    }
   }
 
   //Run timer by user start event
@@ -342,4 +375,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.isLoadingDataSubscribtion.unsubscribe();
     this.eventChangeDataSubscribtion.unsubscribe();
   }
+}
+
+enum AchievementName {
+  beginner = "Новичок",
+  young = "Юноша",
+  continuing = "Продолжающий",
+  athlete = "Атлет",
+  universe = "Вселенная",
 }

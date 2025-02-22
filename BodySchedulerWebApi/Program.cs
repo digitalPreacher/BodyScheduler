@@ -1,14 +1,20 @@
 using BodySchedulerWebApi.Data;
+using BodySchedulerWebApi.Events.Handlers;
+using BodySchedulerWebApi.Events.Register;
 using BodySchedulerWebApi.Models;
 using BodySchedulerWebApi.Repository;
 using BodySchedulerWebApi.Service;
 using DotNetEnv;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
+using System.Reflection;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -92,6 +98,14 @@ builder.Services.AddScoped<ITrainingResultService, TrainingResultService>();
 builder.Services.AddScoped<IEmailSenderService, EmailSenderService>();
 builder.Services.AddScoped<ICustomExercisesRepository, CustomExercisesRepository>();
 builder.Services.AddScoped<ICustomExercisesService, CustomExercisesService>();
+builder.Services.AddScoped<IAchievementRepository, AchievementRepository>();
+builder.Services.AddScoped<IAchievementService, AchievementService>();
+builder.Services.AddScoped<IUserExperienceRepository, UserExperienceRepository>();
+builder.Services.AddScoped<IUserExperienceService, UserExperienceService>();
+
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(IMediator).Assembly));
+builder.Services.AddScoped<INotificationHandler<UserRegisteredEvent>, AchievementEventHandler>();
+builder.Services.AddScoped<INotificationHandler<UserRegisteredEvent>, ExperienceEventHandler>();
 
 var app = builder.Build();
 
